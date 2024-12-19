@@ -1,13 +1,31 @@
+import {useState, useEffect} from "react";
 import {Outlet, Navigate, Link} from "react-router-dom";
 import {useStateContext} from "../contexts/ContextProvider";
 import logoImg from "../assets/logo.png";
+import axiosClient from "../axios-client";
 
 export default function GuestLayout() {
-  const {token} = useStateContext();
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const {token, query, setQuery, setCategory, setProducts} = useStateContext();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axiosClient.get("/categories").then(({data}) => {
+      setCategories(data.data);
+    });
+  }, []);
 
   if (token) {
     return <Navigate to="/" />;
   }
+
+  const selectCategory = id => {
+    setCategory(id);
+    const categoryId = id || "";
+    axiosClient
+      .get(`/products?search=${query}&category=${categoryId}`)
+      .then(({data}) => setProducts(data.data));
+  };
 
   // Merah Tradisional (#E63946): Warna khas untuk makanan Asia.
   // Emas Tradisional (#FFD700): Memberi kesan keberuntungan.
@@ -26,20 +44,39 @@ export default function GuestLayout() {
         </div>
         <div className="flex">
           <ul className="flex md:gap-10 items-center justify-between w-full">
-            <li className="hidden md:flex gap-3 items-center">
+            <li
+              onClick={() => setCategoryOpen(!categoryOpen)}
+              className="hidden md:flex gap-3 items-center"
+            >
               <button className="cursor-pointer flex items-center gap-4">
                 <i className="fa-solid fa-chevron-down text-sm"></i>
                 <span>Category</span>
               </button>
             </li>
-            <div className="hidden absolute rounded-md shadow-xl w-32 -bottom-16 -my-2 bg-[#F5F5DC] text-black py-2 px-4">
-              <ul>
-                <li className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]">
-                  Food
+            <div
+              className={`${
+                categoryOpen ? "hidden" : "absolute"
+              } rounded-md shadow-xl w-32 -bottom-16 -my-1 bg-[#E63946] text-black py-2 px-4`}
+            >
+              <ul
+                className="text-white"
+                onMouseLeave={() => setCategoryOpen(!categoryOpen)}
+              >
+                <li
+                  className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]"
+                  onClick={() => selectCategory("")}
+                >
+                  All
                 </li>
-                <li className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]">
-                  Beverages
-                </li>
+                {categories.map(category => (
+                  <li
+                    key={category.id}
+                    className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]"
+                    onClick={() => selectCategory(category.id)}
+                  >
+                    {category.name}
+                  </li>
+                ))}
               </ul>
             </div>
             <li className="w-full pr-5 md:px-5">
@@ -47,6 +84,8 @@ export default function GuestLayout() {
                 <i className="fa-solid fa-magnifying-glass"></i>
                 <input
                   type="search"
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
                   className="w-full h-full bg-[#E63946] focus:outline-none placeholder:text-gray-200 placeholder:text-sm"
                   placeholder="Find your favorite items here..."
                 />

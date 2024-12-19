@@ -38,10 +38,18 @@ const Product = ({product}) => {
 
 export default function Products({products}) {
   return (
-    <div className="p-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 grid-flow-row">
-      {products.map(product => (
-        <Product key={product.id} product={product} />
-      ))}
+    <div>
+      {products ? (
+        <div className="p-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 grid-flow-row">
+          {products.map(product => (
+            <Product key={product.id} product={product} />
+          ))}
+        </div>
+      ) : (
+        <div className="p-2 h-screen flex justify-center items-center">
+          <p className="text-2xl font-bold text-gray-100">No products found</p>
+        </div>
+      )}
     </div>
   );
 }

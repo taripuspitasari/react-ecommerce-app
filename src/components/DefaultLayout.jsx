@@ -1,19 +1,33 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Navigate, Outlet, Link} from "react-router-dom";
 import {useStateContext} from "../contexts/ContextProvider";
 import logoImg from "../assets/logo.png";
-import {useEffect} from "react";
 import axiosClient from "../axios-client";
 
 export default function DefaultLayout() {
   const [open, setOpen] = useState(false);
-  const {user, token, setUser, setToken} = useStateContext();
+  const {
+    user,
+    token,
+    setUser,
+    setToken,
+    setProducts,
+    query,
+    setQuery,
+    setCategory,
+  } = useStateContext();
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     if (!token) return;
 
     axiosClient.get("/user").then(({data}) => {
       setUser(data);
+    });
+
+    axiosClient.get("/categories").then(({data}) => {
+      setCategories(data.data);
     });
   }, [token]);
 
@@ -30,29 +44,58 @@ export default function DefaultLayout() {
     return <Navigate to="/public" />;
   }
 
+  const selectCategory = id => {
+    setCategory(id);
+    const categoryId = id || "";
+    axiosClient
+      .get(`/products?search=${query}&category=${categoryId}`)
+      .then(({data}) => setProducts(data.data));
+  };
+
   return (
     <div className="h-screen w-full overflow-y-auto">
       <nav className="p-2 flex flex-col md:flex-row justify-between bg-[#E63946] h-14 w-full sticky top-0 md:h-20 text-[#F5F5DC]">
         <div className="hidden md:flex justify-between">
-          <Link to="/public" className="flex gap-2 items-center">
+          <Link to="/dashboard" className="flex gap-2 items-center">
             <img src={logoImg} alt="" width="40" />
             <p className="text-[#F5F5DC] text-xl font-bold">Mitsuri Food</p>
           </Link>
         </div>
-        <div className="flex">
+        <div className="flex ">
           <ul className="flex md:gap-10 items-center justify-between w-full">
-            <li className="hidden md:flex gap-3 items-center cursor-pointer">
-              <i className="fa-solid fa-chevron-down"></i>
-              <span>Category</span>
+            <li
+              onClick={() => setCategoryOpen(!categoryOpen)}
+              className="hidden md:flex gap-3 items-center cursor-pointer"
+            >
+              <button className="cursor-pointer flex items-center gap-4">
+                <i className="fa-solid fa-chevron-down text-sm"></i>
+                <span>Category</span>
+              </button>
             </li>
-            <div className="hidden absolute rounded-md shadow-xl w-32 -bottom-16 -my-2 bg-[#E63946] text-black py-2 px-4">
-              <ul className="text-white">
-                <li className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]">
-                  Food
+            <div
+              className={`${
+                categoryOpen ? "hidden" : "absolute"
+              } rounded-md shadow-xl w-32 -bottom-16 -my-1 bg-[#E63946] text-black py-2 px-4`}
+            >
+              <ul
+                className="text-white"
+                onMouseLeave={() => setCategoryOpen(!categoryOpen)}
+              >
+                <li
+                  className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]"
+                  onClick={() => selectCategory("")}
+                >
+                  All
                 </li>
-                <li className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]">
-                  Beverages
-                </li>
+                {categories.map(category => (
+                  <li
+                    key={category.id}
+                    className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]"
+                    onClick={() => selectCategory(category.id)}
+                  >
+                    {category.name}
+                  </li>
+                ))}
               </ul>
             </div>
             <li className="w-full pr-5 md:px-5">
@@ -60,6 +103,8 @@ export default function DefaultLayout() {
                 <i className="fa-solid fa-magnifying-glass"></i>
                 <input
                   type="search"
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
                   className="w-full h-full bg-[#E63946] focus:outline-none text-[#F5F5DC] placeholder:text-gray-200 placeholder:text-sm"
                   placeholder="Find your favorite items here..."
                 />

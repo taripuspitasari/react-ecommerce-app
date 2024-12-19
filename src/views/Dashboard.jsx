@@ -1,19 +1,20 @@
 import {useEffect, useState} from "react";
 import axiosClient from "../axios-client";
 import Products from "../components/Products";
+import {useStateContext} from "../contexts/ContextProvider";
 
 export default function Dashboard() {
-  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const {products, setProducts, query, category} = useStateContext();
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [query]);
 
   const getProducts = () => {
     setLoading(true);
     axiosClient
-      .get("/products")
+      .get(`/products?search=${query}&category=${category}`)
       .then(({data}) => {
         setLoading(false);
         setProducts(data.data);

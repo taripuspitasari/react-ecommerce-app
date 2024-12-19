@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/products/:id",
+        path: "products/:id",
         element: <ProductDetail />,
       },
     ],
@@ -59,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/products/:id",
+        element: <ProductDetail />,
       },
     ],
   },
