@@ -1,18 +1,10 @@
 import React from "react";
-import {useStateContext} from "../contexts/ContextProvider";
-import axiosClient from "../axios-client";
+import {useSelector, useDispatch} from "react-redux";
+import {logout} from "../app/slices/authSlice";
 
 export default function Account() {
-  const {user, token, setUser, setToken} = useStateContext();
-
-  const onLogout = e => {
-    e.preventDefault();
-
-    axiosClient.post("/logout").then(() => {
-      setUser({});
-      setToken(null);
-    });
-  };
+  const dispatch = useDispatch();
+  const {user} = useSelector(state => state.auth);
 
   return (
     <div className="w-full h-screen bg-[#F5F5DC]">

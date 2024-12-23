@@ -1,28 +1,17 @@
-import {useEffect, useState} from "react";
-import axiosClient from "../axios-client";
+import {useEffect} from "react";
 import Products from "../components/Products";
-import {useStateContext} from "../contexts/ContextProvider";
+import {useSelector, useDispatch} from "react-redux";
+import {fetchProducts} from "../app/slices/productSlice";
 
 export default function Dashboard() {
-  const [loading, setLoading] = useState(false);
-  const {products, setProducts, query, category} = useStateContext();
+  const dispatch = useDispatch();
+  const {loading, products, query, category} = useSelector(
+    state => state.product
+  );
 
   useEffect(() => {
-    getProducts();
-  }, [query]);
-
-  const getProducts = () => {
-    setLoading(true);
-    axiosClient
-      .get(`/products?search=${query}&category=${category}`)
-      .then(({data}) => {
-        setLoading(false);
-        setProducts(data.data);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  };
+    dispatch(fetchProducts({query, category}));
+  }, [query, category, dispatch]);
 
   return (
     <div className="min-h-screen bg-[#F5F5DC]">

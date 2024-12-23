@@ -1,17 +1,17 @@
 import {Link} from "react-router-dom";
 import signupImg from "../assets/panda.png";
-import {useRef, useState} from "react";
-import {useStateContext} from "../contexts/ContextProvider";
-import axiosClient from "../axios-client";
+import {useRef} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {signupUser} from "../app/slices/authSlice";
 
 export default function Signup() {
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
-  const [errors, setErrors] = useState(null);
 
-  const {setUser, setToken} = useStateContext();
+  const {errors} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   const onSubmit = e => {
     e.preventDefault();
@@ -23,18 +23,7 @@ export default function Signup() {
       password_confirmation: passwordConfirmationRef.current.value,
     };
 
-    axiosClient
-      .post("/signup", payload)
-      .then(({data}) => {
-        setUser(data.user);
-        setToken(data.token);
-      })
-      .catch(err => {
-        const response = err.response;
-        if (response && response.status === 422) {
-          setErrors(response.data.errors);
-        }
-      });
+    dispatch(signupUser(payload));
   };
 
   return (

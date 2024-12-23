@@ -1,30 +1,29 @@
 import {useState, useEffect} from "react";
 import {Outlet, Navigate, Link} from "react-router-dom";
-import {useStateContext} from "../contexts/ContextProvider";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setQuery,
+  setSelectedCategory,
+  fetchCategories,
+} from "../app/slices/productSlice";
 import logoImg from "../assets/logo.png";
-import axiosClient from "../axios-client";
 
 export default function GuestLayout() {
+  const dispatch = useDispatch();
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const {token, query, setQuery, setCategory, setProducts} = useStateContext();
-  const [categories, setCategories] = useState([]);
+  const {query, categories} = useSelector(state => state.product);
+  const {token} = useSelector(state => state.auth);
 
   useEffect(() => {
-    axiosClient.get("/categories").then(({data}) => {
-      setCategories(data.data);
-    });
-  }, []);
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   if (token) {
     return <Navigate to="/" />;
   }
 
   const selectCategory = id => {
-    setCategory(id);
-    const categoryId = id || "";
-    axiosClient
-      .get(`/products?search=${query}&category=${categoryId}`)
-      .then(({data}) => setProducts(data.data));
+    dispatch(setSelectedCategory(id));
   };
 
   // Merah Tradisional (#E63946): Warna khas untuk makanan Asia.
@@ -55,7 +54,7 @@ export default function GuestLayout() {
             </li>
             <div
               className={`${
-                categoryOpen ? "hidden" : "absolute"
+                categoryOpen ? "absolute" : "hidden"
               } rounded-md shadow-xl w-32 -bottom-16 -my-1 bg-[#E63946] text-black py-2 px-4`}
             >
               <ul
@@ -85,7 +84,7 @@ export default function GuestLayout() {
                 <input
                   type="search"
                   value={query}
-                  onChange={e => setQuery(e.target.value)}
+                  onChange={e => dispatch(setQuery(e.target.value))}
                   className="w-full h-full bg-[#E63946] focus:outline-none placeholder:text-gray-200 placeholder:text-sm"
                   placeholder="Find your favorite items here..."
                 />

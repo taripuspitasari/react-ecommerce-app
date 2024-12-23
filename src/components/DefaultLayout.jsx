@@ -1,55 +1,33 @@
 import {useState, useEffect} from "react";
 import {Navigate, Outlet, Link} from "react-router-dom";
-import {useStateContext} from "../contexts/ContextProvider";
+import {useDispatch, useSelector} from "react-redux";
 import logoImg from "../assets/logo.png";
-import axiosClient from "../axios-client";
+import {
+  setQuery,
+  setSelectedCategory,
+  fetchCategories,
+} from "../app/slices/productSlice";
+import {logout} from "../app/slices/authSlice";
 
 export default function DefaultLayout() {
   const [open, setOpen] = useState(false);
-  const {
-    user,
-    token,
-    setUser,
-    setToken,
-    setProducts,
-    query,
-    setQuery,
-    setCategory,
-  } = useStateContext();
+  const dispatch = useDispatch();
+  const {query, categories} = useSelector(state => state.product);
+  const {token, user} = useSelector(state => state.auth);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     if (!token) return;
 
-    axiosClient.get("/user").then(({data}) => {
-      setUser(data);
-    });
-
-    axiosClient.get("/categories").then(({data}) => {
-      setCategories(data.data);
-    });
-  }, [token]);
-
-  const onLogout = e => {
-    e.preventDefault();
-
-    axiosClient.post("/logout").then(() => {
-      setUser({});
-      setToken(null);
-    });
-  };
+    dispatch(fetchCategories());
+  }, [token, dispatch]);
 
   if (!token) {
     return <Navigate to="/public" />;
   }
 
   const selectCategory = id => {
-    setCategory(id);
-    const categoryId = id || "";
-    axiosClient
-      .get(`/products?search=${query}&category=${categoryId}`)
-      .then(({data}) => setProducts(data.data));
+    dispatch(setSelectedCategory(id));
   };
 
   return (
@@ -61,7 +39,7 @@ export default function DefaultLayout() {
             <p className="text-[#F5F5DC] text-xl font-bold">Mitsuri Food</p>
           </Link>
         </div>
-        <div className="flex ">
+        <div className="flex">
           <ul className="flex md:gap-10 items-center justify-between w-full">
             <li
               onClick={() => setCategoryOpen(!categoryOpen)}
@@ -74,7 +52,7 @@ export default function DefaultLayout() {
             </li>
             <div
               className={`${
-                categoryOpen ? "hidden" : "absolute"
+                categoryOpen ? "absolute" : "hidden"
               } rounded-md shadow-xl w-32 -bottom-16 -my-1 bg-[#E63946] text-black py-2 px-4`}
             >
               <ul
@@ -104,7 +82,7 @@ export default function DefaultLayout() {
                 <input
                   type="search"
                   value={query}
-                  onChange={e => setQuery(e.target.value)}
+                  onChange={e => dispatch(setQuery(e.target.value))}
                   className="w-full h-full bg-[#E63946] focus:outline-none text-[#F5F5DC] placeholder:text-gray-200 placeholder:text-sm"
                   placeholder="Find your favorite items here..."
                 />
@@ -150,7 +128,7 @@ export default function DefaultLayout() {
             </li>
             <li
               className="cursor-pointer hover:text-black hover:bg-[#dedec4] p-1"
-              onClick={onLogout}
+              onClick={() => dispatch(logout())}
             >
               Logout
             </li>

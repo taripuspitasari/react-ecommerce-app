@@ -1,15 +1,14 @@
 import {Link} from "react-router-dom";
 import loginImg from "../assets/gate.png";
-import {useRef, useState} from "react";
-import {useStateContext} from "../contexts/ContextProvider";
-import axiosClient from "../axios-client";
+import {useRef} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {loginUser} from "../app/slices/authSlice";
 
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const [errors, setErrors] = useState(null);
-
-  const {setUser, setToken} = useStateContext();
+  const dispatch = useDispatch();
+  const {errors} = useSelector(state => state.auth);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -19,27 +18,9 @@ export default function Login() {
       password: passwordRef.current.value,
     };
 
-    setErrors(null);
-
-    axiosClient
-      .post("/login", payload)
-      .then(({data}) => {
-        setUser(data.user);
-        setToken(data.token);
-      })
-      .catch(err => {
-        const response = err.response;
-        if (response && response.status === 422) {
-          if (response.data.errors) {
-            setErrors(response.data.errors);
-          } else {
-            setErrors({
-              email: [response.data.message],
-            });
-          }
-        }
-      });
+    dispatch(loginUser(payload));
   };
+
   return (
     <div className="bg-[#F5F5DC] h-[calc(100vh-7rem)] md:h-[calc(100vh-5rem)] flex items-center justify-center">
       <div className="flex flex-col w-4/5 md:flex-row items-center bg-white md:w-2/3 rounded-lg py-2">
