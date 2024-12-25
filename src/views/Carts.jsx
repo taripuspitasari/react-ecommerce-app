@@ -1,4 +1,18 @@
+import {useSelector} from "react-redux";
+
 export default function Users() {
+  const {cartTotalQuantity, cartTotalAmount, cartItems} = useSelector(
+    state => state.cart
+  );
+
+  const formatPrice = price => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(price);
+  };
+
   return (
     <div className="h-screen bg-[#F5F5DC] p-2">
       <h2 className="text-3xl py-5 font-medium text-center">My Cart</h2>
@@ -10,43 +24,53 @@ export default function Users() {
                 <th scope="col" className="px-4 py-3">
                   Product
                 </th>
-                <th scope="col" className="px-4 py-3">
+                <th scope="col" className="px-4 py-3 text-center">
                   Price
                 </th>
-                <th scope="col" className="px-4 py-3">
+                <th scope="col" className="px-4 py-3 text-center">
                   Quantity
                 </th>
-                <th scope="col" className="px-4 py-3">
+                <th scope="col" className="px-4 py-3 text-center">
                   Subtotal
                 </th>
-                <th scope="col" className="px-4 py-3"></th>
+                <th scope="col" className="px-4 py-3 text-center">
+                  <button>
+                    <i className="fa-solid fa-trash-can"></i>
+                  </button>
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b dark:border-gray-700">
-                <th
-                  scope="row"
-                  className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Pencukur bulu
-                </th>
-                <td className="px-4 py-3">Rp. 98.000</td>
-                <td className="px-4 py-3">
-                  <div className="flex gap-3 ">
-                    <button className="font-bold">
-                      <i className="fa-solid fa-minus"></i>
-                    </button>
-                    <p>2</p>
-                    <button className="font-bold">
-                      <i className="fa-solid fa-plus"></i>
-                    </button>
-                  </div>
-                </td>
-                <td className="px-4 py-3">Rp. 196.000</td>
-                <td className="px-4 py-3">
-                  <i className="fa-regular fa-trash-can"></i>
-                </td>
-              </tr>
+              {cartItems.map(item => (
+                <tr key={item.id} className="border-b dark:border-gray-700">
+                  <th
+                    scope="row"
+                    className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {item.product_name}
+                  </th>
+                  <td className="px-4 py-3 text-right">
+                    {formatPrice(item.price)}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex justify-between w-full">
+                      <button className="font-bold">
+                        <i className="fa-solid fa-minus"></i>
+                      </button>
+                      <p>{item.quantity}</p>
+                      <button className="font-bold">
+                        <i className="fa-solid fa-plus"></i>
+                      </button>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    {formatPrice(item.subtotal)}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <i className="fa-solid fa-xmark"></i>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -55,18 +79,24 @@ export default function Users() {
             Order Summary
           </h3>
           <table className="mx-auto w-full">
-            <tr>
-              <td className="p-1">Subtotal (2 Items)</td>
-              <td className="text-right p-1">Rp. 198.000</td>
-            </tr>
-            <tr>
-              <td className="p-1">Shipping</td>
-              <td className="text-right p-1">Free</td>
-            </tr>
-            <tr>
-              <td className="p-1">Total</td>
-              <td className="text-right p-1">Rp. 198.000</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td className="p-1">Subtotal ({cartTotalQuantity} Items)</td>
+                <td className="text-right p-1">
+                  {formatPrice(cartTotalAmount)}
+                </td>
+              </tr>
+              <tr>
+                <td className="p-1">Shipping</td>
+                <td className="text-right p-1">Free</td>
+              </tr>
+              <tr>
+                <td className="p-1">Total</td>
+                <td className="text-right p-1">
+                  {formatPrice(cartTotalAmount)}
+                </td>
+              </tr>
+            </tbody>
           </table>
           <div className="flex justify-center">
             <button className="py-2 px-4 rounded-md w-full bg-[#A5D6A7] hover:bg-[#96c497]">

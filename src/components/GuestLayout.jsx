@@ -55,7 +55,7 @@ export default function GuestLayout() {
             <div
               className={`${
                 categoryOpen ? "absolute" : "hidden"
-              } rounded-md shadow-xl w-32 -bottom-16 -my-1 bg-[#E63946] text-black py-2 px-4`}
+              } rounded-md shadow-xl w-32 -bottom-16 -my-7 bg-[#E63946] text-black py-2 px-4`}
             >
               <ul
                 className="text-white"

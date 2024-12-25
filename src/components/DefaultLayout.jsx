@@ -7,12 +7,14 @@ import {
   setSelectedCategory,
   fetchCategories,
 } from "../app/slices/productSlice";
+import {fetchUserCart} from "../app/slices/cartSlice";
 import {logout} from "../app/slices/authSlice";
 
 export default function DefaultLayout() {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const {query, categories} = useSelector(state => state.product);
+  const {cartTotalQuantity} = useSelector(state => state.cart);
   const {token, user} = useSelector(state => state.auth);
   const [categoryOpen, setCategoryOpen] = useState(false);
 
@@ -20,6 +22,7 @@ export default function DefaultLayout() {
     if (!token) return;
 
     dispatch(fetchCategories());
+    dispatch(fetchUserCart());
   }, [token, dispatch]);
 
   if (!token) {
@@ -53,7 +56,7 @@ export default function DefaultLayout() {
             <div
               className={`${
                 categoryOpen ? "absolute" : "hidden"
-              } rounded-md shadow-xl w-32 -bottom-16 -my-1 bg-[#E63946] text-black py-2 px-4`}
+              } rounded-md shadow-xl w-32 -bottom-16 -my-7 bg-[#E63946] text-black py-2 px-4`}
             >
               <ul
                 className="text-white"
@@ -91,8 +94,8 @@ export default function DefaultLayout() {
             <li>
               <Link to="/carts" className="relative">
                 <i className="fa-solid fa-cart-shopping"></i>
-                <div className="absolute -top-3 -right-3 text-xs bg-[#A5D6A7] py-0 px-1 rounded-full ">
-                  2
+                <div className="absolute -top-3 -right-3 text-xs bg-[#A5D6A7] py-0 px-1 rounded-full text-black">
+                  {cartTotalQuantity}
                 </div>
               </Link>
             </li>

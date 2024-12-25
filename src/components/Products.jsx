@@ -1,7 +1,27 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {addToCart} from "../app/slices/cartSlice";
 
 const Product = ({product}) => {
+  const dispatch = useDispatch();
+  const userId = useSelector(state => state.auth.user.id);
+
+  const handleAddToCart = product => {
+    if (!userId) {
+      return <Navigate to="/login" />;
+    }
+
+    const cartDetails = [
+      {
+        product_id: product.id,
+        quantity: 1,
+      },
+    ];
+    dispatch(addToCart({userId, cartDetails}));
+    console.log(cartDetails);
+  };
+
   const formatPrice = price => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -23,7 +43,10 @@ const Product = ({product}) => {
       <p>{formatPrice(product.price)}</p>
       <div className="mt-3">
         <ul className="flex justify-between items-center gap-2">
-          <li className="text-sm flex justify-center items-center gap-3 border py-1 px-4 rounded-full border-[#FFD700] hover:bg-[#FFD700] cursor-pointer">
+          <li
+            onClick={() => handleAddToCart(product)}
+            className="text-sm flex justify-center items-center gap-3 border py-1 px-4 rounded-full border-[#FFD700] hover:bg-[#FFD700] cursor-pointer"
+          >
             <i className="fa-solid fa-cart-shopping"></i>
             <span className="text-xs hidden md:block">Add To Cart</span>
           </li>
