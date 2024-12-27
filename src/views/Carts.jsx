@@ -1,9 +1,18 @@
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
+import {clearAll, updateCartQuantity, clearItem} from "../app/slices/cartSlice";
 
-export default function Users() {
+export default function Carts() {
+  const dispatch = useDispatch();
   const {cartTotalQuantity, cartTotalAmount, cartItems} = useSelector(
     state => state.cart
   );
+
+  const userId = useSelector(state => state.auth.user.id);
+
+  const handleQuantityChange = (cartId, newQuantity) => {
+    if (newQuantity <= 0) return;
+    dispatch(updateCartQuantity({cartId, newQuantity}));
+  };
 
   const formatPrice = price => {
     return new Intl.NumberFormat("id-ID", {
@@ -33,7 +42,11 @@ export default function Users() {
                 <th scope="col" className="px-4 py-3 text-center">
                   Subtotal
                 </th>
-                <th scope="col" className="px-4 py-3 text-center">
+                <th
+                  scope="col"
+                  className="px-4 py-3 text-center"
+                  onClick={() => dispatch(clearAll(userId))}
+                >
                   <button>
                     <i className="fa-solid fa-trash-can"></i>
                   </button>
@@ -54,11 +67,21 @@ export default function Users() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-between w-full">
-                      <button className="font-bold">
+                      <button
+                        className="font-bold"
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity - 1)
+                        }
+                      >
                         <i className="fa-solid fa-minus"></i>
                       </button>
                       <p>{item.quantity}</p>
-                      <button className="font-bold">
+                      <button
+                        className="font-bold"
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity + 1)
+                        }
+                      >
                         <i className="fa-solid fa-plus"></i>
                       </button>
                     </div>
@@ -66,7 +89,12 @@ export default function Users() {
                   <td className="px-4 py-3 text-right">
                     {formatPrice(item.subtotal)}
                   </td>
-                  <td className="px-4 py-3 text-center">
+                  <td
+                    className="px-4 py-3 text-center"
+                    onClick={() =>
+                      dispatch(clearItem({userId, cartId: item.id}))
+                    }
+                  >
                     <i className="fa-solid fa-xmark"></i>
                   </td>
                 </tr>

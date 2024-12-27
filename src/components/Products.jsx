@@ -1,25 +1,20 @@
 import React from "react";
-import {Link, Navigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addToCart} from "../app/slices/cartSlice";
 
 const Product = ({product}) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector(state => state.auth.user.id);
 
-  const handleAddToCart = product => {
+  const handleAddToCart = productId => {
     if (!userId) {
-      return <Navigate to="/login" />;
+      navigate("/login");
+      return;
     }
 
-    const cartDetails = [
-      {
-        product_id: product.id,
-        quantity: 1,
-      },
-    ];
-    dispatch(addToCart({userId, cartDetails}));
-    console.log(cartDetails);
+    dispatch(addToCart({productId, quantity: 1}));
   };
 
   const formatPrice = price => {
@@ -44,7 +39,7 @@ const Product = ({product}) => {
       <div className="mt-3">
         <ul className="flex justify-between items-center gap-2">
           <li
-            onClick={() => handleAddToCart(product)}
+            onClick={() => handleAddToCart(product.id)}
             className="text-sm flex justify-center items-center gap-3 border py-1 px-4 rounded-full border-[#FFD700] hover:bg-[#FFD700] cursor-pointer"
           >
             <i className="fa-solid fa-cart-shopping"></i>

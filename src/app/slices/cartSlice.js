@@ -18,13 +18,63 @@ export const fetchUserCart = createAsyncThunk(
 
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({userId, cartDetails}, {rejectWithValue}) => {
+  async ({productId, quantity}, {rejectWithValue}) => {
     try {
       const payload = {
-        user_id: userId,
-        cart_details: cartDetails,
+        product_id: productId,
+        quantity: quantity,
       };
       const response = await axiosClient.post("/cart", payload);
+      return response.data;
+    } catch (err) {
+      if (err.response && err.response.status === 422) {
+        return rejectWithValue(err.response.data);
+      }
+      throw err;
+    }
+  }
+);
+
+export const updateCartQuantity = createAsyncThunk(
+  "cart/updateCartQuantity",
+  async ({cartId, newQuantity}, {rejectWithValue}) => {
+    try {
+      const payload = {
+        quantity: newQuantity,
+      };
+      const response = await axiosClient.put(`/cart/${cartId}`, payload);
+      return response.data;
+    } catch (err) {
+      if (err.response && err.response.status === 422) {
+        return rejectWithValue(err.response.data);
+      }
+      throw err;
+    }
+  }
+);
+
+export const clearAll = createAsyncThunk(
+  "cart/clearCart",
+  async (userId, {rejectWithValue}) => {
+    try {
+      const response = await axiosClient.delete(`/cart/${userId}`);
+      return response.data;
+    } catch (err) {
+      if (err.response && err.response.status === 422) {
+        return rejectWithValue(err.response.data);
+      }
+      throw err;
+    }
+  }
+);
+
+export const clearItem = createAsyncThunk(
+  "cart/clearItem",
+  async ({userId, cartId}, {rejectWithValue}) => {
+    try {
+      const response = await axiosClient.delete(
+        `/cart/${userId}/items/${cartId}`
+      );
       return response.data;
     } catch (err) {
       if (err.response && err.response.status === 422) {
@@ -52,7 +102,7 @@ const cartSlice = createSlice({
       })
       .addCase(fetchUserCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.details;
+        state.cartItems = action.payload.data;
         state.cartTotalQuantity = action.payload.total_quantity;
         state.cartTotalAmount = action.payload.total_amount;
       })
@@ -65,9 +115,8 @@ const cartSlice = createSlice({
         state.loading = true;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
-        console.log("API Response: ", action.payload);
         state.loading = false;
-        state.cartItems = action.payload.details;
+        state.cartItems = action.payload.data;
         state.cartTotalQuantity = action.payload.total_quantity;
         state.cartTotalAmount = action.payload.total_amount;
       })
@@ -75,7 +124,25 @@ const cartSlice = createSlice({
         state.loading = false;
         state.errors = action.payload;
       });
+    builder.addCase(updateCartQuantity.fulfilled, (state, action) => {
+      state.cartItems = action.payload.data;
+      state.cartTotalQuantity = action.payload.total_quantity;
+      state.cartTotalAmount = action.payload.total_amount;
+    });
+    builder.addCase(clearAll.fulfilled, (state, action) => {
+      state.loading = false;
+      state.cartItems = action.payload.data;
+      state.cartTotalQuantity = action.payload.total_quantity;
+      state.cartTotalAmount = action.payload.total_amount;
+    });
+    builder.addCase(clearItem.fulfilled, (state, action) => {
+      state.loading = false;
+      state.cartItems = action.payload.data;
+      state.cartTotalQuantity = action.payload.total_quantity;
+      state.cartTotalAmount = action.payload.total_amount;
+    });
   },
 });
 
+export const {clearCart} = cartSlice.actions;
 export default cartSlice.reducer;
