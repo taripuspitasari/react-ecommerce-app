@@ -10,6 +10,7 @@ import NotFound from "./views/NotFound";
 import Account from "./views/Account";
 import SidebarLayout from "./components/SidebarLayout";
 import ProductDetail from "./views/ProductDetail";
+import Checkout from "./views/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/carts",
         element: <Carts />,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout />,
       },
       {
         path: "/my-account",

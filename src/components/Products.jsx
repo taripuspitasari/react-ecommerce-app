@@ -57,7 +57,7 @@ const Product = ({product}) => {
 export default function Products({products}) {
   return (
     <div>
-      {products ? (
+      {products.length > 0 ? (
         <div className="p-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 grid-flow-row">
           {products.map(product => (
             <Product key={product.id} product={product} />

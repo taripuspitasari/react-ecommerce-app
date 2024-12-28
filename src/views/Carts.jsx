@@ -1,7 +1,9 @@
 import {useSelector, useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import {clearAll, updateCartQuantity, clearItem} from "../app/slices/cartSlice";
 
 export default function Carts() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {cartTotalQuantity, cartTotalAmount, cartItems} = useSelector(
     state => state.cart
@@ -53,53 +55,66 @@ export default function Carts() {
                 </th>
               </tr>
             </thead>
-            <tbody>
-              {cartItems.map(item => (
-                <tr key={item.id} className="border-b dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    {item.product_name}
-                  </th>
-                  <td className="px-4 py-3 text-right">
-                    {formatPrice(item.price)}
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex justify-between w-full">
-                      <button
-                        className="font-bold"
-                        onClick={() =>
-                          handleQuantityChange(item.id, item.quantity - 1)
-                        }
-                      >
-                        <i className="fa-solid fa-minus"></i>
-                      </button>
-                      <p>{item.quantity}</p>
-                      <button
-                        className="font-bold"
-                        onClick={() =>
-                          handleQuantityChange(item.id, item.quantity + 1)
-                        }
-                      >
-                        <i className="fa-solid fa-plus"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    {formatPrice(item.subtotal)}
-                  </td>
+            {cartItems.length > 0 ? (
+              <tbody>
+                {cartItems.map(item => (
+                  <tr key={item.id} className="border-b dark:border-gray-700">
+                    <th
+                      scope="row"
+                      className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {item.product_name}
+                    </th>
+                    <td className="px-4 py-3 text-right">
+                      {formatPrice(item.price)}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex justify-between w-full">
+                        <button
+                          className="font-bold"
+                          onClick={() =>
+                            handleQuantityChange(item.id, item.quantity - 1)
+                          }
+                        >
+                          <i className="fa-solid fa-minus"></i>
+                        </button>
+                        <p>{item.quantity}</p>
+                        <button
+                          className="font-bold"
+                          onClick={() =>
+                            handleQuantityChange(item.id, item.quantity + 1)
+                          }
+                        >
+                          <i className="fa-solid fa-plus"></i>
+                        </button>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      {formatPrice(item.subtotal)}
+                    </td>
+                    <td
+                      className="px-4 py-3 text-center"
+                      onClick={() =>
+                        dispatch(clearItem({userId, cartId: item.id}))
+                      }
+                    >
+                      <i className="fa-solid fa-xmark"></i>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            ) : (
+              <tbody>
+                <tr className="border-b dark:border-gray-700">
                   <td
-                    className="px-4 py-3 text-center"
-                    onClick={() =>
-                      dispatch(clearItem({userId, cartId: item.id}))
-                    }
+                    colSpan={5}
+                    className="text-center p-2 text-xs text-slate-400"
                   >
-                    <i className="fa-solid fa-xmark"></i>
+                    Cart is empty
                   </td>
                 </tr>
-              ))}
-            </tbody>
+              </tbody>
+            )}
           </table>
         </div>
         <div className="mx-auto border shadow-xl border-slate-200 rounded-md w-1/3 p-4 h-52">
@@ -127,7 +142,10 @@ export default function Carts() {
             </tbody>
           </table>
           <div className="flex justify-center">
-            <button className="py-2 px-4 rounded-md w-full bg-[#A5D6A7] hover:bg-[#96c497]">
+            <button
+              className="py-2 px-4 rounded-md w-full bg-[#A5D6A7] hover:bg-[#96c497]"
+              onClick={() => navigate("/checkout")}
+            >
               Checkout
             </button>
           </div>
