@@ -8,7 +8,7 @@ export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const dispatch = useDispatch();
-  const {errors} = useSelector(state => state.auth);
+  const {loading, errors} = useSelector(state => state.auth);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -38,6 +38,11 @@ export default function Login() {
           <h1 className="md:text-3xl font-bold text-center">
             Login to Mitsuri
           </h1>
+          {loading && (
+            <div className="flex justify-center items-center">
+              <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
+            </div>
+          )}
           <form onSubmit={onSubmit} className="space-y-4 text-sm">
             <div className="w-full">
               <div className="h-10 p-2 rounded-full flex gap-2 items-center border border-[#F5F5DC]">

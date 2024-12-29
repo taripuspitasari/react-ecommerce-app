@@ -64,7 +64,7 @@ export default function Products({products}) {
           ))}
         </div>
       ) : (
-        <div className="p-2 h-screen flex justify-center items-center">
+        <div className="p-2 h-screen flex justify-center pt-20 items-start">
           <p className="text-2xl font-bold text-gray-100">No products found</p>
         </div>
       )}

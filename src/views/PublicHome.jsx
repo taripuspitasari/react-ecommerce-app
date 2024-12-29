@@ -17,7 +17,7 @@ export default function PublicHome() {
     <div className="min-h-screen bg-[#E63946]">
       {loading ? (
         <div className="flex justify-center items-center h-screen">
-          <i className="fa-solid fa-spinner text-4xl text-slate-100 animate-spin"></i>
+          <i className="fa-solid fa-spinner text-4xl text-[#F5F5DC] animate-spin"></i>
         </div>
       ) : (
         <Products products={products} />

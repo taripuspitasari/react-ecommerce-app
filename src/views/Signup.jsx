@@ -10,7 +10,7 @@ export default function Signup() {
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
 
-  const {errors} = useSelector(state => state.auth);
+  const {loading, errors} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const onSubmit = e => {
@@ -43,6 +43,11 @@ export default function Signup() {
           <h1 className="md:text-3xl font-bold text-center">
             Signup to Mitsuri
           </h1>
+          {loading && (
+            <div className="flex justify-center items-center">
+              <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
+            </div>
+          )}
           <form onSubmit={onSubmit} className="space-y-4 text-sm">
             <div className="w-full">
               <div className="h-10 p-2 rounded-full border border-[#F5F5DC] flex gap-2 items-center">
