@@ -12,8 +12,8 @@ export default function Addresses({addresses}) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
-      <div className="w-1/2 absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#F5F5DC] p-5 rounded-lg shadow-lg ">
-        <div className="border border-slate-400 p-4 rounded-xl space-y-3">
+      <div className="w-full md:w-1/2 absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#F5F5DC] p-5 rounded-lg shadow-lg ">
+        <div className="border border-slate-400 p-4 rounded-md space-y-3">
           <div className="relative flex justify-center items-center">
             <h3 className="font-medium text-xl text-center">Addresses</h3>
             <button
@@ -35,7 +35,7 @@ export default function Addresses({addresses}) {
               </div>
               <div className="flex gap-5">
                 <button
-                  className="hover:underline"
+                  className="hover:underline font-medium"
                   onClick={() => {
                     dispatch(getAddress(address.id));
                     dispatch(openModal({type: "updateAddress"}));
@@ -44,7 +44,7 @@ export default function Addresses({addresses}) {
                   update
                 </button>
                 <button
-                  className="hover:underline"
+                  className="hover:underline font-medium"
                   onClick={() => dispatch(deleteAddress(address.id))}
                 >
                   delete
@@ -54,7 +54,7 @@ export default function Addresses({addresses}) {
           ))}
           <button
             onClick={() => dispatch(openModal({type: "addNewAddress"}))}
-            className="w-full py-2 px-4 rounded-full bg-[#A5D6A7] hover:bg-[#96c497]"
+            className="w-full py-2 px-4 rounded-md font-medium bg-[#A5D6A7] hover:bg-[#96c497]"
           >
             Create new address
           </button>

@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axiosClient from "../axios-client";
+import {useDispatch} from "react-redux";
+import {addToCart} from "../app/slices/cartSlice";
 
 export default function ProductDetail() {
+  const dispatch = useDispatch();
   const {id} = useParams();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
@@ -29,6 +32,10 @@ export default function ProductDetail() {
     }).format(price);
   };
 
+  const handleAddToCart = productId => {
+    dispatch(addToCart({productId, quantity: 1}));
+  };
+
   return (
     <div className="min-h-screen bg-white pb-4">
       {loading ? (
@@ -42,14 +49,14 @@ export default function ProductDetail() {
             className="flex flex-col md:flex-row py-4 md:gap-4 items-start w-11/12 mx-auto"
           >
             <div className="md:w-1/2">
-              <img className="rounded-md " src={product.image} />
+              <img className="rounded-md" src={product.image} />
             </div>
             <div className="mt-3 space-y-2 md:space-y-4">
               <div>
                 <h5 className="text-xs text-slate-400">{product.category}</h5>
-                <h3 className="font-bold text-4xl">{product.name}</h3>
+                <h3 className="font-medium text-xl">{product.name}</h3>
+                <p className="font-bold">{formatPrice(product.price)}</p>
               </div>
-              <p className="text-3xl">{formatPrice(product.price)}</p>
               <ul className="flex items-center gap-2 md:w-56">
                 <li className="text-sm flex justify-center items-center gap-3 border py-1 px-4 rounded-full border-[#FFD700] hover:bg-[#FFD700] cursor-pointer">
                   <i className="fa-solid fa-cart-shopping"></i>
@@ -65,10 +72,13 @@ export default function ProductDetail() {
           <div className="flex justify-between items-center p-4 w-11/12 mx-auto bg-[#F5F5DC] shadow-md rounded-md">
             <div>
               <h5 className="text-xs text-slate-400">{product.category}</h5>
-              <h3 className="font-bold text-2xl">{product.name}</h3>
-              <p className="text-xl">{formatPrice(product.price)}</p>
+              <h3 className="font-medium text-xl">{product.name}</h3>
+              <p className="font-bold">{formatPrice(product.price)}</p>
             </div>
-            <div className="text-sm flex justify-center h-10 font-bold items-center gap-3 border py-1 px-4 rounded-md bg-[#A5D6A7] hover:bg-[#FFD700] cursor-pointer">
+            <div
+              onClick={() => handleAddToCart(id)}
+              className="text-sm flex justify-center h-10 font-medium items-center gap-3 border py-1 px-4 rounded-md bg-[#A5D6A7] hover:bg-[#FFD700] cursor-pointer"
+            >
               <i class="fa-solid fa-plus"></i>
               <span className="text-xs hidden md:block">Add To Cart</span>
             </div>

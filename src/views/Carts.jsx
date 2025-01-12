@@ -25,30 +25,30 @@ export default function Carts() {
   };
 
   return (
-    <div className="h-screen bg-[#F5F5DC] p-2">
-      <h2 className="text-3xl py-5 font-medium text-center">My Cart</h2>
-      <div className="border w-full border-slate-300 rounded-md">
-        <table className="w-full text-sm text-left text-gray-600 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase border-b border-slate-300">
+    <div className="md:h-screen bg-[#F5F5DC] p-2">
+      <h2 className="text-xl py-3 font-medium text-center">My Cart</h2>
+      <div className="border w-full border-slate-200 rounded-md shadow-xl overflow-hidden">
+        <table className="w-full text-xs">
+          <thead className="text-gray-700 uppercase border-b border-gray-300 bg-[#A5D6A7]">
             <tr>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-6 py-3 text-left">
                 Product
               </th>
-              <th scope="col" className="px-4 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-right">
                 Price
               </th>
-              <th scope="col" className="px-4 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-center">
                 Quantity
               </th>
-              <th scope="col" className="px-4 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-right">
                 Subtotal
               </th>
-              <th
-                scope="col"
-                className="px-4 py-3 text-center"
-                onClick={() => dispatch(clearAll(userId))}
-              >
-                <button>
+              <th scope="col" className="px-6 py-3 text-center">
+                <button
+                  onClick={() => dispatch(clearAll(userId))}
+                  className="text-red-500 hover:text-red-700"
+                  title="Clear all"
+                >
                   <i className="fa-solid fa-trash-can"></i>
                 </button>
               </th>
@@ -58,28 +58,25 @@ export default function Carts() {
             <tbody>
               {cartItems.map(item => (
                 <tr key={item.id} className="border-b dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
+                  <td className="px-6 py-3 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {item.product_name}
-                  </th>
-                  <td className="px-4 py-3 text-right">
+                  </td>
+                  <td className="px-6 py-3 text-right">
                     {formatPrice(item.price)}
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex justify-between w-full">
+                  <td className="px-6 py-3 text-center">
+                    <div className="flex items-center justify-evenly">
                       <button
-                        className="font-bold"
+                        className="text-gray-500 hover:text-gray-700"
                         onClick={() =>
                           handleQuantityChange(item.id, item.quantity - 1)
                         }
                       >
                         <i className="fa-solid fa-minus"></i>
                       </button>
-                      <p>{item.quantity}</p>
+                      <span>{item.quantity}</span>
                       <button
-                        className="font-bold"
+                        className="text-gray-500 hover:text-gray-700"
                         onClick={() =>
                           handleQuantityChange(item.id, item.quantity + 1)
                         }
@@ -88,16 +85,19 @@ export default function Carts() {
                       </button>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-6 py-3 text-right">
                     {formatPrice(item.subtotal)}
                   </td>
-                  <td
-                    className="px-4 py-3 text-center"
-                    onClick={() =>
-                      dispatch(clearItem({userId, cartId: item.id}))
-                    }
-                  >
-                    <i className="fa-solid fa-xmark"></i>
+                  <td className="px-6 py-3 text-center">
+                    <button
+                      onClick={() =>
+                        dispatch(clearItem({userId, cartId: item.id}))
+                      }
+                      className="text-red-500 hover:text-red-700"
+                      title="Remove item"
+                    >
+                      <i className="fa-solid fa-xmark"></i>
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -107,7 +107,7 @@ export default function Carts() {
               <tr className="border-b dark:border-gray-700">
                 <td
                   colSpan={5}
-                  className="text-center p-2 text-xs text-slate-400"
+                  className="text-center px-6 py-3 text-slate-400"
                 >
                   Cart is empty
                 </td>

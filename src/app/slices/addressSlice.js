@@ -1,6 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axiosClient from "../../axios-client";
-import axios from "axios";
 
 export const fetchUserAddress = createAsyncThunk(
   "address/fetchUserAddress",

@@ -91,7 +91,7 @@ export default function DefaultLayout() {
                 />
               </div>
             </li>
-            <li>
+            <li className="pr-2">
               <Link to="/carts" className="relative">
                 <i className="fa-solid fa-cart-shopping"></i>
                 <div className="absolute -top-3 -right-3 text-xs bg-[#A5D6A7] py-0 px-1 rounded-full text-black">

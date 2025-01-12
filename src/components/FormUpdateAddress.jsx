@@ -51,8 +51,8 @@ export default function FormUpdateAddress() {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
-      <div className="w-1/2 z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#F5F5DC] p-5 rounded-lg shadow-lg ">
-        <div className="border border-slate-400 p-4 rounded-xl space-y-3">
+      <div className="w-full md:w-1/2 z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#F5F5DC] p-5 rounded-lg shadow-lg ">
+        <div className="border border-slate-400 p-4 rounded-md space-y-3">
           <div className="relative flex justify-center items-center">
             <h3 className="font-medium text-xl text-center">Detail address</h3>
             <button
@@ -69,10 +69,10 @@ export default function FormUpdateAddress() {
           )}
           <form onSubmit={handleUpdateSubmit} className="space-y-2">
             <div className="w-full">
-              <div className="h-10 p-2 rounded-full flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
                 <label
                   htmlFor="name"
-                  className="px-2 flex-shrink-0 min-w-[150px]"
+                  className="px-2 flex-shrink-0 min-w-[120px]"
                 >
                   Name
                 </label>
@@ -90,10 +90,10 @@ export default function FormUpdateAddress() {
               )}
             </div>
             <div className="w-full">
-              <div className="h-10 p-2 rounded-full flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
                 <label
                   htmlFor="city"
-                  className="px-2 flex-shrink-0 min-w-[150px]"
+                  className="px-2 flex-shrink-0 min-w-[120px]"
                 >
                   City
                 </label>
@@ -111,10 +111,10 @@ export default function FormUpdateAddress() {
               )}
             </div>
             <div className="w-full">
-              <div className="h-10 p-2 rounded-full flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
                 <label
                   htmlFor="address"
-                  className="px-2 flex-shrink-0 min-w-[150px]"
+                  className="px-2 flex-shrink-0 min-w-[120px]"
                 >
                   Address
                 </label>
@@ -132,10 +132,10 @@ export default function FormUpdateAddress() {
               )}
             </div>
             <div className="w-full">
-              <div className="h-10 p-2 rounded-full flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
                 <label
                   htmlFor="postalCode"
-                  className="px-2 flex-shrink-0 min-w-[150px]"
+                  className="px-2 flex-shrink-0 min-w-[120px]"
                 >
                   Postal Code
                 </label>
@@ -153,10 +153,10 @@ export default function FormUpdateAddress() {
               )}
             </div>
             <div className="w-full">
-              <div className="h-10 p-2 rounded-full flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
                 <label
                   htmlFor="phoneNumber"
-                  className="px-2 flex-shrink-0 min-w-[150px]"
+                  className="px-2 flex-shrink-0 min-w-[120px]"
                 >
                   Phone Number
                 </label>
@@ -175,7 +175,7 @@ export default function FormUpdateAddress() {
             </div>
             <button
               type="submit"
-              className="py-2 px-4 w-full rounded-full bg-[#A5D6A7] hover:bg-[#96c497]"
+              className="py-2 px-4 w-full rounded-md font-medium bg-[#A5D6A7] hover:bg-[#96c497]"
             >
               Update
             </button>

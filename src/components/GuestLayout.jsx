@@ -38,7 +38,7 @@ export default function GuestLayout() {
         <div className="hidden md:flex justify-between">
           <Link to="/public" className="flex gap-2 items-center">
             <img src={logoImg} alt="" width="40" />
-            <p className="text-[#F5F5DC] text-xl font-bold">Mitsuri Food</p>
+            <p className="text-[#F5F5DC] text-xl font-medium">Mitsuri Food</p>
           </Link>
         </div>
         <div className="flex">
@@ -47,8 +47,8 @@ export default function GuestLayout() {
               onClick={() => setCategoryOpen(!categoryOpen)}
               className="hidden md:flex gap-3 items-center"
             >
-              <button className="cursor-pointer flex items-center gap-4">
-                <i className="fa-solid fa-chevron-down text-sm"></i>
+              <button className="cursor-pointer font-medium flex items-center gap-4">
+                <i className="fa-solid fa-chevron-down"></i>
                 <span>Category</span>
               </button>
             </li>
@@ -102,14 +102,14 @@ export default function GuestLayout() {
           <ul className="flex gap-2">
             <li>
               <Link to="/login">
-                <button className="border border-[#F5F5DC] py-2 px-4 rounded-lg">
+                <button className="border font-medium border-[#F5F5DC] py-2 px-4 rounded-lg">
                   Login
                 </button>
               </Link>
             </li>
             <li>
               <Link to="/signup">
-                <button className="py-2 px-4 bg-[#F5F5DC] text-[#E63946] rounded-lg">
+                <button className="py-2 px-4 font-medium bg-[#F5F5DC] text-[#E63946] rounded-lg">
                   Signup
                 </button>
               </Link>
