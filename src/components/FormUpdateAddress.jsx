@@ -2,9 +2,8 @@ import React from "react";
 import {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {updateAddress} from "../app/slices/addressSlice";
-import {closeModal, openModal} from "../app/slices/modalSlice";
 
-export default function FormUpdateAddress() {
+export default function FormUpdateAddress({handleOpenModal}) {
   const dispatch = useDispatch();
   const {errors, loading, address} = useSelector(state => state.address);
 
@@ -46,7 +45,7 @@ export default function FormUpdateAddress() {
       phone_number: data.phoneNumber,
     };
     dispatch(updateAddress({addressId: address.id, payload}));
-    dispatch(openModal({type: "showAddresses"}));
+    handleOpenModal("showAddresses");
   };
 
   return (
@@ -57,7 +56,8 @@ export default function FormUpdateAddress() {
             <h3 className="font-medium text-xl text-center">Detail address</h3>
             <button
               className="absolute top-0 right-0 cursor-pointer"
-              onClick={() => dispatch(closeModal())}
+              // onClick={() => dispatch(closeModal())}
+              onClick={() => handleOpenModal("showAddresses")}
             >
               <i className="fa-solid fa-xmark"></i>
             </button>

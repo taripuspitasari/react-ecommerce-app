@@ -27,7 +27,7 @@ export default function Carts() {
   return (
     <div className="md:h-screen bg-[#F5F5DC] p-2">
       <h2 className="text-xl py-3 font-medium text-center">My Cart</h2>
-      <div className="border w-full border-slate-200 rounded-md shadow-xl overflow-hidden">
+      <div className="border w-full border-slate-200 rounded-md overflow-hidden">
         <table className="w-full text-xs">
           <thead className="text-gray-700 uppercase border-b border-gray-300 bg-[#A5D6A7]">
             <tr>
@@ -58,7 +58,7 @@ export default function Carts() {
             <tbody>
               {cartItems.map(item => (
                 <tr key={item.id} className="border-b dark:border-gray-700">
-                  <td className="px-6 py-3 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className="px-6 py-3 text-left text-gray-900 whitespace-nowrap dark:text-white">
                     {item.product_name}
                   </td>
                   <td className="px-6 py-3 text-right">
@@ -101,6 +101,20 @@ export default function Carts() {
                   </td>
                 </tr>
               ))}
+              <tr className="border-b dark:border-gray-700">
+                <td
+                  colSpan={2}
+                  className="px-6 py-3 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  Total
+                </td>
+                <td className="px-6 py-3 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {cartTotalQuantity}
+                </td>
+                <td className="px-6 py-3 text-right font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {formatPrice(cartTotalAmount)}
+                </td>
+              </tr>
             </tbody>
           ) : (
             <tbody>
@@ -115,6 +129,14 @@ export default function Carts() {
             </tbody>
           )}
         </table>
+      </div>
+      <div className="flex justify-end mt-2">
+        <button
+          className="py-2 px-4 font-medium rounded-md bg-[#A5D6A7] hover:bg-[#96c497]"
+          onClick={() => navigate("/checkout")}
+        >
+          Checkout
+        </button>
       </div>
     </div>
   );

@@ -1,13 +1,13 @@
 import React from "react";
 import {deleteAddress, getAddress} from "../app/slices/addressSlice";
 import {useDispatch} from "react-redux";
-import {
-  openModal,
-  closeModal,
-  setSelectedAddress,
-} from "../app/slices/modalSlice";
 
-export default function Addresses({addresses}) {
+export default function Addresses({
+  handleCloseModal,
+  handleOpenModal,
+  addresses,
+  setSelectedAddress,
+}) {
   const dispatch = useDispatch();
 
   return (
@@ -18,7 +18,7 @@ export default function Addresses({addresses}) {
             <h3 className="font-medium text-xl text-center">Addresses</h3>
             <button
               className="absolute top-0 right-0 cursor-pointer"
-              onClick={() => dispatch(closeModal())}
+              onClick={handleCloseModal}
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
@@ -38,7 +38,7 @@ export default function Addresses({addresses}) {
                   className="hover:underline font-medium"
                   onClick={() => {
                     dispatch(getAddress(address.id));
-                    dispatch(openModal({type: "updateAddress"}));
+                    handleOpenModal("updateAddress");
                   }}
                 >
                   update
@@ -53,8 +53,8 @@ export default function Addresses({addresses}) {
             </div>
           ))}
           <button
-            onClick={() => dispatch(openModal({type: "addNewAddress"}))}
             className="w-full py-2 px-4 rounded-md font-medium bg-[#A5D6A7] hover:bg-[#96c497]"
+            onClick={() => handleOpenModal("addNewAddress")}
           >
             Create new address
           </button>
