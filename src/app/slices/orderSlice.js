@@ -3,12 +3,22 @@ import axiosClient from "../../axios-client";
 
 export const createOrder = createAsyncThunk(
   "order/createOrder",
-  async ({address, paymentMethod}, {rejectWithValue}) => {
+  async (_, {getState, rejectWithValue}) => {
     try {
+      const state = getState();
+      const {selectedAddress, selectedPaymentMethod} = state.order;
+
+      if (!selectedAddress || !selectedPaymentMethod) {
+        return rejectWithValue({
+          message: "Address and payment method are required",
+        });
+      }
+
       const payload = {
-        address,
-        payment_method: paymentMethod,
+        address_id: selectedAddress.id,
+        payment_method: selectedPaymentMethod,
       };
+      console.log(payload);
       const response = await axiosClient.post("/orders", payload);
       return response.data;
     } catch (err) {
@@ -55,5 +65,5 @@ const orderSlice = createSlice({
   },
 });
 
-export const {setAddress, setPaymentMethod} = orderSlice.actions;
+export const {setSelectedAddress, setPaymentMethod} = orderSlice.actions;
 export default orderSlice.reducer;

@@ -6,12 +6,15 @@ import {fetchUserAddress} from "../app/slices/addressSlice";
 import FormAddAddress from "../components/FormAddAddress";
 import FormUpdateAddress from "../components/FormUpdateAddress";
 import qrImg from "../assets/QR.jpg";
+import {setPaymentMethod, setSelectedAddress} from "../app/slices/orderSlice";
 
 export default function Checkout() {
   const dispatch = useDispatch();
   const {addresses} = useSelector(state => state.address);
-  const [selectedAddress, setSelectedAddress] = useState("");
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+  const {selectedAddress, selectedPaymentMethod} = useSelector(
+    state => state.order
+  );
+
   const [type, setType] = useState("");
 
   useEffect(() => {
@@ -20,13 +23,13 @@ export default function Checkout() {
 
   useEffect(() => {
     if (addresses.length < 0) {
-      setSelectedAddress("");
+      dispatch(setSelectedAddress(null));
     }
-    setSelectedAddress(addresses[0]);
+    dispatch(setSelectedAddress(addresses[0]));
   }, [addresses]);
 
   const handleSelectMethod = method => {
-    setSelectedPaymentMethod(method);
+    dispatch(setPaymentMethod(method));
   };
 
   // const renderPaymentDetails = () => {
@@ -122,9 +125,9 @@ export default function Checkout() {
           <div className="flex flex-col gap-5">
             <div className="grid md:grid-rows-1 md:grid-flow-col gap-3">
               <div
-                onClick={() => handleSelectMethod("bank")}
+                onClick={() => handleSelectMethod("bank_transfer")}
                 className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border hover:shadow-xl rounded-md ${
-                  selectedPaymentMethod === "bank"
+                  selectedPaymentMethod === "bank_transfer"
                     ? "border-[#A5D6A7] border-2 shadow-xl"
                     : "border-slate-400"
                 }`}

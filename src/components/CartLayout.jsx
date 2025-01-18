@@ -1,10 +1,12 @@
 import React from "react";
 import {Outlet} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {createOrder} from "../app/slices/orderSlice";
 
 export default function CartLayout() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {cartTotalQuantity, cartTotalAmount, cartItems} = useSelector(
     state => state.cart
   );
@@ -15,6 +17,11 @@ export default function CartLayout() {
       currency: "IDR",
       minimumFractionDigits: 0,
     }).format(price);
+  };
+
+  const handleProceed = () => {
+    dispatch(createOrder());
+    navigate("/");
   };
 
   return (
@@ -70,7 +77,7 @@ export default function CartLayout() {
             <div className="flex justify-center">
               <button
                 className="py-2 px-4 font-medium rounded-md w-full bg-[#A5D6A7] hover:bg-[#96c497]"
-                onClick={() => navigate("/carts/checkout")}
+                onClick={handleProceed}
               >
                 Proceed
               </button>

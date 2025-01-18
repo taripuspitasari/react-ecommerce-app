@@ -1,6 +1,8 @@
 import {useSelector, useDispatch} from "react-redux";
+import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {clearAll, updateCartQuantity, clearItem} from "../app/slices/cartSlice";
+import {fetchUserCart} from "../app/slices/cartSlice";
 
 export default function Carts() {
   const navigate = useNavigate();
@@ -8,6 +10,10 @@ export default function Carts() {
   const {cartTotalQuantity, cartTotalAmount, cartItems} = useSelector(
     state => state.cart
   );
+
+  useEffect(() => {
+    dispatch(fetchUserCart);
+  }, []);
 
   const userId = useSelector(state => state.auth.user.id);
 
@@ -130,7 +136,11 @@ export default function Carts() {
           )}
         </table>
       </div>
-      <div className="flex justify-end mt-2">
+      <div
+        className={`justify-end mt-2 ${
+          cartItems.length > 0 ? "flex" : "hidden"
+        }`}
+      >
         <button
           className="py-2 px-4 font-medium rounded-md bg-[#A5D6A7] hover:bg-[#96c497]"
           onClick={() => navigate("/checkout")}
