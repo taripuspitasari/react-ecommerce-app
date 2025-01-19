@@ -13,8 +13,8 @@ export default function Account() {
         <div className="flex flex-col gap-4 pb-2 items-center">
           <div className="border border-black h-24 w-24 rounded-full"></div>
           <div className="text-center">
-            <h3 className="font-bold text-lg">{user.name}</h3>
-            <p className="text-sm text-gray-500">{user.email}</p>
+            <h3 className="font-bold">{user.name}</h3>
+            <p className="text-gray-500">{user.email}</p>
           </div>
         </div>
         <div>

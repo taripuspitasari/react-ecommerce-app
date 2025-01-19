@@ -124,7 +124,7 @@ export default function DefaultLayout() {
               </div>
             </li>
             <li className="cursor-pointer hover:text-black hover:bg-[#dedec4] p-1">
-              Transaction
+              <Link to="/my-account/transaction">Transaction</Link>
             </li>
             <li className="cursor-pointer hover:text-black hover:bg-[#dedec4] p-1">
               Whislist

@@ -17,18 +17,18 @@ export default function SidebarLayout() {
                 <div className="border border-black h-36 w-36 md:h-14 md:w-14 rounded-full"></div>
                 <div className="text-center md:text-left">
                   <h3 className="font-medium">{user.name}</h3>
-                  <p className="text-sm text-gray-500">{user.email}</p>
+                  <p className="text-gray-500">{user.email}</p>
                 </div>
               </div>
             </li>
             <li className="cursor-pointer font-medium hover:bg-[#dedec4] p-1">
-              Transaction
+              <Link to="transaction">Transaction</Link>
             </li>
             <li className="cursor-pointer font-medium hover:bg-[#dedec4] p-1">
               Whislist
             </li>
             <li className="cursor-pointer font-medium hover:bg-[#dedec4] p-1">
-              <Link to="/account">Account</Link>
+              <Link to="account">Account</Link>
             </li>
             <li
               className="cursor-pointer font-medium hover:bg-[#dedec4] p-1"

@@ -1,8 +1,6 @@
 import {useSelector, useDispatch} from "react-redux";
-import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {clearAll, updateCartQuantity, clearItem} from "../app/slices/cartSlice";
-import {fetchUserCart} from "../app/slices/cartSlice";
 
 export default function Carts() {
   const navigate = useNavigate();
@@ -10,10 +8,6 @@ export default function Carts() {
   const {cartTotalQuantity, cartTotalAmount, cartItems} = useSelector(
     state => state.cart
   );
-
-  useEffect(() => {
-    dispatch(fetchUserCart);
-  }, []);
 
   const userId = useSelector(state => state.auth.user.id);
 

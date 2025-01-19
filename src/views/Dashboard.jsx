@@ -2,6 +2,7 @@ import {useEffect} from "react";
 import Products from "../components/Products";
 import {useSelector, useDispatch} from "react-redux";
 import {fetchProducts} from "../app/slices/productSlice";
+import {fetchUserCart} from "../app/slices/cartSlice";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -12,6 +13,10 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(fetchProducts({query, category}));
   }, [query, category, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchUserCart());
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F5F5DC]">

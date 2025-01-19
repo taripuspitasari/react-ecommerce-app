@@ -30,6 +30,21 @@ export const createOrder = createAsyncThunk(
   }
 );
 
+export const fetchUserOrder = createAsyncThunk(
+  "order/fetchUserCart",
+  async (_, {rejectWithValue}) => {
+    try {
+      const response = await axiosClient.get("/orders");
+      return response.data.data;
+    } catch (err) {
+      if (err.response && err.response.status === 422) {
+        return rejectWithValue(err.response.data);
+      }
+      throw err;
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "order",
   initialState: {
@@ -59,6 +74,20 @@ const orderSlice = createSlice({
         state.orderHistory = action.payload;
       })
       .addCase(createOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      });
+    builder
+      .addCase(fetchUserOrder.pending, state => {
+        state.loading = true;
+      })
+      .addCase(fetchUserOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.address = null;
+        state.paymentMethod = null;
+        state.orderHistory = action.payload;
+      })
+      .addCase(fetchUserOrder.rejected, (state, action) => {
         state.loading = false;
         state.errors = action.payload;
       });

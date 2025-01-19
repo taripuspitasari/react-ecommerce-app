@@ -12,6 +12,7 @@ import NotFound from "./views/NotFound";
 import Account from "./views/Account";
 import ProductDetail from "./views/ProductDetail";
 import Checkout from "./views/Checkout";
+import Transaction from "./views/Transaction";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
           {
             path: "account",
             element: <Account />,
+          },
+          {
+            path: "transaction",
+            element: <Transaction />,
           },
         ],
       },
