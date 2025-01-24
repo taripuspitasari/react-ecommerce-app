@@ -2,11 +2,27 @@ import React from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addToCart} from "../app/slices/cartSlice";
+import {addToWishlist, removeFromWishlist} from "../app/slices/wishlistSlice";
 
 const Product = ({product}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector(state => state.auth.user.id);
+  const {wishlistItems} = useSelector(state => state.wishlist);
+
+  const isItWishlist = wishlistItems.some(
+    item => item.product_id === product.id
+  );
+
+  const handleToggleWishlist = () => {
+    if (isItWishlist) {
+      dispatch(removeFromWishlist(product.id));
+      console.log("remove nie", product.id);
+    } else {
+      dispatch(addToWishlist(product.id));
+      console.log("add nie", product.id);
+    }
+  };
 
   const handleAddToCart = productId => {
     if (!userId) {
@@ -45,8 +61,12 @@ const Product = ({product}) => {
             <i className="fa-solid fa-cart-shopping"></i>
             <span className="text-xs hidden md:block">Add To Cart</span>
           </li>
-          <li className="cursor-pointer">
-            <i className="fa-regular fa-heart"></i>
+          <li className="cursor-pointer" onClick={handleToggleWishlist}>
+            {isItWishlist ? (
+              <i className="fa-solid fa-heart text-red-600"></i>
+            ) : (
+              <i className="fa-regular fa-heart"></i>
+            )}
           </li>
         </ul>
       </div>
@@ -56,9 +76,9 @@ const Product = ({product}) => {
 
 export default function Products({products}) {
   return (
-    <div>
+    <div className="w-full">
       {products.length > 0 ? (
-        <div className="p-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 grid-flow-row">
+        <div className="p-2 grid grid-cols-[repeat(auto-fit,_minmax(224px,_1fr))]">
           {products.map(product => (
             <Product key={product.id} product={product} />
           ))}

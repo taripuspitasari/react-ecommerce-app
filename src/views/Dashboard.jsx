@@ -3,6 +3,7 @@ import Products from "../components/Products";
 import {useSelector, useDispatch} from "react-redux";
 import {fetchProducts} from "../app/slices/productSlice";
 import {fetchUserCart} from "../app/slices/cartSlice";
+import {fetchUserWishlist} from "../app/slices/wishlistSlice";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -16,6 +17,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     dispatch(fetchUserCart());
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchUserWishlist());
   }, []);
 
   return (

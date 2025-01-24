@@ -25,7 +25,7 @@ export default function SidebarLayout() {
               <Link to="transaction">Transaction</Link>
             </li>
             <li className="cursor-pointer font-medium hover:bg-[#dedec4] p-1">
-              Whislist
+              <Link to="wishlist">Wishlist</Link>
             </li>
             <li className="cursor-pointer font-medium hover:bg-[#dedec4] p-1">
               <Link to="account">Account</Link>
@@ -39,7 +39,7 @@ export default function SidebarLayout() {
           </ul>
         </div>
       </div>
-      <div>
+      <div className="w-full">
         <Outlet />
       </div>
     </div>

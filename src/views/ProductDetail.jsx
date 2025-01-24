@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axiosClient from "../axios-client";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addToCart} from "../app/slices/cartSlice";
+import {addToWishlist, removeFromWishlist} from "../app/slices/wishlistSlice";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
   const {id} = useParams();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
+  const {wishlistItems} = useSelector(state => state.wishlist);
 
   useEffect(() => {
     setLoading(true);
@@ -23,6 +25,18 @@ export default function ProductDetail() {
         setLoading(false);
       });
   }, [id]);
+
+  const isItWishlist = wishlistItems.includes(product.id);
+
+  const handleToggleWishlist = () => {
+    if (isItWishlist) {
+      // dispatch(removeFromWishlist(product.id));
+      console.log("remove nie", product.id);
+    } else {
+      // dispatch(addToWishlist(product.id));
+      console.log("add nie", product.id);
+    }
+  };
 
   const formatPrice = price => {
     return new Intl.NumberFormat("id-ID", {
@@ -63,7 +77,11 @@ export default function ProductDetail() {
                   <span className="text-xs hidden md:block">Add To Cart</span>
                 </li>
                 <li className="cursor-pointer">
-                  <i className="fa-regular fa-heart"></i>
+                  {isItWishlist ? (
+                    <i className="fa-solid fa-heart text-red-600"></i>
+                  ) : (
+                    <i className="fa-regular fa-heart "></i>
+                  )}
                 </li>
               </ul>
               <p>{product.description}</p>

@@ -13,6 +13,7 @@ import Account from "./views/Account";
 import ProductDetail from "./views/ProductDetail";
 import Checkout from "./views/Checkout";
 import Transaction from "./views/Transaction";
+import Wishlist from "./views/Wishlist";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
         path: "/my-account",
         element: <SidebarLayout />,
         children: [
+          {
+            path: "wishlist",
+            element: <Wishlist />,
+          },
           {
             path: "account",
             element: <Account />,
