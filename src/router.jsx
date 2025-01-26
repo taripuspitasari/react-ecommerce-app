@@ -14,6 +14,7 @@ import ProductDetail from "./views/ProductDetail";
 import Checkout from "./views/Checkout";
 import Transaction from "./views/Transaction";
 import Wishlist from "./views/Wishlist";
+import TransactionDetail from "./views/TransactionDetail";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: "products/:id",
+        element: <ProductDetail />,
+      },
+      {
         path: "/my-account",
         element: <SidebarLayout />,
         children: [
@@ -58,11 +63,11 @@ const router = createBrowserRouter([
             path: "transaction",
             element: <Transaction />,
           },
+          {
+            path: "transaction/:id",
+            element: <TransactionDetail />,
+          },
         ],
-      },
-      {
-        path: "products/:id",
-        element: <ProductDetail />,
       },
     ],
   },

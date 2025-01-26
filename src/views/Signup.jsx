@@ -31,10 +31,10 @@ export default function Signup() {
   };
 
   return (
-    <div className="bg-[#F5F5DC] h-[calc(100vh-7rem)] md:h-[calc(100vh-5rem)] flex items-center justify-center">
+    <div className="bg-[#F5F5DC] h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)] flex items-center justify-center">
       <div className="flex flex-col w-4/5 md:flex-row items-center bg-white md:w-2/3 rounded-lg py-2">
         <div className="flex flex-col items-center w-1/2">
-          <img src={signupImg} width={400} className="p-10" />
+          <img src={signupImg} width={350} className="p-10" />
           <a
             href="https://www.flaticon.com/free-stickers/cultures"
             title="cultures stickers"
@@ -43,7 +43,7 @@ export default function Signup() {
             Cultures stickers created by Stickers - Flaticon
           </a>
         </div>
-        <div className="md:w-1/2 space-y-5 px-5 mb-5">
+        <div className="md:w-1/2 space-y-5 px-5 m-3">
           <h1 className="text-xl font-medium text-center">Signup to Mitsuri</h1>
           {loading && (
             <div className="flex justify-center items-center">

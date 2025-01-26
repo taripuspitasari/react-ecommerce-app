@@ -34,7 +34,7 @@ export default function GuestLayout() {
 
   return (
     <div className="h-screen w-full">
-      <nav className="p-2 flex flex-col md:flex-row justify-between bg-[#E63946] h-14 w-full sticky top-0 md:h-20 text-[#F5F5DC]">
+      <nav className="p-2 flex flex-col md:flex-row justify-between bg-[#E63946] h-14 w-full sticky top-0 md:h-16 text-[#F5F5DC]">
         <div className="hidden md:flex justify-between">
           <Link to="/public" className="flex gap-2 items-center">
             <img src={logoImg} alt="" width="40" />
@@ -55,12 +55,9 @@ export default function GuestLayout() {
             <div
               className={`${
                 categoryOpen ? "absolute" : "hidden"
-              } rounded-md shadow-xl w-32 -bottom-16 -my-7 bg-[#E63946] text-black py-2 px-4`}
+              } rounded-md shadow-xl w-32 -bottom-10 -my-7 bg-[#E63946] text-white py-2 px-4`}
             >
-              <ul
-                className="text-white"
-                onMouseLeave={() => setCategoryOpen(!categoryOpen)}
-              >
+              <ul onMouseLeave={() => setCategoryOpen(!categoryOpen)}>
                 <li
                   className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]"
                   onClick={() => selectCategory("")}

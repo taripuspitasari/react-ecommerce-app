@@ -10,6 +10,7 @@ export default function ProductDetail() {
   const {id} = useParams();
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
+  const userId = useSelector(state => state.auth.user.id);
   const {wishlistItems} = useSelector(state => state.wishlist);
 
   useEffect(() => {
@@ -26,15 +27,22 @@ export default function ProductDetail() {
       });
   }, [id]);
 
-  const isItWishlist = wishlistItems.includes(product.id);
+  const isItWishlist = wishlistItems.some(
+    item => item.product_id === Number(id)
+  );
 
   const handleToggleWishlist = () => {
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
+
+    const productId = Number(id);
+
     if (isItWishlist) {
-      // dispatch(removeFromWishlist(product.id));
-      console.log("remove nie", product.id);
+      dispatch(removeFromWishlist(productId));
     } else {
-      // dispatch(addToWishlist(product.id));
-      console.log("add nie", product.id);
+      dispatch(addToWishlist(productId));
     }
   };
 
@@ -76,7 +84,7 @@ export default function ProductDetail() {
                   <i className="fa-solid fa-cart-shopping"></i>
                   <span className="text-xs hidden md:block">Add To Cart</span>
                 </li>
-                <li className="cursor-pointer">
+                <li className="cursor-pointer" onClick={handleToggleWishlist}>
                   {isItWishlist ? (
                     <i className="fa-solid fa-heart text-red-600"></i>
                   ) : (
@@ -97,7 +105,7 @@ export default function ProductDetail() {
               onClick={() => handleAddToCart(id)}
               className="text-sm flex justify-center h-10 font-medium items-center gap-3 border py-1 px-4 rounded-md bg-[#A5D6A7] hover:bg-[#FFD700] cursor-pointer"
             >
-              <i class="fa-solid fa-plus"></i>
+              <i className="fa-solid fa-plus"></i>
               <span className="text-xs hidden md:block">Add To Cart</span>
             </div>
           </div>

@@ -8,7 +8,7 @@ export default function Account() {
 
   return (
     <div className="w-full h-screen bg-[#F5F5DC] p-3">
-      <h2 className="text-xl font-medium">Account</h2>
+      <h2 className="text-xl font-medium pb-3">Account</h2>
       <div className="flex gap-10">
         <div className="flex flex-col gap-4 pb-2 items-center">
           <div className="border border-black h-24 w-24 rounded-full"></div>

@@ -22,7 +22,7 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-[#F5F5DC] h-[calc(100vh-7rem)] md:h-[calc(100vh-5rem)] flex items-center justify-center">
+    <div className="bg-[#F5F5DC] h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)] flex items-center justify-center">
       <div className="flex flex-col w-4/5 md:flex-row items-center bg-white md:w-2/3 rounded-lg py-2">
         <div className="flex flex-col items-center w-1/2">
           <img src={loginImg} width={350} className="p-10" />

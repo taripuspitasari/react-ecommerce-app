@@ -15,12 +15,17 @@ const Product = ({product}) => {
   );
 
   const handleToggleWishlist = () => {
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
+
+    const productId = product.id;
+
     if (isItWishlist) {
-      dispatch(removeFromWishlist(product.id));
-      console.log("remove nie", product.id);
+      dispatch(removeFromWishlist(productId));
     } else {
-      dispatch(addToWishlist(product.id));
-      console.log("add nie", product.id);
+      dispatch(addToWishlist(productId));
     }
   };
 
@@ -29,7 +34,6 @@ const Product = ({product}) => {
       navigate("/login");
       return;
     }
-
     dispatch(addToCart({productId, quantity: 1}));
   };
 
@@ -78,14 +82,14 @@ export default function Products({products}) {
   return (
     <div className="w-full">
       {products.length > 0 ? (
-        <div className="p-2 grid grid-cols-[repeat(auto-fit,_minmax(224px,_1fr))]">
+        <div className="grid grid-cols-[repeat(auto-fit,_minmax(224px,_1fr))]">
           {products.map(product => (
             <Product key={product.id} product={product} />
           ))}
         </div>
       ) : (
-        <div className="p-2 h-screen flex justify-center pt-20 items-start">
-          <p className="text-2xl font-bold text-gray-100">No products found</p>
+        <div className="pt-20 h-screen flex justify-center items-start">
+          <p className="text-2xl font-bold text-gray-300">No products found</p>
         </div>
       )}
     </div>

@@ -35,7 +35,7 @@ export default function DefaultLayout() {
 
   return (
     <div className="h-screen w-full overflow-y-auto">
-      <nav className="p-2 flex flex-col md:flex-row justify-between bg-[#E63946] h-14 w-full sticky top-0 md:h-20 text-[#F5F5DC]">
+      <nav className="p-2 flex flex-col md:flex-row justify-between bg-[#E63946] h-14 w-full sticky top-0 md:h-16 text-[#F5F5DC]">
         <div className="hidden md:flex justify-between">
           <Link to="/dashboard" className="flex gap-2 items-center">
             <img src={logoImg} alt="" width="40" />
@@ -56,7 +56,7 @@ export default function DefaultLayout() {
             <div
               className={`${
                 categoryOpen ? "absolute" : "hidden"
-              } rounded-md shadow-xl w-32 -bottom-16 -my-7 bg-[#E63946] text-black py-2 px-4`}
+              } rounded-md shadow-xl w-32 -bottom-10 -my-7 bg-[#E63946] text-black py-2 px-4`}
             >
               <ul
                 className="text-white"
@@ -110,7 +110,7 @@ export default function DefaultLayout() {
         <div
           className={`${
             !open ? "hidden" : "absolute"
-          }  w-72 h-56 rounded-md shadow-xl bg-[#E63946] right-0 top-28  md:right-4 md:top-20 m-1`}
+          }  w-72 h-56 rounded-md shadow-xl bg-[#E63946] right-0 top-28  md:right-4 md:top-16 m-1`}
           onMouseLeave={() => setOpen(!open)}
         >
           <ul className="text-white p-3">

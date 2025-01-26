@@ -34,16 +34,21 @@ export default function Carts() {
               <th scope="col" className="px-6 py-3 text-left">
                 Product
               </th>
-              <th scope="col" className="px-6 py-3 text-right">
-                Price
-              </th>
               <th scope="col" className="px-6 py-3 text-center">
                 Quantity
               </th>
               <th scope="col" className="px-6 py-3 text-right">
+                Price
+              </th>
+              <th scope="col" className="px-6 py-3 text-right">
                 Subtotal
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th
+                scope="col"
+                className={`px-6 py-3 text-center ${
+                  cartItems.length > 0 ? "block" : "hidden"
+                }`}
+              >
                 <button
                   onClick={() => dispatch(clearAll(userId))}
                   className="text-red-500 hover:text-red-700"
@@ -60,9 +65,6 @@ export default function Carts() {
                 <tr key={item.id} className="border-b dark:border-gray-700">
                   <td className="px-6 py-3 text-left text-gray-900 whitespace-nowrap dark:text-white">
                     {item.product_name}
-                  </td>
-                  <td className="px-6 py-3 text-right">
-                    {formatPrice(item.price)}
                   </td>
                   <td className="px-6 py-3 text-center">
                     <div className="flex items-center justify-evenly">
@@ -86,6 +88,9 @@ export default function Carts() {
                     </div>
                   </td>
                   <td className="px-6 py-3 text-right">
+                    {formatPrice(item.price)}
+                  </td>
+                  <td className="px-6 py-3 text-right">
                     {formatPrice(item.subtotal)}
                   </td>
                   <td className="px-6 py-3 text-center">
@@ -101,15 +106,24 @@ export default function Carts() {
                   </td>
                 </tr>
               ))}
+
               <tr className="border-b dark:border-gray-700">
                 <td
-                  colSpan={2}
-                  className="px-6 py-3 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  colSpan={3}
+                  className="px-6 py-3 text-right font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  Estimated Shipping
+                </td>
+                <td className="px-6 py-3 text-right font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  FREE
+                </td>
+              </tr>
+              <tr className="border-b dark:border-gray-700">
+                <td
+                  colSpan={3}
+                  className="px-6 py-3 text-right font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   Total
-                </td>
-                <td className="px-6 py-3 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {cartTotalQuantity}
                 </td>
                 <td className="px-6 py-3 text-right font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {formatPrice(cartTotalAmount)}
@@ -130,17 +144,27 @@ export default function Carts() {
           )}
         </table>
       </div>
-      <div
-        className={`justify-end mt-2 ${
-          cartItems.length > 0 ? "flex" : "hidden"
-        }`}
-      >
-        <button
-          className="py-2 px-4 font-medium rounded-md bg-[#A5D6A7] hover:bg-[#96c497]"
-          onClick={() => navigate("/checkout")}
+      <div className="flex justify-between">
+        <div className={`justify-end mt-2`}>
+          <button
+            className="py-2 px-4 font-medium rounded-md bg-[#ec4553] text-[#F5F5DC] hover:bg-[#f05360]"
+            onClick={() => navigate("/dashboard")}
+          >
+            Continue Shopping
+          </button>
+        </div>
+        <div
+          className={`justify-end mt-2 ${
+            cartItems.length > 0 ? "flex" : "hidden"
+          }`}
         >
-          Checkout
-        </button>
+          <button
+            className="py-2 px-4 font-medium rounded-md bg-[#A5D6A7] hover:bg-[#96c497]"
+            onClick={() => navigate("/checkout")}
+          >
+            Checkout
+          </button>
+        </div>
       </div>
     </div>
   );

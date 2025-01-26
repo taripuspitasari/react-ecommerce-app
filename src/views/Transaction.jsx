@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {fetchUserOrder} from "../app/slices/orderSlice";
+import {Link} from "react-router-dom";
 
 export default function Transaction() {
   const dispatch = useDispatch();
@@ -20,15 +21,15 @@ export default function Transaction() {
 
   return (
     <div className="w-full h-screen bg-[#F5F5DC] p-3">
-      <h2 className="text-xl font-medium">Transaction</h2>
-      <div className="border w-full border-slate-200 rounded-md overflow-hidden">
+      <h2 className="text-xl font-medium pb-3">Transaction</h2>
+      <div className="border w-full border-slate-200 rounded-md overflow-x-auto">
         <table className="w-full text-xs">
           <thead className="text-gray-700 uppercase border-b border-gray-300 bg-[#A5D6A7]">
             <tr>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-left">
                 Date
               </th>
-              <th scope="col" className="px-6 py-3 text-right">
+              <th scope="col" className="px-6 py-3">
                 Nomor Order
               </th>
               <th scope="col" className="px-6 py-3 text-center">
@@ -56,7 +57,7 @@ export default function Transaction() {
                   <td className="px-6 py-3 text-center text-gray-900 whitespace-nowrap dark:text-white">
                     {item.id}
                   </td>
-                  <td className="px-6 py-3 text-left text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className="px-6 py-3 text-center text-gray-900 whitespace-nowrap dark:text-white">
                     {item.order_status}
                   </td>
                   <td className="px-6 py-3 text-right">
@@ -65,7 +66,7 @@ export default function Transaction() {
 
                   <td className="px-6 py-3 text-center">
                     <button className="text-red-500 hover:text-red-700">
-                      see details
+                      <Link to={`${item.id}`}>see details</Link>
                     </button>
                   </td>
                 </tr>
