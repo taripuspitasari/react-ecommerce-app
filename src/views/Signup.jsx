@@ -31,7 +31,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="bg-[#F5F5DC] h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)] flex items-center justify-center">
+    <div className="bg-tomato h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)] flex items-center justify-center">
       <div className="flex flex-col w-4/5 md:flex-row items-center bg-white md:w-2/3 rounded-lg py-2">
         <div className="flex flex-col items-center w-1/2">
           <img src={signupImg} width={350} className="p-10" />
@@ -126,7 +126,7 @@ export default function Signup() {
             </div>
             <button
               type="submit"
-              className="py-2 px-4 w-full bg-[#F5F5DC] text-[#E63946] rounded-md font-medium hover:bg-[#FFD700] hover:text-black"
+              className="py-2 px-4 w-full font-medium border border-beige bg-beige text-tomato hover:text-beige hover:bg-tomato rounded-md"
             >
               Signup
             </button>

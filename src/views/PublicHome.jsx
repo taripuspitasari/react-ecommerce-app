@@ -14,7 +14,7 @@ export default function PublicHome() {
   }, [query, category, dispatch]);
 
   return (
-    <div className="min-h-screen bg-[#E63946]">
+    <div className="min-h-screen bg-tomato">
       {loading ? (
         <div className="flex justify-center items-center h-screen">
           <i className="fa-solid fa-spinner text-4xl text-[#F5F5DC] animate-spin"></i>

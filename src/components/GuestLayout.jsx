@@ -26,19 +26,13 @@ export default function GuestLayout() {
     dispatch(setSelectedCategory(id));
   };
 
-  // Merah Tradisional (#E63946): Warna khas untuk makanan Asia.
-  // Emas Tradisional (#FFD700): Memberi kesan keberuntungan.
-  // Hijau Daun (#A5D6A7): Menyegarkan, cocok untuk bahan alami.
-  // Beige atau Putih Gading (#F5F5DC): Kesan lembut, cocok untuk latar.
-  // Coklat Gelap (#5D4037): Memberikan kesan hangat dan lezat.
-
   return (
     <div className="h-screen w-full">
-      <nav className="p-2 flex flex-col md:flex-row justify-between bg-[#E63946] h-14 w-full sticky top-0 md:h-16 text-[#F5F5DC]">
+      <nav className="p-2 flex flex-col md:flex-row justify-between bg-tomato h-14 w-full sticky top-0 md:h-16 text-beige border-b border-beige">
         <div className="hidden md:flex justify-between">
           <Link to="/public" className="flex gap-2 items-center">
-            <img src={logoImg} alt="" width="40" />
-            <p className="text-[#F5F5DC] text-xl font-medium">Mitsuri Food</p>
+            <img src={logoImg} width="40" />
+            <p className="text-xl font-medium">Mitsuri Food</p>
           </Link>
         </div>
         <div className="flex">
@@ -55,11 +49,11 @@ export default function GuestLayout() {
             <div
               className={`${
                 categoryOpen ? "absolute" : "hidden"
-              } rounded-md shadow-xl w-32 -bottom-10 -my-7 bg-[#E63946] text-white py-2 px-4`}
+              } rounded-md shadow-xl w-32 -bottom-10 -my-7 bg-tomato py-2 px-4`}
             >
               <ul onMouseLeave={() => setCategoryOpen(!categoryOpen)}>
                 <li
-                  className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]"
+                  className="px-1 cursor-pointer hover:text-black hover:bg-beige"
                   onClick={() => selectCategory("")}
                 >
                   All
@@ -67,7 +61,7 @@ export default function GuestLayout() {
                 {categories.map(category => (
                   <li
                     key={category.id}
-                    className="px-1 cursor-pointer hover:text-black hover:bg-[#dedec4]"
+                    className="px-1 cursor-pointer hover:text-black hover:bg-beige"
                     onClick={() => selectCategory(category.id)}
                   >
                     {category.name}
@@ -76,18 +70,18 @@ export default function GuestLayout() {
               </ul>
             </div>
             <li className="w-full pr-5 md:px-5">
-              <div className="md:w-72 h-10 p-2 rounded-full flex gap-2 items-center border border-[#F5F5DC]">
+              <div className="md:w-72 h-10 p-2 rounded-full flex gap-2 items-center border border-beige">
                 <i className="fa-solid fa-magnifying-glass"></i>
                 <input
                   type="search"
                   value={query}
                   onChange={e => dispatch(setQuery(e.target.value))}
-                  className="w-full h-full bg-[#E63946] focus:outline-none placeholder:text-gray-200 placeholder:text-sm"
+                  className="w-full h-full bg-tomato focus:outline-none placeholder:text-beige placeholder:text-sm"
                   placeholder="Find your favorite items here..."
                 />
               </div>
             </li>
-            <li>
+            <li className="hover:text-white">
               <Link to="/login">
                 <i className="fa-solid fa-cart-shopping"></i>
               </Link>
@@ -99,14 +93,14 @@ export default function GuestLayout() {
           <ul className="flex gap-2">
             <li>
               <Link to="/login">
-                <button className="border font-medium border-[#F5F5DC] py-2 px-4 rounded-lg">
+                <button className="border font-medium border-beige py-2 px-4 rounded-lg hover:bg-white hover:text-tomato">
                   Login
                 </button>
               </Link>
             </li>
             <li>
               <Link to="/signup">
-                <button className="py-2 px-4 font-medium bg-[#F5F5DC] text-[#E63946] rounded-lg">
+                <button className="py-2 px-4 font-medium border border-beige bg-beige text-tomato rounded-lg hover:text-tomato hover:bg-white">
                   Signup
                 </button>
               </Link>
@@ -115,21 +109,22 @@ export default function GuestLayout() {
         </div>
       </nav>
       <Outlet />
-      <div className="md:hidden h-14 w-full sticky bottom-0 z-99 bg-[#E63946] shadow-md border-t">
-        <ul className="flex justify-between p-2 text-[#F5F5DC]">
-          <li className="flex flex-col items-center justify-center">
+      {/* smaller device */}
+      <div className="md:hidden h-14 w-full sticky bottom-0 z-99 bg-tomato text-beige shadow-md border-t">
+        <ul className="flex justify-between p-2">
+          <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
             <i className="fa-solid fa-house"></i>
             <p>Home</p>
           </li>
-          <li className="flex flex-col items-center justify-center">
+          <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
             <i className="fa-solid fa-list"></i>
             <p>Category</p>
           </li>
-          <li className="flex flex-col items-center justify-center">
+          <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
             <i className="fa-solid fa-heart"></i>
             <p>Whislist</p>
           </li>
-          <li>
+          <li className="cursor-pointer hover:text-white">
             <Link
               to="/login"
               className="flex flex-col items-center justify-center"

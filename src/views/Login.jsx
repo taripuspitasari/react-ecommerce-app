@@ -22,7 +22,7 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-[#F5F5DC] h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)] flex items-center justify-center">
+    <div className="bg-tomato h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)] flex items-center justify-center">
       <div className="flex flex-col w-4/5 md:flex-row items-center bg-white md:w-2/3 rounded-lg py-2">
         <div className="flex flex-col items-center w-1/2">
           <img src={loginImg} width={350} className="p-10" />
@@ -43,7 +43,7 @@ export default function Login() {
           )}
           <form onSubmit={onSubmit} className="space-y-4">
             <div className="w-full">
-              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-[#F5F5DC]">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-beige">
                 <label
                   htmlFor="email"
                   className="px-2 flex-shrink-0 min-w-[80px]"
@@ -63,7 +63,7 @@ export default function Login() {
               )}
             </div>
             <div className="w-full">
-              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-[#F5F5DC]">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-beige">
                 <label
                   htmlFor="password"
                   className="px-2 flex-shrink-0 min-w-[70px]"
@@ -84,7 +84,7 @@ export default function Login() {
             </div>
             <button
               type="submit"
-              className="py-2 px-4 w-full font-medium bg-[#F5F5DC] text-[#E63946] rounded-md hover:bg-[#FFD700] hover:text-black"
+              className="py-2 px-4 w-full font-medium border border-beige bg-beige text-tomato hover:text-beige hover:bg-tomato rounded-md"
             >
               Login
             </button>

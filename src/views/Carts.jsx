@@ -25,7 +25,7 @@ export default function Carts() {
   };
 
   return (
-    <div className="md:h-screen bg-[#F5F5DC] p-2">
+    <div className="min-h-screen bg-[#F5F5DC] p-2">
       <h2 className="text-xl py-3 font-medium text-center">My Cart</h2>
       <div className="border w-full border-slate-200 rounded-md overflow-hidden">
         <table className="w-full text-xs">

@@ -38,7 +38,7 @@ export const deleteAddress = createAsyncThunk(
       const response = await axiosClient.delete(`/address/${addressId}`);
       return response.data;
     } catch (err) {
-      if (err.response && err.response.state === 422) {
+      if (err.response && err.response.status === 422) {
         return rejectWithValue(err.response.data.errors);
       }
       throw err;

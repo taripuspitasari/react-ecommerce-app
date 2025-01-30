@@ -21,7 +21,7 @@ export default function Transaction() {
 
   return (
     <div className="w-full h-screen bg-[#F5F5DC] p-3">
-      <h2 className="text-xl font-medium pb-3">Transaction</h2>
+      <h2 className="text-xl font-medium pb-3 text-center">Transaction</h2>
       <div className="border w-full border-slate-200 rounded-md overflow-x-auto">
         <table className="w-full text-xs">
           <thead className="text-gray-700 uppercase border-b border-gray-300 bg-[#A5D6A7]">
@@ -29,7 +29,7 @@ export default function Transaction() {
               <th scope="col" className="px-6 py-3 text-left">
                 Date
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 whitespace-nowrap">
                 Nomor Order
               </th>
               <th scope="col" className="px-6 py-3 text-center">

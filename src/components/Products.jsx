@@ -60,12 +60,15 @@ const Product = ({product}) => {
         <ul className="flex justify-between items-center gap-2">
           <li
             onClick={() => handleAddToCart(product.id)}
-            className="text-sm flex justify-center items-center gap-3 border py-1 px-4 rounded-full border-[#FFD700] hover:bg-[#FFD700] cursor-pointer"
+            className="text-sm flex justify-center items-center gap-3 border py-1 px-4 rounded-full border-lemon hover:bg-lemon cursor-pointer"
           >
             <i className="fa-solid fa-cart-shopping"></i>
             <span className="text-xs hidden md:block">Add To Cart</span>
           </li>
-          <li className="cursor-pointer" onClick={handleToggleWishlist}>
+          <li
+            className="cursor-pointer hover:text-red-600"
+            onClick={handleToggleWishlist}
+          >
             {isItWishlist ? (
               <i className="fa-solid fa-heart text-red-600"></i>
             ) : (
@@ -82,7 +85,7 @@ export default function Products({products}) {
   return (
     <div className="w-full">
       {products.length > 0 ? (
-        <div className="grid grid-cols-[repeat(auto-fit,_minmax(224px,_1fr))]">
+        <div className="grid grid-cols-[repeat(auto-fill,_minmax(224px,_1fr))] justify-start">
           {products.map(product => (
             <Product key={product.id} product={product} />
           ))}

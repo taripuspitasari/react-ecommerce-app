@@ -18,7 +18,7 @@ export const createOrder = createAsyncThunk(
         address_id: selectedAddress.id,
         payment_method: selectedPaymentMethod,
       };
-      console.log(payload);
+
       const response = await axiosClient.post("/orders", payload);
       return response.data;
     } catch (err) {
@@ -53,6 +53,7 @@ const orderSlice = createSlice({
     orderHistory: [],
     loading: false,
     errors: null,
+    notification: null,
   },
   reducers: {
     setSelectedAddress: (state, action) => {
@@ -60,6 +61,9 @@ const orderSlice = createSlice({
     },
     setPaymentMethod: (state, action) => {
       state.selectedPaymentMethod = action.payload;
+    },
+    clearNotification: state => {
+      state.notification = null;
     },
   },
   extraReducers: builder => {
@@ -72,6 +76,7 @@ const orderSlice = createSlice({
         state.address = null;
         state.paymentMethod = null;
         state.orderHistory = action.payload;
+        state.notification = "Order is successful";
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.loading = false;
@@ -94,5 +99,6 @@ const orderSlice = createSlice({
   },
 });
 
-export const {setSelectedAddress, setPaymentMethod} = orderSlice.actions;
+export const {setSelectedAddress, setPaymentMethod, clearNotification} =
+  orderSlice.actions;
 export default orderSlice.reducer;
