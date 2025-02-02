@@ -34,7 +34,6 @@ export default function FormAddAddress({handleOpenModal, handleCloseModal}) {
             <h3 className="font-medium text-xl text-center">Detail address</h3>
             <button
               className="absolute top-0 right-0 cursor-pointer"
-              // onClick={() => dispatch(closeModal())}
               onClick={handleCloseModal}
             >
               <i className="fa-solid fa-xmark"></i>

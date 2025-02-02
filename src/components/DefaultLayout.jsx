@@ -41,11 +41,11 @@ export default function DefaultLayout() {
         <div className="hidden md:flex justify-between">
           <Link to="/dashboard" className="flex gap-2 items-center">
             <img src={logoImg} alt="" width="40" />
-            <p className="text-xl font-medium">Mitsuri Food</p>
+            <p className="lg:text-xl font-medium">Mitsuri Food</p>
           </Link>
         </div>
         <div className="flex">
-          <ul className="flex md:gap-10 items-center justify-between w-full">
+          <ul className="flex items-center justify-between w-full">
             <li
               onClick={() => setCategoryOpen(!categoryOpen)}
               className="hidden md:flex gap-3 items-center cursor-pointer"
@@ -111,7 +111,7 @@ export default function DefaultLayout() {
               className="w-full h-full object-cover"
             />
           </div>
-          <p>{user.name}</p>
+          <p>{user.name.split(" ")[0]}</p>
           <button className="flex gap-4" onClick={() => setOpen(!open)}>
             <i className="fa-solid fa-chevron-down"></i>
           </button>

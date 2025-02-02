@@ -1,11 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {logout} from "../app/slices/authSlice";
 import defaultImg from "../assets/default.jpg";
+import FormChangePassword from "../components/FormChangePassword";
+import FormChangeInformation from "../components/FormChangeInformation";
+import FormChangePhoto from "../components/FormChangePhoto";
 
 export default function Account() {
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.auth);
+
+  const [type, setType] = useState("");
+
+  const handleOpenModal = modal => {
+    setType(modal);
+  };
+
+  const handleCloseModal = () => {
+    setType("");
+  };
 
   return (
     <div className="w-full h-screen bg-[#F5F5DC] p-3">
@@ -19,7 +32,10 @@ export default function Account() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="bg-green px-2 py-1 rounded-full absolute top-14 right-0 cursor-pointer">
+          <div
+            onClick={() => handleOpenModal("changePhoto")}
+            className="bg-green px-2 py-1 rounded-full absolute top-14 right-0 cursor-pointer"
+          >
             <i className="fa-solid fa-pen text-xs"></i>
           </div>
         </div>
@@ -40,10 +56,36 @@ export default function Account() {
             <p>{user.email}</p>
           </div>
         </div>
-        <div>
+        <div
+          onClick={() => handleOpenModal("changeInformation")}
+          className="cursor-pointer"
+        >
           <i className="fa-regular fa-pen-to-square"></i>
         </div>
       </div>
+      <div className="flex p-4 justify-between items-start border rounded-md shadow-md">
+        <div className="space-y-2">
+          <h3 className="font-bold">Change Password</h3>
+        </div>
+        <div
+          onClick={() => handleOpenModal("changePassword")}
+          className="cursor-pointer"
+        >
+          <i className="fa-regular fa-pen-to-square"></i>
+        </div>
+      </div>
+
+      {type === "changePassword" && (
+        <FormChangePassword handleCloseModal={handleCloseModal} />
+      )}
+      {type === "changeInformation" && (
+        <FormChangeInformation handleCloseModal={handleCloseModal} />
+      )}
+      {type === "changePhoto" && (
+        <FormChangePhoto handleCloseModal={handleCloseModal} />
+      )}
+
+      {/* <FormChangePhoto /> */}
     </div>
   );
 }
