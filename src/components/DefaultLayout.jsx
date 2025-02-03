@@ -18,7 +18,6 @@ export default function DefaultLayout() {
   const {cartTotalQuantity} = useSelector(state => state.cart);
   const {token, user} = useSelector(state => state.auth);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  console.log(user);
 
   useEffect(() => {
     if (!token) return;

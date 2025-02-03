@@ -1,14 +1,15 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {logout} from "../app/slices/authSlice";
 import defaultImg from "../assets/default.jpg";
 import FormChangePassword from "../components/FormChangePassword";
 import FormChangeInformation from "../components/FormChangeInformation";
 import FormChangePhoto from "../components/FormChangePhoto";
+import {clearNotification} from "../app/slices/authSlice";
 
 export default function Account() {
   const dispatch = useDispatch();
-  const {user} = useSelector(state => state.auth);
+  const {user, notification, loading} = useSelector(state => state.auth);
 
   const [type, setType] = useState("");
 
@@ -20,8 +21,30 @@ export default function Account() {
     setType("");
   };
 
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => dispatch(clearNotification()), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
+
   return (
-    <div className="w-full h-screen bg-[#F5F5DC] p-3">
+    <div className="w-full h-screen bg-[#F5F5DC] p-3 relative">
+      {notification && (
+        <div className="flex gap-2 justify-center items-center p-3 bg-[#A5D6A7] rounded-md absolute m-3 z-50 left-1/2 transform -translate-x-1/2 font-medium shadow-lg">
+          <i className="fa-solid fa-check"></i>
+          <p className="text-center">{notification}</p>
+        </div>
+      )}
+
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
+          <div className="flex justify-center items-center h-full">
+            <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
+          </div>
+        </div>
+      )}
+
       <h2 className="text-xl font-medium pb-3 text-center">Account</h2>
       <div className="flex p-4 gap-3 items-center border rounded-md shadow-md">
         <div className="relative">

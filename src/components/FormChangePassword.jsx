@@ -1,11 +1,10 @@
-import {useRef, useEffect} from "react";
+import {useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {changePassword} from "../app/slices/authSlice";
-import {clearNotification} from "../app/slices/authSlice";
 
 export default function FormChangePassword({handleCloseModal}) {
   const dispatch = useDispatch();
-  const {loading, errors, notification} = useSelector(state => state.auth);
+  const {errors} = useSelector(state => state.auth);
   const currentPasswordRef = useRef();
   const newPasswordRef = useRef();
   const newPasswordConfirmationRef = useRef();
@@ -18,21 +17,9 @@ export default function FormChangePassword({handleCloseModal}) {
       new_password_confirmation: newPasswordConfirmationRef.current.value,
     };
 
-    dispatch(changePassword(payload)).then(({meta}) => {
-      if (meta.requestStatus === "fulfilled") {
-        currentPasswordRef.current.value = "";
-        newPasswordRef.current.value = "";
-        newPasswordConfirmationRef.current.value = "";
-      }
-    });
+    dispatch(changePassword(payload));
+    handleCloseModal();
   };
-
-  useEffect(() => {
-    if (notification) {
-      const timer = setTimeout(() => dispatch(clearNotification()), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [notification]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
@@ -47,19 +34,6 @@ export default function FormChangePassword({handleCloseModal}) {
               <i className="fa-solid fa-xmark"></i>
             </button>
           </div>
-
-          {loading && (
-            <div className="flex justify-center items-center">
-              <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
-            </div>
-          )}
-
-          {notification && (
-            <div className="flex gap-2 justify-center items-center p-3 bg-[#A5D6A7] rounded-md absolute m-3 z-50 left-1/2 transform -translate-x-1/2 font-medium shadow-lg">
-              <i className="fa-solid fa-check"></i>
-              <p className="text-center">{notification}</p>
-            </div>
-          )}
 
           <form className="space-y-2" onSubmit={handleSubmit}>
             <div className="w-full">

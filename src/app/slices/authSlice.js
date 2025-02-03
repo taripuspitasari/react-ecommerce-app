@@ -78,14 +78,14 @@ export const updateUser = createAsyncThunk(
 
 export const changePhoto = createAsyncThunk(
   "auth/changePhoto",
-  async ({id, newPhoto}, {rejectWithValue}) => {
+  async (photo, {rejectWithValue}) => {
     try {
-      // const formData = new FormData();
-      // formData.append("image", newPhoto);
+      const formData = new FormData();
+      formData.append("photo", photo);
 
-      const response = await axiosClient.patch(
-        `/user/${id}/profile-picture`,
-        newPhoto,
+      const response = await axiosClient.post(
+        "/user/profile-picture",
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -193,7 +193,8 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(changePhoto.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.user;
+        state.notification = action.payload.message;
         state.loading = false;
       })
       .addCase(changePhoto.rejected, (state, action) => {

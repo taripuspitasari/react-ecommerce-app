@@ -5,10 +5,9 @@ import {changePhoto} from "../app/slices/authSlice";
 
 export default function FormChangePhoto({handleCloseModal}) {
   const dispatch = useDispatch();
-  const {user, loading, errors, notification} = useSelector(
-    state => state.auth
-  );
-  const [photo, setPhoto] = useState(null);
+  const {user, errors} = useSelector(state => state.auth);
+
+  const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
@@ -20,24 +19,19 @@ export default function FormChangePhoto({handleCloseModal}) {
   const handleFileChange = e => {
     const file = e.target.files[0];
     if (file) {
-      setPhoto(file);
+      setSelectedFile(file);
       setPreviewImage(URL.createObjectURL(file));
     }
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!photo) {
+    if (!selectedFile) {
       alert("Please select a photo to upload.");
       return;
     }
-
-    const formData = new FormData();
-    formData.append("image", photo);
-    console.log("form data", formData);
-    console.log("photo", photo);
-
-    dispatch(changePhoto({id: user.id, newPhoto: formData}));
+    dispatch(changePhoto(selectedFile));
+    handleCloseModal();
   };
 
   return (
@@ -55,19 +49,6 @@ export default function FormChangePhoto({handleCloseModal}) {
               <i className="fa-solid fa-xmark"></i>
             </button>
           </div>
-
-          {loading && (
-            <div className="flex justify-center items-center">
-              <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
-            </div>
-          )}
-
-          {notification && (
-            <div className="flex gap-2 justify-center items-center p-3 bg-[#A5D6A7] rounded-md absolute m-3 z-50 left-1/2 transform -translate-x-1/2 font-medium shadow-lg">
-              <i className="fa-solid fa-check"></i>
-              <p className="text-center">{notification}</p>
-            </div>
-          )}
 
           <form className="space-y-2" onSubmit={handleSubmit}>
             <div className="w-full flex items-center justify-evenly">
@@ -91,13 +72,12 @@ export default function FormChangePhoto({handleCloseModal}) {
                   <input
                     type="file"
                     accept="image/*"
-                    id="image"
                     className="w-full h-full focus:outline-none bg-[#F5F5DC]"
                     onChange={handleFileChange}
                   />
                 </div>
-                {errors?.image?.[0] && (
-                  <p className="p-1 text-red-500">{errors.image[0]}</p>
+                {errors?.photo?.[0] && (
+                  <p className="p-1 text-red-500">{errors.photo[0]}</p>
                 )}
               </div>
             </div>
