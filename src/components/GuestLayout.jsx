@@ -113,20 +113,26 @@ export default function GuestLayout() {
       <div className="md:hidden h-14 w-full sticky bottom-0 z-99 bg-tomato text-beige shadow-md border-t">
         <ul className="flex justify-between p-2">
           <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
-            <i className="fa-solid fa-house"></i>
-            <p>Home</p>
+            <Link
+              to="/public"
+              className="flex flex-col items-center justify-center"
+            >
+              <i className="fa-solid fa-house"></i>
+              <p>Home</p>
+            </Link>
           </li>
           <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
-            <i className="fa-solid fa-list"></i>
-            <p>Category</p>
-          </li>
-          <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
-            <i className="fa-solid fa-heart"></i>
-            <p>Whislist</p>
-          </li>
-          <li className="cursor-pointer hover:text-white">
             <Link
               to="/login"
+              className="flex flex-col items-center justify-center"
+            >
+              <i className="fa-solid fa-heart"></i>
+              <p>Whislist</p>
+            </Link>
+          </li>
+          <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
+            <Link
+              to="/signup"
               className="flex flex-col items-center justify-center"
             >
               <i className="fa-solid fa-user"></i>

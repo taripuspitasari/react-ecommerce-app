@@ -36,7 +36,7 @@ export default function DefaultLayout() {
 
   return (
     <div className="h-screen w-full overflow-y-auto">
-      <nav className="p-2 flex flex-col md:flex-row justify-between bg-tomato h-14 w-full sticky top-0 md:h-16 text-beige">
+      <nav className="p-2 flex flex-col md:flex-row justify-between bg-tomato h-14 w-full sticky z-20 top-0 md:h-16 text-beige">
         <div className="hidden md:flex justify-between">
           <Link to="/dashboard" className="flex gap-2 items-center">
             <img src={logoImg} alt="" width="40" />
@@ -170,10 +170,6 @@ export default function DefaultLayout() {
               <i className="fa-solid fa-house"></i>
               <p>Home</p>
             </Link>
-          </li>
-          <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
-            <i className="fa-solid fa-list"></i>
-            <p>Category</p>
           </li>
           <li>
             <Link

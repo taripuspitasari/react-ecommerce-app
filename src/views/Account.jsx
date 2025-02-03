@@ -29,9 +29,9 @@ export default function Account() {
   }, [notification]);
 
   return (
-    <div className="w-full h-screen bg-[#F5F5DC] p-3 relative">
+    <div className="w-full h-screen bg-[#F5F5DC] p-3">
       {notification && (
-        <div className="flex gap-2 justify-center items-center p-3 bg-[#A5D6A7] rounded-md absolute m-3 z-50 left-1/2 transform -translate-x-1/2 font-medium shadow-lg">
+        <div className="flex gap-2 justify-center items-center p-3 bg-[#A5D6A7] rounded-md absolute m-3 z-50 right-5 bottom-5 font-medium shadow-lg">
           <i className="fa-solid fa-check"></i>
           <p className="text-center">{notification}</p>
         </div>
@@ -47,7 +47,7 @@ export default function Account() {
 
       <h2 className="text-xl font-medium pb-3 text-center">Account</h2>
       <div className="flex p-4 gap-3 items-center border rounded-md shadow-md">
-        <div className="relative">
+        <div className="relative z-10">
           <div className="border border-beige h-20 w-20 rounded-full overflow-hidden">
             <img
               src={user.image || defaultImg}
@@ -97,6 +97,14 @@ export default function Account() {
           <i className="fa-regular fa-pen-to-square"></i>
         </div>
       </div>
+      <div
+        className="md:hidden flex p-4 justify-between items-start border rounded-md shadow-md cursor-pointer"
+        onClick={() => dispatch(logout())}
+      >
+        <div className="space-y-2">
+          <button className="font-bold">Logout</button>
+        </div>
+      </div>
 
       {type === "changePassword" && (
         <FormChangePassword handleCloseModal={handleCloseModal} />
@@ -107,8 +115,6 @@ export default function Account() {
       {type === "changePhoto" && (
         <FormChangePhoto handleCloseModal={handleCloseModal} />
       )}
-
-      {/* <FormChangePhoto /> */}
     </div>
   );
 }

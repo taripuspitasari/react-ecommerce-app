@@ -59,7 +59,7 @@ export default function TransactionDetail() {
                 <p>Order ID: #{id} </p>
                 <p className="text-gray-400">{created_at}</p>
               </div>
-              <p>Status: {order_status}</p>
+              <p className="capitalize">Status: {order_status}</p>
             </div>
 
             <div className="flex flex-col md:flex-row gap-5 w-full justify-between my-5">
@@ -79,7 +79,7 @@ export default function TransactionDetail() {
                 <h5 className="font-bold mb-1">Payment Details</h5>
                 <div className="flex justify-between">
                   <p>Payment method</p>
-                  <p>{payment_method}</p>
+                  <p className="uppercase">{payment_method}</p>
                 </div>
                 <div className="flex justify-between">
                   <p>Total Amount</p>
