@@ -36,10 +36,10 @@ export default function DefaultLayout() {
 
   return (
     <div className="h-screen w-full overflow-y-auto">
-      <nav className="p-2 flex flex-col md:flex-row justify-between bg-tomato h-14 w-full sticky z-20 top-0 md:h-16 text-beige">
-        <div className="hidden md:flex justify-between">
+      <nav className="p-2 flex flex-col lg:flex-row justify-between bg-tomato h-14 w-full sticky z-20 top-0 lg:h-16 text-beige">
+        <div className="hidden lg:flex justify-between">
           <Link to="/dashboard" className="flex gap-2 items-center">
-            <img src={logoImg} alt="" width="40" />
+            <img src={logoImg} width="40" />
             <p className="lg:text-xl font-medium">Mitsuri Food</p>
           </Link>
         </div>
@@ -47,7 +47,7 @@ export default function DefaultLayout() {
           <ul className="flex items-center justify-between w-full">
             <li
               onClick={() => setCategoryOpen(!categoryOpen)}
-              className="hidden md:flex gap-3 items-center cursor-pointer"
+              className="hidden lg:flex gap-3 items-center cursor-pointer"
             >
               <button className="cursor-pointer flex items-center gap-4">
                 <i className="fa-solid fa-chevron-down text-sm"></i>
@@ -80,8 +80,8 @@ export default function DefaultLayout() {
                 ))}
               </ul>
             </div>
-            <li className="w-full pr-5 md:px-5">
-              <div className="md:w-96 h-10 p-2 rounded-full flex gap-2 items-center border border-beige">
+            <li className="w-full pr-5 lg:px-5">
+              <div className="lg:w-96 h-10 p-2 rounded-full flex gap-2 items-center border border-beige">
                 <i className="fa-solid fa-magnifying-glass"></i>
                 <input
                   type="search"
@@ -102,7 +102,7 @@ export default function DefaultLayout() {
             </li>
           </ul>
         </div>
-        <div className="hidden md:flex gap-2 items-center p-2">
+        <div className="hidden lg:flex gap-2 items-center p-2">
           <div className="border border-beige h-8 w-8 rounded-full overflow-hidden">
             <img
               src={user.image || defaultImg}
@@ -118,7 +118,7 @@ export default function DefaultLayout() {
         <div
           className={`${
             !open ? "hidden" : "absolute"
-          }  w-72 z-99 rounded-md shadow-xl bg-tomato right-0 top-28  md:right-4 md:top-16 m-1`}
+          }  w-72 z-99 rounded-md shadow-xl bg-tomato right-0 top-28  lg:right-4 lg:top-16 m-1`}
           onMouseLeave={() => setOpen(!open)}
         >
           <ul className="text-white p-3">
@@ -160,7 +160,7 @@ export default function DefaultLayout() {
       </nav>
       <Outlet />
       {/* bottom bar in smaller device */}
-      <div className="md:hidden h-14 w-full sticky bottom-0 z-99 bg-tomato text-beige shadow-md border-t">
+      <div className="lg:hidden h-14 w-full sticky bottom-0 z-99 bg-tomato text-beige shadow-md border-t">
         <ul className="flex justify-between p-2">
           <li>
             <Link

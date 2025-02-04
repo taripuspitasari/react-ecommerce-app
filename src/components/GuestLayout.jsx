@@ -27,19 +27,19 @@ export default function GuestLayout() {
   };
 
   return (
-    <div className="h-screen w-full">
-      <nav className="p-2 flex flex-col md:flex-row justify-between bg-tomato h-14 w-full sticky top-0 md:h-16 text-beige border-b border-beige">
-        <div className="hidden md:flex justify-between">
+    <div className="h-screen w-full overflow-y-auto">
+      <nav className="p-2 flex flex-col lg:flex-row justify-between bg-tomato h-14 w-full sticky z-20 top-0 lg:h-16 text-beige">
+        <div className="hidden lg:flex justify-between">
           <Link to="/public" className="flex gap-2 items-center">
             <img src={logoImg} width="40" />
-            <p className="text-xl font-medium">Mitsuri Food</p>
+            <p className="lg:text-xl font-medium">Mitsuri Food</p>
           </Link>
         </div>
         <div className="flex">
-          <ul className="flex md:gap-10 items-center justify-between w-full">
+          <ul className="flex items-center justify-between w-full">
             <li
               onClick={() => setCategoryOpen(!categoryOpen)}
-              className="hidden md:flex gap-3 items-center"
+              className="hidden lg:flex gap-3 items-center cursor-pointer"
             >
               <button className="cursor-pointer font-medium flex items-center gap-4">
                 <i className="fa-solid fa-chevron-down"></i>
@@ -69,8 +69,8 @@ export default function GuestLayout() {
                 ))}
               </ul>
             </div>
-            <li className="w-full pr-5 md:px-5">
-              <div className="md:w-72 h-10 p-2 rounded-full flex gap-2 items-center border border-beige">
+            <li className="w-full pr-5 lg:px-5">
+              <div className="lg:w-72 h-10 p-2 rounded-full flex gap-2 items-center border border-beige">
                 <i className="fa-solid fa-magnifying-glass"></i>
                 <input
                   type="search"
@@ -89,7 +89,7 @@ export default function GuestLayout() {
           </ul>
         </div>
 
-        <div className="hidden md:flex items-center">
+        <div className="hidden lg:flex items-center">
           <ul className="flex gap-2">
             <li>
               <Link to="/login">
@@ -110,7 +110,7 @@ export default function GuestLayout() {
       </nav>
       <Outlet />
       {/* smaller device */}
-      <div className="md:hidden h-14 w-full sticky bottom-0 z-99 bg-tomato text-beige shadow-md border-t">
+      <div className="lg:hidden h-14 w-full sticky bottom-0 z-99 bg-tomato text-beige shadow-md border-t">
         <ul className="flex justify-between p-2">
           <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
             <Link

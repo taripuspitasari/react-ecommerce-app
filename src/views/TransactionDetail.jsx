@@ -48,7 +48,7 @@ export default function TransactionDetail() {
         <div>
           <div>
             <div className="flex items-center gap-4">
-              <Link className="md:hidden" to="/my-account/transaction">
+              <Link className="lg:hidden" to="/my-account/transaction">
                 <i className="fa-solid fa-arrow-left text-lg"></i>
               </Link>
               <h4 className="text-xl font-medium">Transaction Details</h4>
@@ -62,8 +62,8 @@ export default function TransactionDetail() {
               <p className="capitalize">Status: {order_status}</p>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-5 w-full justify-between my-5">
-              <div className="w-1/2">
+            <div className="flex flex-col lg:flex-row gap-5 w-full justify-between my-5">
+              <div className="lg:w-1/2">
                 <h5 className="font-bold mb-1">Delivery Address</h5>
                 <p>
                   <span className="font-medium">{address.name}</span> |{" "}
@@ -75,7 +75,7 @@ export default function TransactionDetail() {
                   <li>{address.postal_code}</li>
                 </ul>
               </div>
-              <div className="w-1/2">
+              <div className="lg:w-1/2">
                 <h5 className="font-bold mb-1">Payment Details</h5>
                 <div className="flex justify-between">
                   <p>Payment method</p>

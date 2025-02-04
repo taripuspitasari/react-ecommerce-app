@@ -98,7 +98,7 @@ export default function Account() {
         </div>
       </div>
       <div
-        className="md:hidden flex p-4 justify-between items-start border rounded-md shadow-md cursor-pointer"
+        className="lg:hidden flex p-4 justify-between items-start border rounded-md shadow-md cursor-pointer"
         onClick={() => dispatch(logout())}
       >
         <div className="space-y-2">

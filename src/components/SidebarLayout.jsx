@@ -8,9 +8,9 @@ export default function SidebarLayout() {
 
   return (
     <div className="flex min-h-screen w-full bg-[#F5F5DC]">
-      <div className="hidden md:block w-full md:w-64">
+      <div className="hidden lg:block w-full lg:w-64">
         <div>
-          <ul className="text-black p-3 space-y-5 md:space-y-2">
+          <ul className="text-black p-3 space-y-5 lg:space-y-2">
             <li>
               <NavLink
                 to="transaction"

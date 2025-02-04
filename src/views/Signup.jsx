@@ -31,19 +31,19 @@ export default function Signup() {
   };
 
   return (
-    <div className="bg-tomato h-[calc(100vh-7rem)] md:h-[calc(100vh-4rem)] flex items-center justify-center">
-      <div className="flex flex-col w-4/5 md:flex-row items-center bg-white md:w-2/3 rounded-lg py-2">
+    <div className="bg-tomato h-[calc(100vh-7rem)] lg:h-[calc(100vh-4rem)] flex items-center justify-center">
+      <div className="flex flex-col w-4/5 lg:flex-row items-center bg-white lg:w-2/3 rounded-lg py-2">
         <div className="flex flex-col items-center w-1/2">
           <img src={signupImg} width={350} className="p-10" />
           <a
             href="https://www.flaticon.com/free-stickers/cultures"
             title="cultures stickers"
-            className="text-slate-200 text-xs hidden md:block"
+            className="text-slate-200 text-xs hidden lg:block"
           >
             Cultures stickers created by Stickers - Flaticon
           </a>
         </div>
-        <div className="md:w-1/2 space-y-5 px-5 m-3">
+        <div className="lg:w-1/2 space-y-5 px-5 m-3">
           <h1 className="text-xl font-medium text-center">Signup to Mitsuri</h1>
           {loading && (
             <div className="flex justify-center items-center">

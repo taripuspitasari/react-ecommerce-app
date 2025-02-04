@@ -26,11 +26,11 @@ export default function CartLayout() {
 
   return (
     <div className="min-h-screen w-full bg-[#F5F5DC]">
-      <div className="flex flex-col md:flex-row md:items-start">
-        <div className="md:w-2/3">
+      <div className="flex flex-col lg:flex-row lg:items-start">
+        <div className="lg:w-2/3">
           <Outlet />
         </div>
-        <div className="md:w-1/3">
+        <div className="lg:w-1/3">
           <h2 className="invisible text-xl py-3 font-medium text-center">
             summary
           </h2>

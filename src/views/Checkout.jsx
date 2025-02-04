@@ -81,7 +81,7 @@ export default function Checkout() {
   };
 
   return (
-    <div className="md:min-h-screen bg-[#F5F5DC] px-2">
+    <div className="lg:min-h-screen bg-[#F5F5DC] px-2">
       <h2 className="text-xl py-3 font-medium text-center">Checkout</h2>
       <div className="border shadow-xl border-slate-200 rounded-md p-4 space-y-3">
         {selectedAddress ? (
@@ -123,7 +123,7 @@ export default function Checkout() {
         <div className="space-y-3 mt-4">
           <h3 className="font-bold">Select payment method</h3>
           <div className="flex flex-col gap-5">
-            <div className="grid md:grid-rows-1 md:grid-flow-col gap-3">
+            <div className="grid lg:grid-rows-1 lg:grid-flow-col gap-3">
               <div
                 onClick={() => handleSelectMethod("bank_transfer")}
                 className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border hover:shadow-xl rounded-md ${

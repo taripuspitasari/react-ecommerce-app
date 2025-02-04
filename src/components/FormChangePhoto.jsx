@@ -36,7 +36,7 @@ export default function FormChangePhoto({handleCloseModal}) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
-      <div className="w-full md:w-1/2 z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#F5F5DC] p-5 rounded-lg shadow-lg ">
+      <div className="w-full lg:w-1/2 z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#F5F5DC] p-5 rounded-lg shadow-lg ">
         <div className="border border-slate-400 p-4 rounded-md space-y-3">
           <div className="relative flex justify-center items-center">
             <h3 className="font-medium text-xl text-center">
