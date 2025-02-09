@@ -69,15 +69,16 @@ export default function DefaultLayout() {
                 >
                   All
                 </li>
-                {categories.map(category => (
-                  <li
-                    key={category.id}
-                    className="px-1 cursor-pointer hover:text-black hover:bg-beige"
-                    onClick={() => selectCategory(category.id)}
-                  >
-                    {category.name}
-                  </li>
-                ))}
+                {categories?.length > 0 &&
+                  categories.map(category => (
+                    <li
+                      key={category.id}
+                      className="px-1 cursor-pointer hover:text-black hover:bg-beige"
+                      onClick={() => selectCategory(category.id)}
+                    >
+                      {category.name}
+                    </li>
+                  ))}
               </ul>
             </div>
             <li className="w-full pr-5 lg:px-5">

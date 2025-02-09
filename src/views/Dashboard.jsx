@@ -38,27 +38,28 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-beige">
-      <div className="md:hidden flex justify-center gap-2 pt-2">
+      <div className="lg:hidden flex justify-center gap-2 pt-2">
         <div
           className={`py-2 px-4  rounded-md ${
             category === "" ? "bg-gold" : "bg-green"
           }`}
-          key={category.id}
+          key={category?.id || ""}
           onClick={() => selectCategory("")}
         >
           All
         </div>
-        {categories.map(c => (
-          <div
-            className={`py-2 px-4 bg-green rounded-md ${
-              category === c.id ? "bg-gold" : "bg-green"
-            } `}
-            key={c.id}
-            onClick={() => selectCategory(c.id)}
-          >
-            {c.name}
-          </div>
-        ))}
+        {categories?.length > 0 &&
+          categories.map(c => (
+            <div
+              className={`py-2 px-4 rounded-md ${
+                (category ?? "") === c.id ? "bg-gold" : "bg-green"
+              }`}
+              key={c.id}
+              onClick={() => selectCategory(c.id)}
+            >
+              {c.name}
+            </div>
+          ))}
       </div>
       {notification && (
         <div className="flex gap-2 justify-center items-center p-3 bg-[#A5D6A7] rounded-md lg:w-1/5 absolute m-3 z-50 left-1/2 transform -translate-x-1/2 font-medium shadow-lg">

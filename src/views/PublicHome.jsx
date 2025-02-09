@@ -19,27 +19,28 @@ export default function PublicHome() {
 
   return (
     <div className="min-h-screen bg-tomato">
-      <div className="md:hidden flex justify-center gap-2 pt-2">
+      <div className="lg:hidden flex justify-center gap-2 pt-2">
         <div
           className={`py-2 px-4  rounded-md ${
             category === "" ? "bg-gold" : "bg-green"
           }`}
-          key={category.id}
+          key={category?.id || ""}
           onClick={() => selectCategory("")}
         >
           All
         </div>
-        {categories.map(c => (
-          <div
-            className={`py-2 px-4 bg-green rounded-md ${
-              category === c.id ? "bg-gold" : "bg-green"
-            } `}
-            key={c.id}
-            onClick={() => selectCategory(c.id)}
-          >
-            {c.name}
-          </div>
-        ))}
+        {categories?.length > 0 &&
+          categories.map(c => (
+            <div
+              className={`py-2 px-4 rounded-md ${
+                (category ?? "") === c.id ? "bg-gold" : "bg-green"
+              }`}
+              key={c.id}
+              onClick={() => selectCategory(c.id)}
+            >
+              {c.name}
+            </div>
+          ))}
       </div>
       {loading ? (
         <div className="flex justify-center items-center h-screen">

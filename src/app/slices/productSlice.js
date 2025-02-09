@@ -33,7 +33,7 @@ const productSlice = createSlice({
     products: [],
     categories: [],
     query: "",
-    category: null,
+    category: "",
     loading: false,
     errors: null,
   },
