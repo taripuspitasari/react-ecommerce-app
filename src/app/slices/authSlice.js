@@ -8,10 +8,7 @@ export const signupUser = createAsyncThunk(
       const response = await axiosClient.post("/signup", payload);
       return response.data;
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data.errors);
-      }
-      throw err;
+      return rejectWithValue(err.response.data.errors);
     }
   }
 );
@@ -26,7 +23,6 @@ export const loginUser = createAsyncThunk(
       if (err.response && err.response.status === 422) {
         return rejectWithValue(err.response.data);
       }
-      throw err;
     }
   }
 );
@@ -94,10 +90,7 @@ export const changePhoto = createAsyncThunk(
       );
       return response.data;
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data);
-      }
-      throw err;
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -121,6 +114,9 @@ const authSlice = createSlice({
     },
     clearNotification: state => {
       state.notification = null;
+    },
+    clearErrors: state => {
+      state.errors = null;
     },
   },
   extraReducers: builder => {
@@ -204,5 +200,5 @@ const authSlice = createSlice({
   },
 });
 
-export const {clearAuth, clearNotification} = authSlice.actions;
+export const {clearAuth, clearNotification, clearErrors} = authSlice.actions;
 export default authSlice.reducer;

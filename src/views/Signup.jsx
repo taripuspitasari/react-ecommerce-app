@@ -1,30 +1,37 @@
 import {Link} from "react-router-dom";
 import signupImg from "../assets/panda.png";
-import {useRef} from "react";
+import {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {signupUser} from "../app/slices/authSlice";
+import {signupUser, clearErrors} from "../app/slices/authSlice";
 
 export default function Signup() {
-  const nameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmationRef = useRef();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [matchPassword, setMatchPassword] = useState("");
+
+  useEffect(() => {
+    dispatch(clearErrors());
+  }, []);
 
   const {loading, errors} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  const onSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
+    if (password !== confirmPassword) {
+      setMatchPassword("Password confirmation does not match.");
       return;
     }
 
+    setMatchPassword("");
+
     const payload = {
-      name: nameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-      password_confirmation: passwordConfirmationRef.current.value,
+      name: name,
+      email: email,
+      password: password,
     };
 
     dispatch(signupUser(payload));
@@ -50,18 +57,20 @@ export default function Signup() {
               <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
             </div>
           )}
-          <form onSubmit={onSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="w-full">
               <div className="h-10 p-2 rounded-md border border-[#F5F5DC] flex gap-2 items-center">
                 <label htmlFor="name" className="px-2">
                   Name
                 </label>
                 <input
-                  ref={nameRef}
                   type="text"
                   name="name"
                   id="name"
                   className="w-full h-full focus:outline-none"
+                  required
+                  value={name}
+                  onChange={e => setName(e.target.value)}
                 />
               </div>
               {errors?.name?.[0] && (
@@ -74,11 +83,13 @@ export default function Signup() {
                   Email
                 </label>
                 <input
-                  ref={emailRef}
                   type="email"
                   name="email"
                   id="email"
                   className="w-full h-full focus:outline-none"
+                  required
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                 />
               </div>
               {errors?.email?.[0] && (
@@ -91,11 +102,13 @@ export default function Signup() {
                   Password
                 </label>
                 <input
-                  ref={passwordRef}
                   type="password"
                   name="password"
                   id="password"
                   className="w-full h-full focus:outline-none"
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                 />
               </div>
               {errors?.password?.[0] && (
@@ -111,18 +124,16 @@ export default function Signup() {
                   Password Confirmation
                 </label>
                 <input
-                  ref={passwordConfirmationRef}
                   type="password"
                   name="passwordConfirmation"
                   id="passwordConfirmation"
                   className="w-full h-full focus:outline-none"
+                  required
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
                 />
               </div>
-              {errors?.passwordConfirmation?.[0] && (
-                <p className="px-4 text-red-500">
-                  {errors.passwordConfirmation[0]}
-                </p>
-              )}
+              <p className="px-4 text-red-500">{matchPassword}</p>
             </div>
             <button
               type="submit"

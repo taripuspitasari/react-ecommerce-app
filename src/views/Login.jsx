@@ -1,21 +1,25 @@
 import {Link} from "react-router-dom";
 import loginImg from "../assets/gate.png";
-import {useRef} from "react";
+import {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {loginUser} from "../app/slices/authSlice";
+import {loginUser, clearErrors} from "../app/slices/authSlice";
 
 export default function Login() {
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const dispatch = useDispatch();
   const {loading, errors} = useSelector(state => state.auth);
+  useEffect(() => {
+    dispatch(clearErrors());
+  }, []);
 
-  const onSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     const payload = {
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
+      email: email,
+      password: password,
     };
 
     dispatch(loginUser(payload));
@@ -41,7 +45,7 @@ export default function Login() {
               <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
             </div>
           )}
-          <form onSubmit={onSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="w-full">
               <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-beige">
                 <label
@@ -51,11 +55,13 @@ export default function Login() {
                   Email
                 </label>
                 <input
-                  ref={emailRef}
                   type="email"
                   name="email"
                   id="email"
                   className="w-full h-full focus:outline-none"
+                  required
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                 />
               </div>
               {errors?.email?.[0] && (
@@ -71,11 +77,13 @@ export default function Login() {
                   Password
                 </label>
                 <input
-                  ref={passwordRef}
                   type="password"
                   name="password"
                   id="password"
-                  className="w-full h-full focus:outline-none "
+                  className="w-full h-full focus:outline-none"
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                 />
               </div>
               {errors?.password?.[0] && (

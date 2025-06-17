@@ -21,16 +21,4 @@ Follow the steps below to get started with the application:
 - npm install
 - npm run dev
 
-![Public Page](docs/mockup.png)  
-![Public Page](docs/image.png)  
-![Signup Page](docs/image-1.png)  
-![Login Page](docs/image-2.png)  
-![Dashboard Page](docs/image-3.png)  
-![Cart Page](docs/image-4.png)  
-![Checkout Preview](docs/image-5.png)  
-![History Transaction](docs/image-6.png)  
-![Wishlist Page](docs/image-7.png)  
-![Account Page](docs/image-8.png)  
-![Transaction Detail Page](docs/image-9.png)  
-![Product Detail Page](docs/image-10.png)  
-![Dropdown menu](docs/image-11.png)
+![Public Page](docs/mockup.png)
