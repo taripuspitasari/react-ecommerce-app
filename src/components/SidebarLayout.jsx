@@ -13,7 +13,19 @@ export default function SidebarLayout() {
           <ul className="text-black p-3 space-y-5 lg:space-y-2">
             <li>
               <NavLink
-                to="transaction"
+                to="/dashboard/account/my-account"
+                className={({isActive}) =>
+                  `cursor-pointer font-medium p-1 block rounded-sm ${
+                    isActive ? "bg-[#dedec4]" : "hover:bg-[#dedec4]"
+                  }`
+                }
+              >
+                Account
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/dashboard/account/transaction"
                 className={({isActive}) =>
                   `cursor-pointer font-medium p-1 block rounded-sm ${
                     isActive ? "bg-[#dedec4]" : "hover:bg-[#dedec4]"
@@ -25,7 +37,7 @@ export default function SidebarLayout() {
             </li>
             <li>
               <NavLink
-                to="wishlist"
+                to="/dashboard/account/wishlist"
                 className={({isActive}) =>
                   `cursor-pointer font-medium p-1 block rounded-sm ${
                     isActive ? "bg-[#dedec4]" : "hover:bg-[#dedec4]"
@@ -35,18 +47,7 @@ export default function SidebarLayout() {
                 Wishlist
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="account"
-                className={({isActive}) =>
-                  `cursor-pointer font-medium p-1 block rounded-sm ${
-                    isActive ? "bg-[#dedec4]" : "hover:bg-[#dedec4]"
-                  }`
-                }
-              >
-                Account
-              </NavLink>
-            </li>
+
             <li
               className="cursor-pointer font-medium rounded-sm hover:bg-[#dedec4] p-1"
               onClick={() => dispatch(logout())}

@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {Navigate, Outlet, Link} from "react-router-dom";
+import {Outlet, Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import logoImg from "../assets/logo.png";
 import defaultImg from "../assets/default.jpg";
@@ -11,24 +11,25 @@ import {
 import {fetchUserCart} from "../app/slices/cartSlice";
 import {logout} from "../app/slices/authSlice";
 
-export default function DefaultLayout() {
+export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const {query, categories} = useSelector(state => state.product);
   const {cartTotalQuantity} = useSelector(state => state.cart);
-  const {token, user} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.auth);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const navigate = useNavigate();
+
+  if (!user) {
+    navigate({
+      pathname: "/",
+    });
+  }
 
   useEffect(() => {
-    if (!token) return;
-
     dispatch(fetchCategories());
     dispatch(fetchUserCart());
-  }, [token, dispatch]);
-
-  if (!token) {
-    return <Navigate to="/public" />;
-  }
+  }, []);
 
   const selectCategory = id => {
     dispatch(setSelectedCategory(id));
@@ -94,7 +95,7 @@ export default function DefaultLayout() {
               </div>
             </li>
             <li className="pr-2 hover:text-white">
-              <Link to="/carts" className="relative">
+              <Link to="/dashboard/cart" className="relative">
                 <i className="fa-solid fa-cart-shopping"></i>
                 <div className="absolute -top-3 -right-4 text-xs bg-green py-0.5 px-1.5 rounded-full text-black">
                   {cartTotalQuantity}
@@ -125,7 +126,7 @@ export default function DefaultLayout() {
           <ul className="text-white p-3">
             <li>
               <Link
-                to="/my-account/account"
+                to="/dashboard/account"
                 className="cursor-pointer border-b border-white flex gap-4 pb-2 items-center"
               >
                 <div className=" border border-beige h-14 w-14 rounded-full overflow-hidden">
@@ -142,13 +143,13 @@ export default function DefaultLayout() {
               </Link>
             </li>
             <li className="cursor-pointer hover:text-black hover:bg-[#dedec4] p-1">
-              <Link to="/my-account/transaction">Transaction</Link>
+              <Link to="account/transaction">Transaction</Link>
             </li>
             <li className="cursor-pointer hover:text-black hover:bg-[#dedec4] p-1">
-              <Link to="/my-account/wishlist">Wishlist</Link>
+              <Link to="account/wishlist">Wishlist</Link>
             </li>
             <li className="cursor-pointer hover:text-black hover:bg-[#dedec4] p-1">
-              <Link to="/my-account/account">Account</Link>
+              <Link to="account/my-account">Account</Link>
             </li>
             <li
               className="cursor-pointer hover:text-black hover:bg-[#dedec4] p-1"
@@ -165,7 +166,7 @@ export default function DefaultLayout() {
         <ul className="flex justify-between p-2">
           <li>
             <Link
-              to="/"
+              to="/dashboard"
               className="flex flex-col items-center justify-center hover:text-white cursor-pointer"
             >
               <i className="fa-solid fa-house"></i>
@@ -174,7 +175,7 @@ export default function DefaultLayout() {
           </li>
           <li>
             <Link
-              to="/my-account/wishlist"
+              to="account/wishlist"
               className="flex flex-col items-center justify-center hover:text-white cursor-pointer"
             >
               <i className="fa-solid fa-heart"></i>
@@ -183,7 +184,7 @@ export default function DefaultLayout() {
           </li>
           <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
             <Link
-              to="/my-account/account"
+              to="account/my-account"
               className="flex flex-col items-center justify-center"
             >
               <i className="fa-solid fa-user"></i>

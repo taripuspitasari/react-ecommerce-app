@@ -13,20 +13,6 @@ export const signupUser = createAsyncThunk(
   }
 );
 
-export const loginUser = createAsyncThunk(
-  "auth/loginUser",
-  async (payload, {rejectWithValue}) => {
-    try {
-      const response = await axiosClient.post("/login", payload);
-      return response.data;
-    } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data);
-      }
-    }
-  }
-);
-
 export const logout = createAsyncThunk(
   "auth/logout",
   async (_, {dispatch, rejectWithValue}) => {
@@ -99,7 +85,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: {},
-    token: null,
     loading: false,
     errors: null,
     notification: null,
@@ -118,26 +103,11 @@ const authSlice = createSlice({
     clearErrors: state => {
       state.errors = null;
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
   extraReducers: builder => {
-    builder
-      .addCase(loginUser.pending, state => {
-        state.loading = true;
-        state.errors = null;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-
-        localStorage.setItem("ACCESS_TOKEN", action.payload.token);
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.errors = action.payload?.errors || {
-          email: [action.payload?.message],
-        };
-      });
     builder
       .addCase(signupUser.pending, state => {
         state.loading = true;
@@ -200,5 +170,6 @@ const authSlice = createSlice({
   },
 });
 
-export const {clearAuth, clearNotification, clearErrors} = authSlice.actions;
+export const {clearAuth, clearNotification, clearErrors, setUser} =
+  authSlice.actions;
 export default authSlice.reducer;

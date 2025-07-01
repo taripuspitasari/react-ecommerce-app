@@ -1,13 +1,8 @@
-import {createBrowserRouter, Navigate} from "react-router-dom";
-import DefaultLayout from "./components/DefaultLayout";
-import GuestLayout from "./components/GuestLayout";
+import {createBrowserRouter} from "react-router-dom";
 import SidebarLayout from "./components/SidebarLayout";
-import CartLayout from "./components/CartLayout";
-import PublicHome from "./views/PublicHome";
 import Login from "./views/Login";
 import Signup from "./views/Signup";
 import Carts from "./views/Carts";
-import Dashboard from "./views/Dashboard";
 import NotFound from "./views/NotFound";
 import Account from "./views/Account";
 import ProductDetail from "./views/ProductDetail";
@@ -15,81 +10,51 @@ import Checkout from "./views/Checkout";
 import Transaction from "./views/Transaction";
 import Wishlist from "./views/Wishlist";
 import TransactionDetail from "./views/TransactionDetail";
+import Layout from "./components/Layout";
+import Home from "./views/Home";
+import DashboardLayout from "./components/DashboardLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <DefaultLayout />,
+    Component: Layout,
     children: [
-      {
-        path: "/",
-        element: <Navigate to="/dashboard" />,
-      },
-      {
-        path: "/dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "/carts",
-        element: <Carts />,
-      },
-      {
-        path: "/checkout",
-        element: <CartLayout />,
-        children: [
-          {
-            path: "",
-            element: <Checkout />,
-          },
-        ],
-      },
+      {index: true, Component: Home},
+      {path: "login", Component: Login},
+      {path: "signup", Component: Signup},
       {
         path: "products/:id",
-        element: <ProductDetail />,
-      },
-      {
-        path: "/my-account",
-        element: <SidebarLayout />,
-        children: [
-          {
-            path: "wishlist",
-            element: <Wishlist />,
-          },
-          {
-            path: "account",
-            element: <Account />,
-          },
-          {
-            path: "transaction",
-            element: <Transaction />,
-          },
-          {
-            path: "transaction/:id",
-            element: <TransactionDetail />,
-          },
-        ],
+        Component: ProductDetail,
       },
     ],
   },
   {
-    path: "/",
-    element: <GuestLayout />,
+    path: "/dashboard",
+    Component: DashboardLayout,
     children: [
+      {index: true, Component: Home},
       {
-        path: "/public",
-        element: <PublicHome />,
+        path: "cart",
+        Component: Carts,
       },
       {
-        path: "/login",
-        element: <Login />,
+        path: "checkout",
+        Component: Checkout,
       },
       {
-        path: "/signup",
-        element: <Signup />,
+        path: "account",
+        Component: SidebarLayout,
+        children: [
+          {index: true, Component: Account},
+          {path: "my-account", Component: Account},
+          {path: "transaction", Component: Transaction},
+          {path: "transaction/:id", Component: TransactionDetail},
+          {path: "wishlist", Component: Wishlist},
+        ],
       },
       {
-        path: "/products/:id",
-        element: <ProductDetail />,
+        path: "products/:id",
+        Component: ProductDetail,
       },
     ],
   },

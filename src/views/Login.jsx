@@ -1,29 +1,39 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import loginImg from "../assets/gate.png";
-import {useState, useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {loginUser, clearErrors} from "../app/slices/authSlice";
+import {useState} from "react";
+import {useDispatch} from "react-redux";
+import {setUser} from "../app/slices/authSlice";
+import axiosClient from "../axios-client";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(null);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {loading, errors} = useSelector(state => state.auth);
-  useEffect(() => {
-    dispatch(clearErrors());
-  }, []);
 
-  const handleSubmit = e => {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
+    setErrors(null);
 
-    const payload = {
-      email: email,
-      password: password,
-    };
+    try {
+      const response = await axiosClient.post("/login", {email, password});
+      localStorage.setItem("ACCESS_TOKEN", response.data.token);
+      dispatch(setUser(response.data.user));
 
-    dispatch(loginUser(payload));
-  };
+      navigate({
+        pathname: "/dashboard",
+      });
+    } catch (error) {
+      setErrors(
+        error.response.data.message || "Login failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="bg-tomato h-[calc(100vh-7rem)] lg:h-[calc(100vh-4rem)] flex items-center justify-center">
@@ -45,6 +55,7 @@ export default function Login() {
               <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
             </div>
           )}
+          {errors && <p className="px-4 py-2 text-red-500">{errors}</p>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="w-full">
               <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-beige">
@@ -64,9 +75,6 @@ export default function Login() {
                   onChange={e => setEmail(e.target.value)}
                 />
               </div>
-              {errors?.email?.[0] && (
-                <p className="px-4 text-red-500">{errors.email[0]}</p>
-              )}
             </div>
             <div className="w-full">
               <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-beige">
@@ -86,9 +94,6 @@ export default function Login() {
                   onChange={e => setPassword(e.target.value)}
                 />
               </div>
-              {errors?.password?.[0] && (
-                <p className="px-4 text-red-500">{errors.password[0]}</p>
-              )}
             </div>
             <button
               type="submit"
@@ -100,7 +105,7 @@ export default function Login() {
           <p className="text-center text-slate-400 text-xs ">
             Don't have an account?{" "}
             <Link to="/signup" className="hover:underline hover:text-black">
-              Signup
+              Sign up
             </Link>
           </p>
         </div>

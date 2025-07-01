@@ -50,7 +50,7 @@ const Product = ({product}) => {
       key={product.id}
       className="bg-white md:w-56 md:h-68 m-2 p-4 rounded-md shadow-md"
     >
-      <Link to={`/products/${product.id}`}>
+      <Link to={`products/${product.id}`}>
         <img className="mb-2 rounded-md w-full" src={product.image} />
       </Link>
       <h5 className="text-xs text-slate-400">{product.category}</h5>

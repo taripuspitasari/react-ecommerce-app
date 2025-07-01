@@ -3,7 +3,7 @@ import Products from "../components/Products";
 import {useSelector, useDispatch} from "react-redux";
 import {fetchProducts, setSelectedCategory} from "../app/slices/productSlice";
 
-export default function PublicHome() {
+export default function Home() {
   const dispatch = useDispatch();
   const {loading, products, query, category, categories} = useSelector(
     state => state.product

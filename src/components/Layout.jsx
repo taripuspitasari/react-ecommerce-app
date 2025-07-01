@@ -8,31 +8,26 @@ import {
 } from "../app/slices/productSlice";
 import logoImg from "../assets/logo.png";
 
-export default function GuestLayout() {
-  const dispatch = useDispatch();
+export default function Layout() {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const {query, categories} = useSelector(state => state.product);
-  const {token} = useSelector(state => state.auth);
-
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
-
-  if (token) {
-    return <Navigate to="/" />;
-  }
+  const dispatch = useDispatch();
 
   const selectCategory = id => {
     dispatch(setSelectedCategory(id));
   };
 
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
+
   return (
-    <div className="h-screen w-full overflow-y-auto">
+    <div className="min-h-screen">
       <nav className="p-2 flex flex-col lg:flex-row justify-between bg-tomato h-14 w-full sticky z-20 top-0 lg:h-16 text-beige">
         <div className="hidden lg:flex justify-between">
-          <Link to="/public" className="flex gap-2 items-center">
-            <img src={logoImg} width="40" />
-            <p className="lg:text-xl font-medium">Mitsuri Food</p>
+          <Link to="/" className="flex gap-2 items-center">
+            <img src={logoImg} width="35" />
+            <p className="lg:text-lg font-medium">Mitsuri Food</p>
           </Link>
         </div>
         <div className="flex">
@@ -41,7 +36,7 @@ export default function GuestLayout() {
               onClick={() => setCategoryOpen(!categoryOpen)}
               className="hidden lg:flex gap-3 items-center cursor-pointer"
             >
-              <button className="cursor-pointer font-medium flex items-center gap-4">
+              <button className="cursor-pointer flex items-center gap-4">
                 <i className="fa-solid fa-chevron-down"></i>
                 <span>Category</span>
               </button>
@@ -89,20 +84,19 @@ export default function GuestLayout() {
             </li>
           </ul>
         </div>
-
         <div className="hidden lg:flex items-center">
           <ul className="flex gap-2">
             <li>
               <Link to="/login">
                 <button className="border font-medium border-beige py-2 px-4 rounded-lg hover:bg-white hover:text-tomato">
-                  Login
+                  Log In
                 </button>
               </Link>
             </li>
             <li>
               <Link to="/signup">
                 <button className="py-2 px-4 font-medium border border-beige bg-beige text-tomato rounded-lg hover:text-tomato hover:bg-white">
-                  Signup
+                  Sign Up
                 </button>
               </Link>
             </li>
@@ -110,14 +104,10 @@ export default function GuestLayout() {
         </div>
       </nav>
       <Outlet />
-      {/* smaller device */}
       <div className="lg:hidden h-14 w-full sticky bottom-0 z-99 bg-tomato text-beige shadow-md border-t">
         <ul className="flex justify-between p-2">
           <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
-            <Link
-              to="/public"
-              className="flex flex-col items-center justify-center"
-            >
+            <Link to="/" className="flex flex-col items-center justify-center">
               <i className="fa-solid fa-house"></i>
               <p>Home</p>
             </Link>
@@ -128,7 +118,7 @@ export default function GuestLayout() {
               className="flex flex-col items-center justify-center"
             >
               <i className="fa-solid fa-heart"></i>
-              <p>Whislist</p>
+              <p>Wishlist</p>
             </Link>
           </li>
           <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">

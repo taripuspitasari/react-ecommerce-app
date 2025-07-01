@@ -59,7 +59,7 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-4">
+    <div className="h-[calc(100vh-7rem)] lg:h-[calc(100vh-4rem)] bg-beige pb-4">
       {loading ? (
         <div className="flex justify-center items-center h-screen">
           <i className="fa-solid fa-spinner text-4xl text-slate-400 animate-spin"></i>
