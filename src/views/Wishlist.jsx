@@ -17,11 +17,10 @@ export default function Wishlist() {
   );
 
   return (
-    <div className="w-full min-h-screen bg-[#F5F5DC] p-3">
-      <h2 className="text-xl font-medium pb-3 text-center">Wishlist</h2>
+    <div>
       {loading ? (
         <div className="flex justify-center items-center h-screen">
-          <i className="fa-solid fa-spinner text-4xl text-slate-400 animate-spin"></i>
+          <i className="fa-solid fa-spinner text-4xl text-primary animate-spin"></i>
         </div>
       ) : (
         <Products products={wishlistProducts} />

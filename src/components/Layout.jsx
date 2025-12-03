@@ -1,12 +1,12 @@
 import {useState, useEffect} from "react";
-import {Outlet, Navigate, Link} from "react-router-dom";
+import {Outlet, Navigate, NavLink, Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
   setQuery,
   setSelectedCategory,
   fetchCategories,
 } from "../app/slices/productSlice";
-import logoImg from "../assets/logo.png";
+import logoImg from "../assets/new-logo.png";
 
 export default function Layout() {
   const [categoryOpen, setCategoryOpen] = useState(false);
@@ -22,113 +22,137 @@ export default function Layout() {
   }, []);
 
   return (
-    <div className="min-h-screen">
-      <nav className="p-2 flex flex-col lg:flex-row justify-between bg-tomato h-14 w-full sticky z-20 top-0 lg:h-16 text-beige">
-        <div className="hidden lg:flex justify-between">
-          <Link to="/" className="flex gap-2 items-center">
-            <img src={logoImg} width="35" />
-            <p className="lg:text-lg font-medium">Mitsuri Food</p>
-          </Link>
-        </div>
-        <div className="flex">
-          <ul className="flex items-center justify-between w-full">
-            <li
-              onClick={() => setCategoryOpen(!categoryOpen)}
-              className="hidden lg:flex gap-3 items-center cursor-pointer"
-            >
-              <button className="cursor-pointer flex items-center gap-4">
-                <i className="fa-solid fa-chevron-down"></i>
-                <span>Category</span>
-              </button>
-            </li>
-            <div
-              className={`${
-                categoryOpen ? "absolute" : "hidden"
-              } rounded-md shadow-xl w-32 -bottom-10 -my-7 bg-tomato py-2 px-4`}
-            >
-              <ul onMouseLeave={() => setCategoryOpen(!categoryOpen)}>
-                <li
-                  className="px-1 cursor-pointer hover:text-black hover:bg-beige"
-                  onClick={() => selectCategory("")}
-                >
-                  All
-                </li>
-                {categories?.length > 0 &&
-                  categories.map(category => (
-                    <li
-                      key={category.id}
-                      className="px-1 cursor-pointer hover:text-black hover:bg-beige"
-                      onClick={() => selectCategory(category.id)}
-                    >
-                      {category.name}
-                    </li>
-                  ))}
-              </ul>
+    <div className="bg-secondary">
+      <nav className="p-4 flex justify-between bg-secondary h-14 w-full sticky z-20 top-0 lg:h-16 text-primary">
+        <ul className="flex items-center justify-between container">
+          <li>
+            <div>
+              <Link to="/" className="flex gap-2 items-center">
+                <img
+                  src={logoImg}
+                  width="40"
+                  className="lg:hidden rounded-full object-cover border border-primary"
+                />
+                <p className="hidden lg:block text-2xl font-bold font-spartan">
+                  Mitsuri Corner
+                </p>
+              </Link>
             </div>
-            <li className="w-full pr-5 lg:px-5">
-              <div className="lg:w-72 h-10 p-2 rounded-full flex gap-2 items-center border border-beige">
+          </li>
+          <li>
+            <div className="flex justify-between gap-5 items-center">
+              <div
+                onClick={() => setCategoryOpen(!categoryOpen)}
+                className="hidden lg:flex gap-3 items-center cursor-pointer"
+              >
+                <button className="cursor-pointer flex items-center gap-4">
+                  <i className="fa-solid fa-chevron-down"></i>
+                  <span>Categories</span>
+                </button>
+              </div>
+              <div
+                className={`${
+                  categoryOpen ? "absolute" : "hidden"
+                }  shadow-xl w-32 -bottom-16 -my-7 bg-secondary py-2 px-4`}
+              >
+                <ul onMouseLeave={() => setCategoryOpen(!categoryOpen)}>
+                  <li
+                    className="px-1 cursor-pointer hover:font-bold "
+                    onClick={() => selectCategory("")}
+                  >
+                    All
+                  </li>
+                  {categories?.length > 0 &&
+                    categories.map(category => (
+                      <li
+                        key={category.id}
+                        className="px-1 cursor-pointer hover:font-bold"
+                        onClick={() => selectCategory(category.id)}
+                      >
+                        {category.name}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+              <div className="lg:w-72 h-10 p-2 rounded-full flex gap-2 items-center border border-primary">
                 <i className="fa-solid fa-magnifying-glass"></i>
                 <input
                   type="search"
                   value={query}
                   onChange={e => dispatch(setQuery(e.target.value))}
-                  className="w-full h-full bg-tomato focus:outline-none placeholder:text-beige placeholder:text-sm"
+                  className="w-full h-full bg-secondary focus:outline-none placeholder:text-primary placeholder:text-opacity-50 placeholder:text-sm"
                   placeholder="Find your favorite items here..."
                 />
               </div>
-            </li>
-            <li className="hover:text-white">
+              <div>
+                <Link to="/login">
+                  <i className="fa-solid fa-cart-shopping"></i>
+                </Link>
+              </div>
+            </div>
+          </li>
+          <li className="hidden lg:block">
+            <div className="flex justify-between items-center gap-2">
               <Link to="/login">
-                <i className="fa-solid fa-cart-shopping"></i>
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className="hidden lg:flex items-center">
-          <ul className="flex gap-2">
-            <li>
-              <Link to="/login">
-                <button className="border font-medium border-beige py-2 px-4 rounded-lg hover:bg-white hover:text-tomato">
+                <button className="border font-medium border-primary py-2 px-4 rounded-lg hover:bg-primary hover:text-secondary">
                   Log In
                 </button>
               </Link>
-            </li>
-            <li>
               <Link to="/signup">
-                <button className="py-2 px-4 font-medium border border-beige bg-beige text-tomato rounded-lg hover:text-tomato hover:bg-white">
+                <button className="py-2 px-4 font-medium  bg-accent text-secondary rounded-lg hover:bg-primary hover:text-secondary">
                   Sign Up
                 </button>
               </Link>
-            </li>
-          </ul>
-        </div>
+            </div>
+          </li>
+        </ul>
       </nav>
-      <Outlet />
-      <div className="lg:hidden h-14 w-full sticky bottom-0 z-99 bg-tomato text-beige shadow-md border-t">
+
+      <div className="min-h-screen px-4">
+        <Outlet />
+      </div>
+
+      <div className="lg:hidden h-14 w-full sticky bottom-0 z-99 bg-secondary text-slate-400 shadow-md border-t">
         <ul className="flex justify-between p-2">
           <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
-            <Link to="/" className="flex flex-col items-center justify-center">
+            <NavLink
+              to="/"
+              end
+              className={({isActive}) =>
+                `flex flex-col items-center justify-center  cursor-pointer ${
+                  isActive ? "text-primary" : "hover:text-primary"
+                }`
+              }
+            >
               <i className="fa-solid fa-house"></i>
               <p>Home</p>
-            </Link>
+            </NavLink>
           </li>
           <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
-            <Link
+            <NavLink
               to="/login"
-              className="flex flex-col items-center justify-center"
+              className={({isActive}) =>
+                `flex flex-col items-center justify-center  cursor-pointer ${
+                  isActive ? "text-primary" : "hover:text-primary"
+                }`
+              }
             >
               <i className="fa-solid fa-heart"></i>
               <p>Wishlist</p>
-            </Link>
+            </NavLink>
           </li>
           <li className="flex flex-col items-center justify-center hover:text-white cursor-pointer">
-            <Link
+            <NavLink
               to="/signup"
-              className="flex flex-col items-center justify-center"
+              className={({isActive}) =>
+                `flex flex-col items-center justify-center  cursor-pointer ${
+                  isActive ? "text-primary" : "hover:text-primary"
+                }`
+              }
             >
               <i className="fa-solid fa-user"></i>
               <p>Account</p>
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>

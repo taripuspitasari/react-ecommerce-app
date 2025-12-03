@@ -1,22 +1,12 @@
 import React from "react";
-import {Outlet, Link, NavLink} from "react-router-dom";
+import {Outlet, NavLink} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {logout} from "../app/slices/authSlice";
 
-export default function SidebarLayout() {
-  const dispatch = useDispatch();
-
+export default function AccountLayout() {
   return (
-    <div className="flex min-h-screen w-full bg-secondary">
-      <div className="hidden lg:block w-full lg:w-64">
-        <ul className="text-primary p-3 space-y-5 lg:space-y-2">
-          <li>
-            <Link to="/dashboard" className="flex gap-2 items-center">
-              <p className="hidden lg:block text-2xl font-bold font-spartan">
-                Mitsuri Corner
-              </p>
-            </Link>
-          </li>
+    <div>
+      <nav className="hidden lg:flex h-8 items-center">
+        <ul className="flex justify-evenly items-center container text-primary text-opacity-80">
           <li>
             <NavLink
               to="/dashboard/account/my-account"
@@ -53,15 +43,9 @@ export default function SidebarLayout() {
               Wishlist
             </NavLink>
           </li>
-          <li
-            className="cursor-pointer rounded-sm hover:font-bold p-1"
-            onClick={() => dispatch(logout())}
-          >
-            Logout
-          </li>
         </ul>
-      </div>
-      <div className="w-full">
+      </nav>
+      <div>
         <Outlet />
       </div>
     </div>

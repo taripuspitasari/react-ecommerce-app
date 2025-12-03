@@ -1,9 +1,10 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {fetchUserOrder} from "../app/slices/orderSlice";
 import {Link} from "react-router-dom";
+import OrderDetail from "./OrderDetail";
 
-export default function Transaction() {
+export default function Order() {
   const dispatch = useDispatch();
   const {orderHistory} = useSelector(state => state.order);
 
@@ -19,12 +20,21 @@ export default function Transaction() {
     }).format(price);
   };
 
+  const [openDetails, setOpenDetails] = useState(false);
+
+  const handleCloseDetails = () => {
+    setOpenDetails(false);
+  };
+
+  const handleOpenDetails = () => {
+    setOpenDetails(true);
+  };
+
   return (
-    <div className="w-full h-screen bg-[#F5F5DC] p-3">
-      <h2 className="text-xl font-medium pb-3 text-center">Transaction</h2>
+    <div>
       <div className="border w-full border-slate-200 rounded-md overflow-x-auto">
-        <table className="w-full text-xs">
-          <thead className="text-gray-700 uppercase border-b border-gray-300 bg-[#A5D6A7]">
+        <table className="w-full text-xs bg-white">
+          <thead className="text-gray-700 uppercase border-b border-gray-300 ">
             <tr>
               <th scope="col" className="px-6 py-3 text-left">
                 Date
@@ -64,9 +74,14 @@ export default function Transaction() {
                     {formatPrice(item.total_amount)}
                   </td>
 
+                  {/* <td className="px-6 py-3 text-center">
+                    <button className="text-primary cursor-pointer">
+                      <Link to={`${item.id}`}>See Details</Link>
+                    </button>
+                  </td> */}
                   <td className="px-6 py-3 text-center">
-                    <button className="text-red-500 hover:text-red-700">
-                      <Link to={`${item.id}`}>see details</Link>
+                    <button className="text-primary cursor-pointer">
+                      <Link to={`${item.id}`}>See Details</Link>
                     </button>
                   </td>
                 </tr>
@@ -79,7 +94,7 @@ export default function Transaction() {
                   colSpan={5}
                   className="text-center px-6 py-3 text-slate-400"
                 >
-                  Transaction is empty
+                  Order is empty
                 </td>
               </tr>
             </tbody>

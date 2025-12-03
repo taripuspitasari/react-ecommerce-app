@@ -48,7 +48,7 @@ const Product = ({product}) => {
   return (
     <div
       key={product.id}
-      className="bg-white md:w-56 md:h-68 m-2 p-4 rounded-md shadow-md"
+      className="bg-white md:w-56 md:h-68 my-2 p-4 rounded-md shadow-md"
     >
       <Link to={`products/${product.id}`}>
         <img className="mb-2 rounded-md w-full" src={product.image} />
@@ -60,10 +60,10 @@ const Product = ({product}) => {
         <ul className="flex justify-between items-center gap-2">
           <li
             onClick={() => handleAddToCart(product.id)}
-            className="text-sm flex justify-center items-center gap-3 border py-1 px-4 rounded-full border-lemon hover:bg-lemon cursor-pointer"
+            className="text-sm flex justify-between items-center gap-3 border py-1 px-2 rounded-md hover:bg-primary cursor-pointer"
           >
-            <i className="fa-solid fa-cart-shopping"></i>
-            <span className="text-xs hidden md:block">Add To Cart</span>
+            <p className="text-xs">Add To Cart</p>
+            <i className="fa-solid fa-plus"></i>
           </li>
           <li
             className="cursor-pointer hover:text-red-600"
@@ -92,7 +92,9 @@ export default function Products({products}) {
         </div>
       ) : (
         <div className="pt-20 h-screen flex justify-center items-start">
-          <p className="text-2xl font-bold text-gray-300">No products found</p>
+          <p className="font-bold text-primary text-opacity-50">
+            No products found
+          </p>
         </div>
       )}
     </div>

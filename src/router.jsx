@@ -7,12 +7,13 @@ import NotFound from "./views/NotFound";
 import Account from "./views/Account";
 import ProductDetail from "./views/ProductDetail";
 import Checkout from "./views/Checkout";
-import Transaction from "./views/Transaction";
+import Order from "./views/Order";
 import Wishlist from "./views/Wishlist";
-import TransactionDetail from "./views/TransactionDetail";
+import OrderDetail from "./views/OrderDetail";
 import Layout from "./components/Layout";
 import Home from "./views/Home";
 import DashboardLayout from "./components/DashboardLayout";
+import AccountLayout from "./components/AccountLayout";
 
 const router = createBrowserRouter([
   {
@@ -43,12 +44,12 @@ const router = createBrowserRouter([
       },
       {
         path: "account",
-        Component: SidebarLayout,
+        Component: AccountLayout,
         children: [
           {index: true, Component: Account},
           {path: "my-account", Component: Account},
-          {path: "transaction", Component: Transaction},
-          {path: "transaction/:id", Component: TransactionDetail},
+          {path: "order", Component: Order},
+          {path: "order/:id", Component: OrderDetail},
           {path: "wishlist", Component: Wishlist},
         ],
       },

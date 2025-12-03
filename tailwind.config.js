@@ -5,13 +5,12 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
+        spartan: ["League Spartan", "sans-serif"],
       },
       colors: {
-        lemon: "#E1C994",
-        tomato: "#BF0200",
-        grout: "#E4E3E4",
-        beige: "#F5F5DC",
-        gold: "#FFD700",
+        primary: "#f9975d",
+        secondary: "#fcf8e8",
+        accent: "#a31743",
         green: "#A5D6A7",
       },
     },

@@ -25,13 +25,13 @@ export default function Carts() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F5DC] p-2">
-      <h2 className="text-xl py-3 font-medium text-center">My Cart</h2>
+    <div>
+      <h2 className="text-xl py-3 font-medium text-primary">Shopping Cart</h2>
       <div className="flex flex-col lg:flex-row lg:items-start gap-2">
         <div className="lg:w-2/3">
           <div className="border w-full border-slate-200 rounded-md overflow-hidden">
-            <table className="w-full text-xs">
-              <thead className="text-gray-700 uppercase border-b border-gray-300 bg-[#A5D6A7]">
+            <table className="w-full text-xs bg-white">
+              <thead className="text-gray-700 uppercase border-b border-gray-300">
                 <tr>
                   <th scope="col" className="px-6 py-3 text-left">
                     Product
@@ -125,8 +125,8 @@ export default function Carts() {
           </div>
         </div>
         <div className="lg:w-1/3">
-          <div className="mx-auto border border-slate-200 rounded-md p-4">
-            <h3 className="text-center pb-2 font-bold">Order Summary</h3>
+          <div className="mx-auto border border-slate-200 rounded-md p-4 bg-white">
+            <h3 className="text-center pb-2 text-lg">Order Summary</h3>
             <table className="mx-auto w-full">
               <tbody>
                 <tr>
@@ -136,7 +136,7 @@ export default function Carts() {
                   </td>
                 </tr>
                 <tr>
-                  <td className="p-1">Shipping</td>
+                  <td className="p-1">Delivery Fee</td>
                   <td className="text-right p-1 text-slate-500">Free</td>
                 </tr>
                 <tr className="border-t border-slate-300">
@@ -153,10 +153,10 @@ export default function Carts() {
               }`}
             >
               <button
-                className="py-2 px-4 font-medium rounded-md w-full bg-[#A5D6A7] hover:bg-[#96c497]"
+                className="py-2 px-4 font-medium rounded-md w-full bg-secondary text-primary cursor-pointer"
                 onClick={() => navigate("/dashboard/checkout")}
               >
-                Checkout
+                Checkout Now
               </button>
             </div>
           </div>
@@ -165,10 +165,10 @@ export default function Carts() {
       <div className="flex justify-end gap-2">
         <div className={`justify-end mt-2`}>
           <button
-            className="py-2 px-4 font-medium rounded-md text-[#ec4553] hover:underline"
+            className="py-2 px-4 font-medium rounded-md text-primary cursor-pointer"
             onClick={() => navigate("/dashboard")}
           >
-            Continue Shopping
+            Update Cart
           </button>
         </div>
       </div>

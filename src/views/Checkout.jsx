@@ -60,23 +60,23 @@ export default function Checkout() {
   };
 
   return (
-    <div className="lg:min-h-screen bg-[#F5F5DC] px-2">
-      <h2 className="text-xl py-3 font-medium text-center">Checkout</h2>
+    <div>
+      <h2 className="text-xl py-3 font-medium text-primary">Checkout</h2>
       <div className="flex flex-col lg:flex-row lg:items-start gap-2">
-        <div className="lg:w-2/3 border border-slate-200 rounded-md p-4 space-y-3">
+        <div className="lg:w-2/3 border border-slate-200 rounded-md p-4 space-y-3 bg-white">
           {selectedAddress ? (
             <div className="space-y-3 border-b border-slate-300 pb-3">
               <div className="flex justify-between">
-                <h3 className="font-bold">Address</h3>
+                <h3 className="text-lg">Shipping Address</h3>
                 <button
-                  className="hover:underline font-bold"
+                  className="cursor-pointer"
                   onClick={() => handleOpenModal("showAddresses")}
                 >
-                  Other address
+                  Edit
                 </button>
               </div>
               <div key={selectedAddress.id}>
-                <h4 className="font-medium">
+                <h4>
                   {selectedAddress.name} | +62{selectedAddress.phone_number}
                 </h4>
                 <p>
@@ -92,7 +92,7 @@ export default function Checkout() {
                 <h4>No address available.</h4>
               </div>
               <button
-                className="py-2 px-4 font-medium rounded-md bg-[#A5D6A7] hover:bg-[#96c497]"
+                className="py-2 px-4 font-medium rounded-md bg-secondary text-primary cursor pointer"
                 onClick={() => handleOpenModal("addNewAddress")}
               >
                 Create new address
@@ -101,14 +101,14 @@ export default function Checkout() {
           )}
 
           <div className="space-y-3 mt-4">
-            <h3 className="font-bold">Select payment method</h3>
+            <h3 className="text-lg">Payment</h3>
             <div className="flex flex-col gap-5">
               <div className="grid lg:grid-rows-1 lg:grid-flow-col gap-3">
                 <div
                   onClick={() => handleSelectMethod("bank_transfer")}
-                  className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border hover:shadow-xl rounded-md ${
+                  className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border cursor-pointer rounded-md ${
                     selectedPaymentMethod === "bank_transfer"
-                      ? "border-[#A5D6A7] border-2 shadow-xl"
+                      ? "border-primary shadow-md text-primary"
                       : "border-slate-400"
                   }`}
                 >
@@ -117,9 +117,9 @@ export default function Checkout() {
                 </div>
                 <div
                   onClick={() => handleSelectMethod("qr")}
-                  className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border hover:shadow-xl rounded-md ${
+                  className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border cursor-pointer rounded-md ${
                     selectedPaymentMethod === "qr"
-                      ? "border-[#A5D6A7] border-2 shadow-xl"
+                      ? "border-primary shadow-md text-primary"
                       : "border-slate-400"
                   }`}
                 >
@@ -128,9 +128,9 @@ export default function Checkout() {
                 </div>
                 <div
                   onClick={() => handleSelectMethod("cod")}
-                  className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border hover:shadow-xl rounded-md ${
+                  className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border cursor-pointer rounded-md ${
                     selectedPaymentMethod === "cod"
-                      ? "border-[#A5D6A7] border-2 shadow-xl"
+                      ? "border-primary shadow-md text-primary"
                       : "border-slate-400"
                   }`}
                 >
@@ -142,8 +142,8 @@ export default function Checkout() {
           </div>
         </div>
         <div className="lg:w-1/3">
-          <div className="mx-auto border border-slate-200 rounded-md p-4">
-            <h3 className="text-center pb-2 font-bold">Order Summary</h3>
+          <div className="mx-auto border border-slate-200 rounded-md p-4 bg-white">
+            <h3 className="text-center pb-2 text-lg">Order Summary</h3>
             <table className="mx-auto w-full">
               <tbody>
                 <tr>
@@ -176,17 +176,17 @@ export default function Checkout() {
             </table>
             <div className="flex justify-center">
               <button
-                className="py-2 px-4 font-medium rounded-md w-full bg-[#A5D6A7] hover:bg-[#96c497]"
+                className="py-2 px-4 font-medium rounded-md w-full bg-secondary text-primary cursor-pointer"
                 onClick={handleProceed}
               >
-                Proceed
+                Place Order
               </button>
             </div>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end">
             <div className={`justify-end mt-2`}>
               <button
-                className="py-2 px-4 font-medium rounded-md text-[#ec4553] hover:underline"
+                className="px-4 font-medium rounded-md text-primary cursor pointer"
                 onClick={() => navigate("/dashboard")}
               >
                 Continue Shopping

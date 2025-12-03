@@ -18,11 +18,13 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-tomato">
+    <div>
       <div className="lg:hidden flex justify-center gap-2 pt-2">
         <div
-          className={`py-2 px-4  rounded-md ${
-            category === "" ? "bg-gold" : "bg-green"
+          className={`py-2 px-4  rounded-md border border-primary ${
+            category === ""
+              ? "bg-primary text-secondary"
+              : "bg-secondary text-primary"
           }`}
           key={category?.id || ""}
           onClick={() => selectCategory("")}
@@ -32,8 +34,10 @@ export default function Home() {
         {categories?.length > 0 &&
           categories.map(c => (
             <div
-              className={`py-2 px-4 rounded-md ${
-                (category ?? "") === c.id ? "bg-gold" : "bg-green"
+              className={`py-2 px-4 rounded-md border border-primary ${
+                (category ?? "") === c.id
+                  ? "bg-primary text-secondary"
+                  : "bg-secondary text-primary"
               }`}
               key={c.id}
               onClick={() => selectCategory(c.id)}
@@ -44,7 +48,7 @@ export default function Home() {
       </div>
       {loading ? (
         <div className="flex justify-center items-center h-screen">
-          <i className="fa-solid fa-spinner text-4xl text-[#F5F5DC] animate-spin"></i>
+          <i className="fa-solid fa-spinner text-4xl text-primary animate-spin"></i>
         </div>
       ) : (
         <Products products={products} />

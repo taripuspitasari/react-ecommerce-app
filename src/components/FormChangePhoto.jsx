@@ -52,7 +52,7 @@ export default function FormChangePhoto({handleCloseModal}) {
 
           <form className="space-y-2" onSubmit={handleSubmit}>
             <div className="w-full flex items-center justify-evenly">
-              <div className="border border-beige h-20 w-20 rounded-full overflow-hidden">
+              <div className="border border-secondary h-20 w-20 rounded-full overflow-hidden">
                 {previewImage ? (
                   <img
                     src={previewImage}

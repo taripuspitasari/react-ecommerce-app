@@ -59,10 +59,10 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="h-[calc(100vh-7rem)] lg:h-[calc(100vh-4rem)] bg-beige pb-4">
+    <div className="min-h-[calc(100vh-7rem)] lg:h-[calc(100vh-4rem)] bg-secondary pb-4">
       {loading ? (
         <div className="flex justify-center items-center h-screen">
-          <i className="fa-solid fa-spinner text-4xl text-slate-400 animate-spin"></i>
+          <i className="fa-solid fa-spinner text-4xl text-primary animate-spin"></i>
         </div>
       ) : (
         <div>
@@ -80,9 +80,9 @@ export default function ProductDetail() {
                 <p className="font-bold">{formatPrice(product.price)}</p>
               </div>
               <ul className="flex items-center gap-2 md:w-56">
-                <li className="text-sm flex justify-center items-center gap-3 border py-1 px-4 rounded-full border-[#FFD700] hover:bg-[#FFD700] cursor-pointer">
-                  <i className="fa-solid fa-cart-shopping"></i>
-                  <span className="text-xs hidden md:block">Add To Cart</span>
+                <li className="text-sm flex justify-center items-center gap-3 border py-1 px-2 rounded-md hover:bg-primary cursor-pointer">
+                  <span className="text-xs">Add To Cart</span>
+                  <i className="fa-solid fa-plus"></i>
                 </li>
                 <li className="cursor-pointer" onClick={handleToggleWishlist}>
                   {isItWishlist ? (
@@ -95,7 +95,7 @@ export default function ProductDetail() {
               <p>{product.description}</p>
             </div>
           </div>
-          <div className="flex justify-between items-center p-4 w-11/12 mx-auto bg-[#F5F5DC] shadow-md rounded-md">
+          {/* <div className="flex justify-between items-center p-4 w-11/12 mx-auto bg-[#F5F5DC] shadow-md rounded-md">
             <div>
               <h5 className="text-xs text-slate-400">{product.category}</h5>
               <h3 className="font-medium text-xl">{product.name}</h3>
@@ -108,6 +108,9 @@ export default function ProductDetail() {
               <i className="fa-solid fa-plus"></i>
               <span className="text-xs hidden md:block">Add To Cart</span>
             </div>
+          </div> */}
+          <div className="p-4 w-11/12 mx-auto">
+            <h2 className="text-center font-bold">Related Products</h2>
           </div>
         </div>
       )}
