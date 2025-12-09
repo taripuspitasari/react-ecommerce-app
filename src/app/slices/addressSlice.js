@@ -37,6 +37,8 @@ export const deleteAddress = createAsyncThunk(
     try {
       const response = await axiosClient.delete(`/address/${addressId}`);
       return response.data;
+      // await axiosClient.delete(`/address/${addressId}`);
+      // return addressId
     } catch (err) {
       if (err.response && err.response.status === 422) {
         return rejectWithValue(err.response.data.errors);
@@ -95,7 +97,7 @@ const addressSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchUserAddress.fulfilled, (state, action) => {
-        state.addresses = action.payload;
+        state.addresses = action.payload.data;
         state.loading = false;
         state.errors = null;
       })
@@ -108,7 +110,7 @@ const addressSlice = createSlice({
         state.loading = true;
       })
       .addCase(addNewAddress.fulfilled, (state, action) => {
-        state.addresses = action.payload;
+        state.addresses.push(action.payload.data);
         state.loading = false;
         state.errors = null;
       })
@@ -117,12 +119,13 @@ const addressSlice = createSlice({
         state.errors = action.payload;
       });
     builder.addCase(deleteAddress.fulfilled, (state, action) => {
-      state.addresses = action.payload;
+      state.addresses = action.payload.data;
+      // state.addresses = state.addresses.filter(item => item.id !== action.payload.addressId);
       state.loading = false;
       state.errors = null;
     });
     builder.addCase(getAddress.fulfilled, (state, action) => {
-      state.address = action.payload;
+      state.address = action.payload.data;
       state.loading = false;
       state.errors = null;
     });
@@ -131,7 +134,9 @@ const addressSlice = createSlice({
         state.loading = true;
       })
       .addCase(updateAddress.fulfilled, (state, action) => {
-        state.addresses = action.payload;
+        state.addresses = state.addresses.map(item =>
+          item.id !== action.payload.data.id ? item : action.payload.data
+        );
         state.loading = false;
         state.errors = null;
       })

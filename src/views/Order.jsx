@@ -67,7 +67,7 @@ export default function Order() {
                   <td className="px-6 py-3 text-center text-gray-900 whitespace-nowrap dark:text-white">
                     {item.id}
                   </td>
-                  <td className="px-6 py-3 text-center text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className="px-6 py-3 text-center text-gray-900 whitespace-nowrap dark:text-white capitalize">
                     {item.order_status}
                   </td>
                   <td className="px-6 py-3 text-right">

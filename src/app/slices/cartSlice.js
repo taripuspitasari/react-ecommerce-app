@@ -1,11 +1,13 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axiosClient from "../../axios-client";
+import {alertSuccess} from "../../components/alert";
 
 export const fetchUserCart = createAsyncThunk(
   "cart/fetchUserCart",
   async (_, {rejectWithValue}) => {
     try {
       const response = await axiosClient.get("/cart");
+
       return response.data;
     } catch (err) {
       if (err.response && err.response.status === 422) {
@@ -25,6 +27,7 @@ export const addToCart = createAsyncThunk(
         quantity: quantity,
       };
       const response = await axiosClient.post("/cart", payload);
+      alertSuccess(`${response.data.data.product_name} added to the cart`);
       return response.data;
     } catch (err) {
       if (err.response && err.response.status === 422) {
@@ -116,7 +119,7 @@ const cartSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = action.payload.data;
+        state.cartItems.push(action.payload.data);
         state.cartTotalQuantity = action.payload.total_quantity;
         state.cartTotalAmount = action.payload.total_amount;
       })
@@ -125,7 +128,9 @@ const cartSlice = createSlice({
         state.errors = action.payload;
       });
     builder.addCase(updateCartQuantity.fulfilled, (state, action) => {
-      state.cartItems = action.payload.data;
+      state.cartItems = state.cartItems.map(item =>
+        item.id !== action.payload.data.id ? item : action.payload.data
+      );
       state.cartTotalQuantity = action.payload.total_quantity;
       state.cartTotalAmount = action.payload.total_amount;
     });

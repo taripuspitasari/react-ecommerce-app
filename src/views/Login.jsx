@@ -1,39 +1,29 @@
 import {Link, useNavigate} from "react-router-dom";
 import loginImg from "../assets/gate.png";
 import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {setUser} from "../app/slices/authSlice";
-import axiosClient from "../axios-client";
+import {useDispatch, useSelector} from "react-redux";
+import {loginUser} from "../app/slices/authSlice";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  async function handleSubmit(e) {
+  const {loading, errors} = useSelector(state => state.auth);
+
+  const handleSubmit = e => {
     e.preventDefault();
-    setLoading(true);
-    setErrors(null);
+    const payload = {
+      email: email,
+      password: password,
+    };
 
-    try {
-      const response = await axiosClient.post("/login", {email, password});
-      localStorage.setItem("ACCESS_TOKEN", response.data.token);
-      dispatch(setUser(response.data.user));
-
-      navigate({
-        pathname: "/dashboard",
-      });
-    } catch (error) {
-      setErrors(
-        error.response.data.message || "Login failed. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
+    dispatch(loginUser(payload))
+      .unwrap()
+      .then(() => navigate("/dashboard"))
+      .catch(err => console.log(err));
+  };
 
   return (
     <div className="bg-secondary h-[calc(100vh-7rem)] lg:h-[calc(100vh-4rem)] flex items-center justify-center">
@@ -52,10 +42,9 @@ export default function Login() {
           <h1 className="text-xl font-medium text-center">Login to Mitsuri</h1>
           {loading && (
             <div className="flex justify-center items-center">
-              <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
+              <i className="fa-solid fa-spinner text-xl text-primary animate-spin"></i>
             </div>
           )}
-          {errors && <p className="px-4 py-2 text-red-500">{errors}</p>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="w-full">
               <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-secondary">
@@ -95,6 +84,11 @@ export default function Login() {
                 />
               </div>
             </div>
+            {errors && (
+              <p className="py-2 px-3 text-red-500 bg-red-50 rounded-md border border-red-300">
+                {errors}
+              </p>
+            )}
             <button
               type="submit"
               className="py-2 px-4 w-full font-medium  bg-secondary text-primary rounded-md"
@@ -102,6 +96,7 @@ export default function Login() {
               Login
             </button>
           </form>
+
           <p className="text-center text-slate-400 text-xs ">
             Don't have an account?{" "}
             <Link to="/signup" className="hover:underline hover:text-black">

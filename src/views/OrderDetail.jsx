@@ -40,9 +40,9 @@ export default function OrderDetail() {
 
   return (
     <div>
-      <div className="flex items-center gap-4 md:hidden">
-        <Link className="lg:hidden" to="/my-account/order">
-          <i className="fa-solid fa-arrow-left text-lg"></i>
+      <div className="p-2 flex items-center gap-4 md:hidden">
+        <Link className="lg:hidden" to="/dashboard/account/order">
+          <i className="fa-solid fa-arrow-left text-lg text-primary"></i>
         </Link>
         <h4 className="font-medium text-primary">Order Details</h4>
       </div>
@@ -51,25 +51,27 @@ export default function OrderDetail() {
           <i className="fa-solid fa-spinner text-primary animate-spin"></i>
         </div>
       ) : (
-        <div className="space-y-3 border rounded-md shadow-md bg-white p-2">
-          <div className="grid grid-cols-5 py-3 border-b">
-            <div className="px-4 border-r">
+        <div className="space-y-2 border rounded-md shadow-md bg-white p-2">
+          <div className="grid grid-cols-2 md:grid-cols-5 py-3 border-b space-y-1">
+            <div className="px-4 md:border-r">
               <h4 className="text-slate-400 text-xs">Order Date</h4>
               <p>{created_at}</p>
             </div>
-            <div className="px-4 border-r">
+            <div className="px-4 md:border-r">
               <h4 className="text-slate-400 text-xs">Order ID</h4>
               <p>#{id}</p>
             </div>
-            <div className="px-4 border-r">
+            <div className="px-4 md:border-r">
               <h4 className="text-slate-400 text-xs">Order Status</h4>
               <p className="capitalize">{order_status}</p>
             </div>
-            <div className="px-4 border-r">
+            <div className="px-4 md:border-r">
               <h4 className="text-slate-400 text-xs">Payment Method</h4>
               <p
                 className={`${
-                  payment_method === "cod" ? "uppercase" : "capitalize"
+                  payment_method === "bank_transfer"
+                    ? "capitalize"
+                    : "uppercase"
                 }`}
               >
                 {payment_method}
@@ -81,31 +83,10 @@ export default function OrderDetail() {
             </div>
           </div>
 
-          <div className="flex gap-x-10 px-2">
+          <div className="flex md:flex-row flex-col gap-x-10 px-2">
             {/* products list */}
-            {/* <div className="w-1/2">
-              <ul className="space-y-1">
-                {order_details.map((item, index) => (
-                  <li
-                    className="p-2 border-gray-300 grid grid-cols-4"
-                    key={index}
-                  >
-                    <h6 className="font-medium">{item.product_name}</h6>
-                    <p className="place-self-end text-slate-400">
-                      {formatPrice(item.price)}
-                    </p>
-                    <p className="place-self-end text-slate-400">
-                      {item.quantity} pcs
-                    </p>
-                    <p className="font-medium place-self-end">
-                      {formatPrice(item.subtotal)}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div> */}
 
-            <div className="w-1/2">
+            <div className="md:w-1/2">
               <ul className="space-y-1">
                 {order_details.map((item, index) => (
                   <li
@@ -113,11 +94,13 @@ export default function OrderDetail() {
                     key={index}
                   >
                     <div>
-                      <h6 className="font-medium">{item.product_name}</h6>
-                      <p className="text-slate-400 text-xs">
+                      <h6 className="font-medium  text-nowrap">
+                        {item.product_name}
+                      </h6>
+                      <p className="text-slate-400 text-xs text-nowrap">
                         Price: {formatPrice(item.price)}
                       </p>
-                      <p className="text-slate-400 text-xs">
+                      <p className="text-slate-400 text-xs text-nowrap">
                         Quantity: {item.quantity} pcs
                       </p>
                     </div>
@@ -132,7 +115,7 @@ export default function OrderDetail() {
             </div>
 
             {/* address */}
-            <div className="w-1/2 p-1">
+            <div className="w-1/2 px-2 py-1">
               <h5 className="font-medium mb-1">Delivery Address</h5>
               <p>
                 <span>{address.name}</span> |{" "}

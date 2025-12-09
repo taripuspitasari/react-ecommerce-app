@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from "react";
-import defaultImg from "../assets/default.jpg";
+import {useState, useEffect} from "react";
+import defaultImg from "../../assets/default.jpg";
 import {useSelector, useDispatch} from "react-redux";
-import {changePhoto} from "../app/slices/authSlice";
+import {changePhoto} from "../../app/slices/authSlice";
+import {alertError} from "../alert";
 
 export default function FormChangePhoto({handleCloseModal}) {
   const dispatch = useDispatch();
-  const {user, errors} = useSelector(state => state.auth);
+  const {user, errors, loading} = useSelector(state => state.auth);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -27,16 +28,18 @@ export default function FormChangePhoto({handleCloseModal}) {
   const handleSubmit = e => {
     e.preventDefault();
     if (!selectedFile) {
-      alert("Please select a photo to upload.");
+      alertError("No photo selected. Please choose a file to upload");
       return;
     }
-    dispatch(changePhoto(selectedFile));
-    handleCloseModal();
+    dispatch(changePhoto(selectedFile))
+      .unwrap()
+      .then(() => handleCloseModal())
+      .catch(err => console.log(err));
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
-      <div className="w-full lg:w-1/2 z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#F5F5DC] p-5 rounded-lg shadow-lg ">
+      <div className="w-full lg:w-1/2 z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-secondary p-5 rounded-lg shadow-lg ">
         <div className="border border-slate-400 p-4 rounded-md space-y-3">
           <div className="relative flex justify-center items-center">
             <h3 className="font-medium text-xl text-center">
@@ -49,7 +52,13 @@ export default function FormChangePhoto({handleCloseModal}) {
               <i className="fa-solid fa-xmark"></i>
             </button>
           </div>
-
+          {loading && (
+            <div className="fixed inset-0  z-40">
+              <div className="flex justify-center items-center h-full">
+                <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
+              </div>
+            </div>
+          )}
           <form className="space-y-2" onSubmit={handleSubmit}>
             <div className="w-full flex items-center justify-evenly">
               <div className="border border-secondary h-20 w-20 rounded-full overflow-hidden">
@@ -72,18 +81,20 @@ export default function FormChangePhoto({handleCloseModal}) {
                   <input
                     type="file"
                     accept="image/*"
-                    className="w-full h-full focus:outline-none bg-[#F5F5DC]"
+                    className="w-full h-full focus:outline-none bg-secondary"
                     onChange={handleFileChange}
                   />
                 </div>
                 {errors?.photo?.[0] && (
-                  <p className="p-1 text-red-500">{errors.photo[0]}</p>
+                  <p className="mt-2 py-2 px-3 text-red-500 bg-red-50 rounded-md border border-red-300">
+                    {errors.photo[0]}
+                  </p>
                 )}
               </div>
             </div>
             <button
               type="submit"
-              className="py-2 px-4 w-full rounded-md font-medium bg-[#A5D6A7] hover:bg-[#96c497]"
+              className="py-2 px-4 w-full rounded-md font-medium bg-primary text-secondary"
             >
               Save
             </button>

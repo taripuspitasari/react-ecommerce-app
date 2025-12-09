@@ -1,15 +1,16 @@
-import React, {useState, useEffect} from "react";
+import {useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {logout} from "../app/slices/authSlice";
 import defaultImg from "../assets/default.jpg";
-import FormChangePassword from "../components/FormChangePassword";
-import FormChangeInformation from "../components/FormChangeInformation";
-import FormChangePhoto from "../components/FormChangePhoto";
-import {clearNotification} from "../app/slices/authSlice";
+import FormChangePassword from "../components/User/FormChangePassword";
+import FormChangeInformation from "../components/User/FormChangeInformation";
+import FormChangePhoto from "../components/User/FormChangePhoto";
+import {useNavigate} from "react-router-dom";
 
 export default function Account() {
   const dispatch = useDispatch();
-  const {user, notification, loading} = useSelector(state => state.auth);
+  const navigate = useNavigate();
+  const {user} = useSelector(state => state.auth);
 
   const [type, setType] = useState("");
 
@@ -21,30 +22,15 @@ export default function Account() {
     setType("");
   };
 
-  useEffect(() => {
-    if (notification) {
-      const timer = setTimeout(() => dispatch(clearNotification()), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [notification]);
+  const handleLogout = () => {
+    dispatch(logout())
+      .unwrap()
+      .then(() => navigate("/login"))
+      .catch(err => console.log(err));
+  };
 
   return (
     <div>
-      {notification && (
-        <div className="flex gap-2 justify-center items-center p-3 bg-[#A5D6A7] rounded-md absolute m-3 z-50 right-5 bottom-5 font-medium shadow-lg">
-          <i className="fa-solid fa-check"></i>
-          <p className="text-center">{notification}</p>
-        </div>
-      )}
-
-      {loading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
-          <div className="flex justify-center items-center h-full">
-            <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
-          </div>
-        </div>
-      )}
-
       <div className="border rounded-md shadow-md bg-white">
         <div className="flex p-4 gap-3 items-center">
           <div className="relative z-10">
@@ -99,7 +85,7 @@ export default function Account() {
         </div>
         <div
           className="lg:hidden flex p-4 justify-between items-start cursor-pointer"
-          onClick={() => dispatch(logout())}
+          onClick={handleLogout}
         >
           <div className="space-y-2">
             <button className="font-bold">Logout</button>

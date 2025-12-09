@@ -20,19 +20,32 @@ export default function DashboardLayout() {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const navigate = useNavigate();
 
-  if (!user) {
-    navigate({
-      pathname: "/",
-    });
-  }
+  // if (!user) {
+  //   navigate({
+  //     pathname: "/login",
+  //   });
+  // }
 
   useEffect(() => {
-    dispatch(fetchCategories());
-    dispatch(fetchUserCart());
-  }, []);
+    if (!user) {
+      navigate("/login");
+    }
+
+    if (user) {
+      dispatch(fetchCategories());
+      dispatch(fetchUserCart());
+    }
+  }, [user]);
 
   const selectCategory = id => {
     dispatch(setSelectedCategory(id));
+  };
+
+  const handleLogout = () => {
+    dispatch(logout())
+      .unwrap()
+      .then(() => navigate("/login"))
+      .catch(err => console.log(err));
   };
 
   return (
@@ -117,7 +130,7 @@ export default function DashboardLayout() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p>{user.name.split(" ")[0]}</p>
+              <p>{user?.name?.split(" ")[0]}</p>
               <button className="flex gap-4" onClick={() => setOpen(!open)}>
                 <i className="fa-solid fa-chevron-down"></i>
               </button>
@@ -162,7 +175,7 @@ export default function DashboardLayout() {
 
                 <li
                   className="cursor-pointer hover:font-bold p-1"
-                  onClick={() => dispatch(logout())}
+                  onClick={handleLogout}
                 >
                   Logout
                 </li>

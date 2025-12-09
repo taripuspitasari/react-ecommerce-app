@@ -1,14 +1,27 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axiosClient from "../../axios-client";
+import {alertSuccess} from "../../components/alert";
 
 export const signupUser = createAsyncThunk(
   "auth/signupUser",
   async (payload, {rejectWithValue}) => {
     try {
       const response = await axiosClient.post("/signup", payload);
-      return response.data;
+      return response.data.data;
     } catch (err) {
       return rejectWithValue(err.response.data.errors);
+    }
+  }
+);
+
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async (payload, {rejectWithValue}) => {
+    try {
+      const response = await axiosClient.post("/login", payload);
+      return response.data.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data.message);
     }
   }
 );
@@ -33,12 +46,10 @@ export const changePassword = createAsyncThunk(
         "/change-password",
         passwordData
       );
+      alertSuccess(response.data.message);
       return response.data;
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data);
-      }
-      throw err;
+      return rejectWithValue(err.response.data.errors);
     }
   }
 );
@@ -48,12 +59,10 @@ export const updateUser = createAsyncThunk(
   async ({id, data}, {rejectWithValue}) => {
     try {
       const response = await axiosClient.patch(`/user/${id}/profile`, data);
+      alertSuccess(response.data.message);
       return response.data;
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data);
-      }
-      throw err;
+      return rejectWithValue(err.response.data.errors);
     }
   }
 );
@@ -74,9 +83,10 @@ export const changePhoto = createAsyncThunk(
           },
         }
       );
+      alertSuccess(response.data.message);
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data.errors);
     }
   }
 );
@@ -87,11 +97,10 @@ const authSlice = createSlice({
     user: {},
     loading: false,
     errors: null,
-    notification: null,
   },
   reducers: {
     clearAuth: state => {
-      state.user = {};
+      state.user = null;
       state.token = null;
       state.loading = false;
       state.errors = null;
@@ -113,13 +122,27 @@ const authSlice = createSlice({
         state.loading = true;
         state.errors = null;
       })
-      .addCase(signupUser.fulfilled, (state, action) => {
+      .addCase(signupUser.fulfilled, state => {
+        state.loading = false;
+        state.errors = null;
+      })
+      .addCase(signupUser.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      });
+    builder
+      .addCase(loginUser.pending, state => {
+        state.loading = true;
+        state.errors = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
         localStorage.setItem("ACCESS_TOKEN", action.payload.token);
+        localStorage.setItem("USER_EC", action.payload.user);
       })
-      .addCase(signupUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.errors = action.payload;
       });
@@ -137,17 +160,14 @@ const authSlice = createSlice({
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.loading = false;
-        state.errors = action.payload?.errors || {
-          new_password: [action.payload?.message],
-        };
+        state.errors = action.payload;
       });
     builder
       .addCase(updateUser.pending, state => {
         state.loading = true;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.notification = action.payload.message;
+        state.user = action.payload.data;
         state.loading = false;
       })
       .addCase(updateUser.rejected, (state, action) => {
@@ -159,8 +179,7 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(changePhoto.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.notification = action.payload.message;
+        state.user = action.payload.data;
         state.loading = false;
       })
       .addCase(changePhoto.rejected, (state, action) => {

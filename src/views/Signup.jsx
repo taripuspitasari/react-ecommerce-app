@@ -1,8 +1,9 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import signupImg from "../assets/panda.png";
 import {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {signupUser, clearErrors} from "../app/slices/authSlice";
+import {alertError} from "../components/alert";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -17,6 +18,7 @@ export default function Signup() {
 
   const {loading, errors} = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -34,7 +36,10 @@ export default function Signup() {
       password: password,
     };
 
-    dispatch(signupUser(payload));
+    dispatch(signupUser(payload))
+      .unwrap()
+      .then(() => navigate("/login"))
+      .catch(err => console.log(err));
   };
 
   return (
