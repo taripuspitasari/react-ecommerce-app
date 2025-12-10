@@ -1,9 +1,8 @@
-import React from "react";
 import {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {updateAddress} from "../app/slices/addressSlice";
+import {updateAddress} from "../../app/slices/addressSlice";
 
-export default function FormUpdateAddress({handleOpenModal}) {
+export default function FormUpdateAddress({handleOpenModal, handleCloseModal}) {
   const dispatch = useDispatch();
   const {errors, loading, address} = useSelector(state => state.address);
 
@@ -44,32 +43,35 @@ export default function FormUpdateAddress({handleOpenModal}) {
       postal_code: data.postalCode,
       phone_number: data.phoneNumber,
     };
-    dispatch(updateAddress({addressId: address.id, payload}));
-    handleOpenModal("showAddresses");
+    dispatch(updateAddress({addressId: address.id, payload}))
+      .unwrap()
+      .then(() => handleOpenModal("showAddresses"))
+      .catch(err => console.log(err));
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
-      <div className="w-full md:w-1/2 z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#F5F5DC] p-5 rounded-lg shadow-lg ">
-        <div className="border border-slate-400 p-4 rounded-md space-y-3">
-          <div className="relative flex justify-center items-center">
-            <h3 className="font-medium text-xl text-center">Detail address</h3>
+      <div className="w-full md:w-1/2 z-50 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-secondary p-2 rounded-lg shadow-lg ">
+        <div className=" p-2 rounded-md space-y-3">
+          <div className="relative flex justify-between items-center border-b border-primary pb-1 text-primary">
+            <h3 className="font-medium text-xl">Edit Address</h3>
             <button
               className="absolute top-0 right-0 cursor-pointer"
-              // onClick={() => dispatch(closeModal())}
-              onClick={() => handleOpenModal("showAddresses")}
+              onClick={handleCloseModal}
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
           </div>
           {loading && (
-            <div className="flex justify-center items-center">
-              <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
+            <div className="fixed inset-0  z-40">
+              <div className="flex justify-center items-center h-full">
+                <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
+              </div>
             </div>
           )}
           <form onSubmit={handleUpdateSubmit} className="space-y-2">
             <div className="w-full">
-              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-primary">
                 <label
                   htmlFor="name"
                   className="px-2 flex-shrink-0 min-w-[120px]"
@@ -81,16 +83,18 @@ export default function FormUpdateAddress({handleOpenModal}) {
                   name="name"
                   id="name"
                   value={data.name}
-                  className="w-full h-full focus:outline-none bg-[#F5F5DC]"
+                  className="w-full h-full focus:outline-none bg-secondary"
                   onChange={handleChange}
                 />
               </div>
               {errors?.name?.[0] && (
-                <p className="px-4 text-red-500">{errors.name[0]}</p>
+                <p className="mt-2 py-2 px-3 text-red-500 bg-red-50 rounded-md border border-red-300">
+                  {errors.name[0]}
+                </p>
               )}
             </div>
             <div className="w-full">
-              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-primary">
                 <label
                   htmlFor="city"
                   className="px-2 flex-shrink-0 min-w-[120px]"
@@ -102,16 +106,18 @@ export default function FormUpdateAddress({handleOpenModal}) {
                   name="city"
                   id="city"
                   value={data.city}
-                  className="w-full h-full focus:outline-none bg-[#F5F5DC]"
+                  className="w-full h-full focus:outline-none bg-secondary"
                   onChange={handleChange}
                 />
               </div>
               {errors?.city?.[0] && (
-                <p className="px-4 text-red-500">{errors.city[0]}</p>
+                <p className="mt-2 py-2 px-3 text-red-500 bg-red-50 rounded-md border border-red-300">
+                  {errors.city[0]}
+                </p>
               )}
             </div>
             <div className="w-full">
-              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-primary">
                 <label
                   htmlFor="address"
                   className="px-2 flex-shrink-0 min-w-[120px]"
@@ -123,16 +129,18 @@ export default function FormUpdateAddress({handleOpenModal}) {
                   name="address"
                   id="address"
                   value={data.address}
-                  className="w-full h-full focus:outline-none bg-[#F5F5DC]"
+                  className="w-full h-full focus:outline-none bg-secondary"
                   onChange={handleChange}
                 />
               </div>
               {errors?.address?.[0] && (
-                <p className="px-4 text-red-500">{errors.address[0]}</p>
+                <p className="mt-2 py-2 px-3 text-red-500 bg-red-50 rounded-md border border-red-300">
+                  {errors.address[0]}
+                </p>
               )}
             </div>
             <div className="w-full">
-              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-primary">
                 <label
                   htmlFor="postalCode"
                   className="px-2 flex-shrink-0 min-w-[120px]"
@@ -144,16 +152,18 @@ export default function FormUpdateAddress({handleOpenModal}) {
                   name="postalCode"
                   id="postalCode"
                   value={data.postalCode}
-                  className="w-full h-full focus:outline-none bg-[#F5F5DC]"
+                  className="w-full h-full focus:outline-none bg-secondary"
                   onChange={handleChange}
                 />
               </div>
               {errors?.postal_code?.[0] && (
-                <p className="px-4 text-red-500">{errors.postal_code[0]}</p>
+                <p className="mt-2 py-2 px-3 text-red-500 bg-red-50 rounded-md border border-red-300">
+                  {errors.postal_code[0]}
+                </p>
               )}
             </div>
             <div className="w-full">
-              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-slate-400">
+              <div className="h-10 p-2 rounded-md flex gap-2 items-center border border-primary">
                 <label
                   htmlFor="phoneNumber"
                   className="px-2 flex-shrink-0 min-w-[120px]"
@@ -165,20 +175,30 @@ export default function FormUpdateAddress({handleOpenModal}) {
                   name="phoneNumber"
                   id="phoneNumber"
                   value={data.phoneNumber}
-                  className="w-full h-full focus:outline-none bg-[#F5F5DC]"
+                  className="w-full h-full focus:outline-none bg-secondary"
                   onChange={handleChange}
                 />
               </div>
               {errors?.phone_number?.[0] && (
-                <p className="px-4 text-red-500">{errors.phone_number[0]}</p>
+                <p className="mt-2 py-2 px-3 text-red-500 bg-red-50 rounded-md border border-red-300">
+                  {errors.phone_number[0]}
+                </p>
               )}
             </div>
-            <button
-              type="submit"
-              className="py-2 px-4 w-full rounded-md font-medium bg-[#A5D6A7] hover:bg-[#96c497]"
-            >
-              Update
-            </button>
+            <div className="flex justify-end gap-3">
+              <button
+                className="py-2 px-4 rounded-md font-medium border border-primary  text-primary"
+                onClick={() => handleOpenModal("showAddresses")}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="py-2 px-4 rounded-md font-medium bg-primary text-secondary"
+              >
+                Update
+              </button>
+            </div>
           </form>
         </div>
       </div>

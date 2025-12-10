@@ -1,10 +1,9 @@
-import React from "react";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import Addresses from "../components/Addresses";
-import {fetchUserAddress} from "../app/slices/addressSlice";
-import FormAddAddress from "../components/FormAddAddress";
-import FormUpdateAddress from "../components/FormUpdateAddress";
+import Addresses from "../components/Address/Addresses";
+import {loadUserAddresses} from "../app/slices/addressSlice";
+import FormAddAddress from "../components/Address/FormAddAddress";
+import FormUpdateAddress from "../components/Address/FormUpdateAddress";
 import {setPaymentMethod, setSelectedAddress} from "../app/slices/orderSlice";
 import {useNavigate} from "react-router-dom";
 import {createOrder} from "../app/slices/orderSlice";
@@ -19,7 +18,7 @@ export default function Checkout() {
   const [type, setType] = useState("");
 
   useEffect(() => {
-    dispatch(fetchUserAddress());
+    dispatch(loadUserAddresses());
   }, [dispatch]);
 
   useEffect(() => {
@@ -62,6 +61,7 @@ export default function Checkout() {
   return (
     <div>
       <h2 className="text-xl py-3 font-medium text-primary">Checkout</h2>
+
       <div className="flex flex-col lg:flex-row lg:items-start gap-2">
         <div className="lg:w-2/3 border border-slate-200 rounded-md p-4 space-y-3 bg-white">
           {selectedAddress ? (
@@ -93,7 +93,7 @@ export default function Checkout() {
               </div>
               <button
                 className="py-2 px-4 font-medium rounded-md bg-secondary text-primary cursor pointer"
-                onClick={() => handleOpenModal("addNewAddress")}
+                onClick={() => handleOpenModal("createNewAddress")}
               >
                 Create new address
               </button>
@@ -195,7 +195,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-      {type === "addNewAddress" && (
+      {type === "createNewAddress" && (
         <FormAddAddress
           handleOpenModal={handleOpenModal}
           handleCloseModal={handleCloseModal}
@@ -210,7 +210,10 @@ export default function Checkout() {
         />
       )}
       {type === "updateAddress" && (
-        <FormUpdateAddress handleOpenModal={handleOpenModal} />
+        <FormUpdateAddress
+          handleOpenModal={handleOpenModal}
+          handleCloseModal={handleCloseModal}
+        />
       )}
     </div>
   );

@@ -1,32 +1,26 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axiosClient from "../../axios-client";
 
-export const fetchUserAddress = createAsyncThunk(
-  "address/fetchUserAddress",
+export const loadUserAddresses = createAsyncThunk(
+  "address/loadUserAddresses",
   async (_, {rejectWithValue}) => {
     try {
       const response = await axiosClient.get("address");
       return response.data;
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data.errors);
-      }
-      throw err;
+      return rejectWithValue(err.response.data.errors);
     }
   }
 );
 
-export const addNewAddress = createAsyncThunk(
+export const createNewAddress = createAsyncThunk(
   "address/addAddress",
   async (payload, {rejectWithValue}) => {
     try {
       const response = await axiosClient.post("address", payload);
       return response.data;
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data.errors);
-      }
-      throw err;
+      return rejectWithValue(err.response.data.errors);
     }
   }
 );
@@ -35,30 +29,22 @@ export const deleteAddress = createAsyncThunk(
   "address/deleteAddress",
   async (addressId, {rejectWithValue}) => {
     try {
-      const response = await axiosClient.delete(`/address/${addressId}`);
-      return response.data;
-      // await axiosClient.delete(`/address/${addressId}`);
-      // return addressId
+      await axiosClient.delete(`/address/${addressId}`);
+      return addressId;
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data.errors);
-      }
-      throw err;
+      return rejectWithValue(err.response.data.errors);
     }
   }
 );
 
-export const getAddress = createAsyncThunk(
-  "address/getAddress",
+export const getAddressById = createAsyncThunk(
+  "address/getAddressById",
   async (addressId, {rejectWithValue}) => {
     try {
       const response = await axiosClient.get(`/address/${addressId}`);
       return response.data;
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data.errors);
-      }
-      throw err;
+      return rejectWithValue(err.response.data.errors);
     }
   }
 );
@@ -70,10 +56,7 @@ export const updateAddress = createAsyncThunk(
       const response = await axiosClient.put(`/address/${addressId}`, payload);
       return response.data;
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        return rejectWithValue(err.response.data.errors);
-      }
-      throw err;
+      return rejectWithValue(err.response.data.errors);
     }
   }
 );
@@ -93,42 +76,59 @@ const addressSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchUserAddress.pending, state => {
+      .addCase(loadUserAddresses.pending, state => {
         state.loading = true;
       })
-      .addCase(fetchUserAddress.fulfilled, (state, action) => {
+      .addCase(loadUserAddresses.fulfilled, (state, action) => {
         state.addresses = action.payload.data;
         state.loading = false;
         state.errors = null;
       })
-      .addCase(fetchUserAddress.rejected, (state, action) => {
+      .addCase(loadUserAddresses.rejected, (state, action) => {
         state.loading = false;
         state.errors = action.payload;
       });
     builder
-      .addCase(addNewAddress.pending, state => {
+      .addCase(createNewAddress.pending, state => {
         state.loading = true;
       })
-      .addCase(addNewAddress.fulfilled, (state, action) => {
+      .addCase(createNewAddress.fulfilled, (state, action) => {
         state.addresses.push(action.payload.data);
         state.loading = false;
         state.errors = null;
       })
-      .addCase(addNewAddress.rejected, (state, action) => {
+      .addCase(createNewAddress.rejected, (state, action) => {
         state.loading = false;
         state.errors = action.payload;
       });
-    builder.addCase(deleteAddress.fulfilled, (state, action) => {
-      state.addresses = action.payload.data;
-      // state.addresses = state.addresses.filter(item => item.id !== action.payload.addressId);
-      state.loading = false;
-      state.errors = null;
-    });
-    builder.addCase(getAddress.fulfilled, (state, action) => {
-      state.address = action.payload.data;
-      state.loading = false;
-      state.errors = null;
-    });
+    builder
+      .addCase(deleteAddress.pending, state => {
+        state.loading = true;
+      })
+      .addCase(deleteAddress.fulfilled, (state, action) => {
+        state.addresses = state.addresses.filter(
+          item => item.id !== action.payload
+        );
+        state.loading = false;
+        state.errors = null;
+      })
+      .addCase(deleteAddress.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      });
+    builder
+      .addCase(getAddressById.pending, state => {
+        state.loading = true;
+      })
+      .addCase(getAddressById.fulfilled, (state, action) => {
+        state.address = action.payload.data;
+        state.loading = false;
+        state.errors = null;
+      })
+      .addCase(getAddressById.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      });
     builder
       .addCase(updateAddress.pending, state => {
         state.loading = true;
