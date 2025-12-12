@@ -4,17 +4,20 @@ import Addresses from "../components/Address/Addresses";
 import {loadUserAddresses} from "../app/slices/addressSlice";
 import FormAddAddress from "../components/Address/FormAddAddress";
 import FormUpdateAddress from "../components/Address/FormUpdateAddress";
-import {setPaymentMethod, setSelectedAddress} from "../app/slices/orderSlice";
 import {useNavigate} from "react-router-dom";
-import {createOrder} from "../app/slices/orderSlice";
+import {createNewOrder} from "../app/slices/orderSlice";
+import {alertError} from "../components/alert";
 
 export default function Checkout() {
   const dispatch = useDispatch();
-  const {addresses} = useSelector(state => state.address);
-  const {selectedAddress, selectedPaymentMethod} = useSelector(
-    state => state.order
-  );
+  const navigate = useNavigate();
 
+  const {addresses} = useSelector(state => state.address);
+  const {cartTotalQuantity, cartTotalAmount, cartItems} = useSelector(
+    state => state.cart
+  );
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [type, setType] = useState("");
 
   useEffect(() => {
@@ -23,13 +26,13 @@ export default function Checkout() {
 
   useEffect(() => {
     if (addresses.length < 0) {
-      dispatch(setSelectedAddress(null));
+      setSelectedAddress(null);
     }
-    dispatch(setSelectedAddress(addresses[0]));
-  }, [addresses]);
+    setSelectedAddress(addresses[0]);
+  }, []);
 
   const handleSelectMethod = method => {
-    dispatch(setPaymentMethod(method));
+    setSelectedPaymentMethod(method);
   };
 
   const handleOpenModal = modal => {
@@ -40,11 +43,6 @@ export default function Checkout() {
     setType("");
   };
 
-  const navigate = useNavigate();
-  const {cartTotalQuantity, cartTotalAmount, cartItems} = useSelector(
-    state => state.cart
-  );
-
   const formatPrice = price => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -54,8 +52,23 @@ export default function Checkout() {
   };
 
   const handleProceed = () => {
-    dispatch(createOrder());
-    navigate("/dashboard");
+    if (!selectedAddress) {
+      return alertError("Address is required");
+    }
+
+    if (!selectedPaymentMethod) {
+      return alertError("Payment method is required");
+    }
+
+    const payload = {
+      address_id: selectedAddress.id,
+      payment_method: selectedPaymentMethod,
+    };
+
+    dispatch(createNewOrder(payload))
+      .unwrap()
+      .then(() => navigate("/dashboard"))
+      .catch(err => console.log(err));
   };
 
   return (
@@ -69,10 +82,10 @@ export default function Checkout() {
               <div className="flex justify-between">
                 <h3 className="text-lg">Shipping Address</h3>
                 <button
-                  className="cursor-pointer"
+                  className="cursor-pointer font-medium text-primary"
                   onClick={() => handleOpenModal("showAddresses")}
                 >
-                  Edit
+                  Change
                 </button>
               </div>
               <div key={selectedAddress.id}>

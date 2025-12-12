@@ -1,34 +1,28 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import {useParams, Link} from "react-router-dom";
 import axiosClient from "../axios-client";
 
 export default function OrderDetail() {
   const {id} = useParams();
-  const [order, setOrder] = useState({});
-  const [loading, setLoading] = useState(false);
 
-  const {
-    address = "",
-    created_at = "",
-    order_details = [],
-    order_status = "",
-    payment_method = "",
-    total_amount = 0,
-  } = order;
+  const [order, setOrder] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("contoh nih");
 
   useEffect(() => {
-    setLoading(true);
-    axiosClient
-      .get(`/orders/${id}`)
-      .then(({data}) => {
+    const fetchOrder = async () => {
+      try {
+        const res = await axiosClient.get(`/orders/${id}`);
+        setOrder(res.data.data);
+      } catch (error) {
+        setError("Failed to load order");
+      } finally {
         setLoading(false);
-        const response = data.data;
-        setOrder(response);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  }, []);
+      }
+    };
+
+    fetchOrder();
+  }, [id]);
 
   const formatPrice = price => {
     return new Intl.NumberFormat("id-ID", {
@@ -37,6 +31,13 @@ export default function OrderDetail() {
       minimumFractionDigits: 0,
     }).format(price);
   };
+
+  if (error)
+    return (
+      <div className="pt-20 h-screen flex justify-center items-start">
+        <p className="font-bold text-primary text-opacity-50">{error}</p>
+      </div>
+    );
 
   return (
     <div>
@@ -55,7 +56,7 @@ export default function OrderDetail() {
           <div className="grid grid-cols-2 md:grid-cols-5 py-3 border-b space-y-1">
             <div className="px-4 md:border-r">
               <h4 className="text-slate-400 text-xs">Order Date</h4>
-              <p>{created_at}</p>
+              <p>{order.created_at}</p>
             </div>
             <div className="px-4 md:border-r">
               <h4 className="text-slate-400 text-xs">Order ID</h4>
@@ -63,23 +64,23 @@ export default function OrderDetail() {
             </div>
             <div className="px-4 md:border-r">
               <h4 className="text-slate-400 text-xs">Order Status</h4>
-              <p className="capitalize">{order_status}</p>
+              <p className="capitalize">{order.order_status}</p>
             </div>
             <div className="px-4 md:border-r">
               <h4 className="text-slate-400 text-xs">Payment Method</h4>
               <p
                 className={`${
-                  payment_method === "bank_transfer"
+                  order.payment_method === "bank_transfer"
                     ? "capitalize"
                     : "uppercase"
                 }`}
               >
-                {payment_method}
+                {order.payment_method}
               </p>
             </div>
             <div className="px-4">
               <h4 className="text-slate-400 text-xs">Total Amount</h4>
-              <p>{formatPrice(total_amount)}</p>
+              <p>{formatPrice(order.total_amount)}</p>
             </div>
           </div>
 
@@ -88,7 +89,7 @@ export default function OrderDetail() {
 
             <div className="md:w-1/2">
               <ul className="space-y-1">
-                {order_details.map((item, index) => (
+                {order.order_details.map((item, index) => (
                   <li
                     className="p-2 border-gray-300 flex justify-between"
                     key={index}
@@ -118,13 +119,13 @@ export default function OrderDetail() {
             <div className="w-1/2 px-2 py-1">
               <h5 className="font-medium mb-1">Delivery Address</h5>
               <p>
-                <span>{address.name}</span> |{" "}
-                <span>{address.phone_number}</span>
+                <span>{order.address.name}</span> |{" "}
+                <span>{order.address.phone_number}</span>
               </p>
               <ul>
-                <li>{address.address}</li>
-                <li>{address.city}</li>
-                <li>{address.postal_code}</li>
+                <li>{order.address.address}</li>
+                <li>{order.address.city}</li>
+                <li>{order.address.postal_code}</li>
               </ul>
             </div>
           </div>

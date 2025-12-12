@@ -65,7 +65,7 @@ export default function FormUpdateAddress({handleOpenModal, handleCloseModal}) {
           {loading && (
             <div className="fixed inset-0  z-40">
               <div className="flex justify-center items-center h-full">
-                <i className="fa-solid fa-spinner text-xl text-slate-400 animate-spin"></i>
+                <i className="fa-solid fa-spinner text-xl text-primary animate-spin"></i>
               </div>
             </div>
           )}

@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {fetchUserOrder} from "../app/slices/orderSlice";
+import {loadUserOrders} from "../app/slices/orderSlice";
 import {Link} from "react-router-dom";
-import OrderDetail from "./OrderDetail";
 
 export default function Order() {
   const dispatch = useDispatch();
-  const {orderHistory} = useSelector(state => state.order);
+  const {orders, loading, errors} = useSelector(state => state.order);
 
   useEffect(() => {
-    dispatch(fetchUserOrder());
+    dispatch(loadUserOrders());
   }, []);
 
   const formatPrice = price => {
@@ -20,15 +19,12 @@ export default function Order() {
     }).format(price);
   };
 
-  const [openDetails, setOpenDetails] = useState(false);
-
-  const handleCloseDetails = () => {
-    setOpenDetails(false);
-  };
-
-  const handleOpenDetails = () => {
-    setOpenDetails(true);
-  };
+  if (errors)
+    return (
+      <div className="pt-20 h-screen flex justify-center items-start">
+        <p className="font-bold text-primary text-opacity-50">{errors}</p>
+      </div>
+    );
 
   return (
     <div>
@@ -48,18 +44,18 @@ export default function Order() {
               <th scope="col" className="px-6 py-3 text-right">
                 Total
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
-                <button
-                  onClick={() => dispatch(clearAll(userId))}
-                  className="text-red-500 hover:text-red-700"
-                  title="Clear all"
-                ></button>
-              </th>
+              <th scope="col" className="px-6 py-3 text-center"></th>
             </tr>
           </thead>
-          {orderHistory.length > 0 ? (
+          {loading ? (
+            <div className="fixed inset-0  z-40">
+              <div className="flex justify-center items-center h-full">
+                <i className="fa-solid fa-spinner text-xl text-primary animate-spin"></i>
+              </div>
+            </div>
+          ) : orders.length > 0 ? (
             <tbody>
-              {orderHistory.map(item => (
+              {orders.map(item => (
                 <tr key={item.id} className="border-b dark:border-gray-700">
                   <td className="px-6 py-3 text-left text-gray-900 whitespace-nowrap dark:text-white">
                     {item.created_at}
@@ -74,11 +70,6 @@ export default function Order() {
                     {formatPrice(item.total_amount)}
                   </td>
 
-                  {/* <td className="px-6 py-3 text-center">
-                    <button className="text-primary cursor-pointer">
-                      <Link to={`${item.id}`}>See Details</Link>
-                    </button>
-                  </td> */}
                   <td className="px-6 py-3 text-center">
                     <button className="text-primary cursor-pointer">
                       <Link to={`${item.id}`}>See Details</Link>
