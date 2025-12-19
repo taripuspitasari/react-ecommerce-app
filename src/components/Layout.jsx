@@ -1,25 +1,32 @@
 import {useState, useEffect} from "react";
 import {Outlet, Navigate, NavLink, Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {
-  setQuery,
-  setSelectedCategory,
-  fetchCategories,
-} from "../app/slices/productSlice";
+import {loadCategories, loadProducts} from "../app/slices/productSlice";
 import logoImg from "../assets/new-logo.png";
 
 export default function Layout() {
-  const [categoryOpen, setCategoryOpen] = useState(false);
-  const {query, categories} = useSelector(state => state.product);
   const dispatch = useDispatch();
+  const [category, setCategory] = useState("");
+  const [query, setQuery] = useState("");
+  const [categoryOpen, setCategoryOpen] = useState(false);
 
-  const selectCategory = id => {
-    dispatch(setSelectedCategory(id));
-  };
+  const {categories} = useSelector(state => state.product);
 
   useEffect(() => {
-    dispatch(fetchCategories());
+    dispatch(loadCategories());
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(loadProducts({query, category}));
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [query, category, dispatch]);
+
+  const selectCategory = id => {
+    setCategory(id);
+  };
 
   return (
     <div className="bg-secondary">
@@ -76,10 +83,17 @@ export default function Layout() {
               </div>
               <div className="lg:w-72 h-10 p-2 rounded-full flex gap-2 items-center border border-primary">
                 <i className="fa-solid fa-magnifying-glass"></i>
-                <input
+                {/* <input
                   type="search"
                   value={query}
                   onChange={e => dispatch(setQuery(e.target.value))}
+                  className="w-full h-full bg-secondary focus:outline-none placeholder:text-primary placeholder:text-opacity-50 placeholder:text-sm"
+                  placeholder="Find your favorite items here..."
+                /> */}
+                <input
+                  type="search"
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
                   className="w-full h-full bg-secondary focus:outline-none placeholder:text-primary placeholder:text-opacity-50 placeholder:text-sm"
                   placeholder="Find your favorite items here..."
                 />
@@ -107,6 +121,33 @@ export default function Layout() {
           </li>
         </ul>
       </nav>
+      <div className="lg:hidden flex justify-center gap-2 pt-2">
+        <div
+          className={`py-2 px-4  rounded-md border border-primary ${
+            category === ""
+              ? "bg-primary text-secondary"
+              : "bg-secondary text-primary"
+          }`}
+          key={category?.id || ""}
+          onClick={() => selectCategory("")}
+        >
+          All
+        </div>
+        {categories?.length > 0 &&
+          categories.map(c => (
+            <div
+              className={`py-2 px-4 rounded-md border border-primary ${
+                (category ?? "") === c.id
+                  ? "bg-primary text-secondary"
+                  : "bg-secondary text-primary"
+              }`}
+              key={c.id}
+              onClick={() => selectCategory(c.id)}
+            >
+              {c.name}
+            </div>
+          ))}
+      </div>
 
       <div className="min-h-screen px-4">
         <Outlet />
