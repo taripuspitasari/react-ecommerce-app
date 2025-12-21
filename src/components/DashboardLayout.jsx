@@ -105,13 +105,6 @@ export default function DashboardLayout() {
               </div>
               <div className="lg:w-72 h-10 p-2 rounded-full flex gap-2 items-center border border-primary">
                 <i className="fa-solid fa-magnifying-glass"></i>
-                {/* <input
-                  type="search"
-                  value={query}
-                  onChange={e => dispatch(setQuery(e.target.value))}
-                  className="w-full h-full bg-secondary focus:outline-none placeholder:text-primary placeholder:text-opacity-50 placeholder:text-sm"
-                  placeholder="Find your favorite items here..."
-                /> */}
                 <input
                   type="search"
                   value={query}
@@ -134,7 +127,7 @@ export default function DashboardLayout() {
             <div className="hidden lg:flex gap-2 items-center p-2">
               <div className="border border-secondary h-8 w-8 rounded-full overflow-hidden">
                 <img
-                  src={user.image || defaultImg}
+                  src={user?.image || defaultImg}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />

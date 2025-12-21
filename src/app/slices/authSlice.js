@@ -28,10 +28,10 @@ export const loginUser = createAsyncThunk(
 
 export const logout = createAsyncThunk(
   "auth/logout",
-  async (_, {dispatch, rejectWithValue}) => {
+  async (_, {rejectWithValue}) => {
     try {
       await axiosClient.post("/logout");
-      dispatch(authSlice.actions.clearAuth());
+      return true;
     } catch (err) {
       return rejectWithValue("Logout failed");
     }
@@ -98,24 +98,7 @@ const authSlice = createSlice({
     loading: false,
     errors: null,
   },
-  reducers: {
-    clearAuth: state => {
-      state.user = null;
-      state.token = null;
-      state.loading = false;
-      state.errors = null;
-      localStorage.removeItem("ACCESS_TOKEN");
-    },
-    clearNotification: state => {
-      state.notification = null;
-    },
-    clearErrors: state => {
-      state.errors = null;
-    },
-    setUser: (state, action) => {
-      state.user = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(signupUser.pending, state => {
@@ -138,17 +121,26 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
         localStorage.setItem("ACCESS_TOKEN", action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.errors = action.payload;
       });
-    builder.addCase(logout.rejected, (state, action) => {
-      state.loading = false;
-      state.errors = action.payload;
-    });
+    builder
+      .addCase(logout.pending, (state, action) => {
+        state.loading = true;
+        state.errors = null;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        localStorage.removeItem("ACCESS_TOKEN", action.payload.token);
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.errors = action.payload;
+      });
     builder
       .addCase(changePassword.fulfilled, (state, action) => {
         state.loading = false;
@@ -188,6 +180,4 @@ const authSlice = createSlice({
   },
 });
 
-export const {clearAuth, clearNotification, clearErrors, setUser} =
-  authSlice.actions;
 export default authSlice.reducer;
