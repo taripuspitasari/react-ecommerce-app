@@ -1,19 +1,20 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchUserWishlist} from "../app/slices/wishlistSlice";
+import {loadUserWishlists} from "../app/slices/wishlistSlice";
 import Products from "../components/Products";
 
 export default function Wishlist() {
   const dispatch = useDispatch();
-  const {wishlistItems, loading} = useSelector(state => state.wishlist);
+  const {wishlists, loading} = useSelector(state => state.wishlist);
   const {products} = useSelector(state => state.product);
 
   useEffect(() => {
-    dispatch(fetchUserWishlist());
+    dispatch(loadUserWishlists());
+    console.log(wishlists);
   }, []);
 
   const wishlistProducts = products.filter(product =>
-    wishlistItems.some(item => item.product_id === product.id)
+    wishlists.includes(product.id)
   );
 
   return (

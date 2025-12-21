@@ -2,6 +2,7 @@ import {useEffect} from "react";
 import Products from "../components/Products";
 import {useSelector, useDispatch} from "react-redux";
 import {loadProducts} from "../app/slices/productSlice";
+import {loadUserWishlists} from "../app/slices/wishlistSlice";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -10,6 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(loadProducts());
+    dispatch(loadUserWishlists());
   }, []);
 
   return (

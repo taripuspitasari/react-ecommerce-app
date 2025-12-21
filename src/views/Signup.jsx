@@ -1,9 +1,8 @@
 import {Link, useNavigate} from "react-router-dom";
 import signupImg from "../assets/panda.png";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {signupUser, clearErrors} from "../app/slices/authSlice";
-import {alertError} from "../components/alert";
+import {signupUser} from "../app/slices/authSlice";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -11,10 +10,6 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [matchPassword, setMatchPassword] = useState("");
-
-  useEffect(() => {
-    dispatch(clearErrors());
-  }, []);
 
   const {loading, errors} = useSelector(state => state.auth);
   const dispatch = useDispatch();

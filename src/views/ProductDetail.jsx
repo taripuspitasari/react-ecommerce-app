@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import axiosClient from "../axios-client";
 import {useDispatch, useSelector} from "react-redux";
 import {addToCart} from "../app/slices/cartSlice";
-import {addToWishlist, removeFromWishlist} from "../app/slices/wishlistSlice";
+import {toggleWishlist} from "../app/slices/wishlistSlice";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ export default function ProductDetail() {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
   const userId = useSelector(state => state.auth.user.id);
-  const {wishlistItems} = useSelector(state => state.wishlist);
+  const {wishlists} = useSelector(state => state.wishlist);
 
   useEffect(() => {
     setLoading(true);
@@ -27,9 +27,7 @@ export default function ProductDetail() {
       });
   }, [id]);
 
-  const isItWishlist = wishlistItems.some(
-    item => item.product_id === Number(id)
-  );
+  const isItWishlist = wishlists.includes(product.id);
 
   const handleToggleWishlist = () => {
     if (!userId) {
@@ -37,13 +35,8 @@ export default function ProductDetail() {
       return;
     }
 
-    const productId = Number(id);
-
-    if (isItWishlist) {
-      dispatch(removeFromWishlist(productId));
-    } else {
-      dispatch(addToWishlist(productId));
-    }
+    const productId = product.id;
+    dispatch(toggleWishlist(productId));
   };
 
   const formatPrice = price => {
@@ -54,8 +47,13 @@ export default function ProductDetail() {
     }).format(price);
   };
 
-  const handleAddToCart = productId => {
-    dispatch(addToCart({productId, quantity: 1}));
+  const handleAddToCart = () => {
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
+
+    dispatch(addToCart({productId: product.id, quantity: 1}));
   };
 
   return (
@@ -80,7 +78,10 @@ export default function ProductDetail() {
                 <p className="font-bold">{formatPrice(product.price)}</p>
               </div>
               <ul className="flex items-center gap-2 md:w-56">
-                <li className="text-sm flex justify-center items-center gap-3 border py-1 px-2 rounded-md hover:bg-primary cursor-pointer">
+                <li
+                  className="text-sm flex justify-center items-center gap-3 border py-1 px-2 rounded-md hover:bg-primary cursor-pointer"
+                  onClick={handleAddToCart}
+                >
                   <span className="text-xs">Add To Cart</span>
                   <i className="fa-solid fa-plus"></i>
                 </li>
@@ -95,20 +96,6 @@ export default function ProductDetail() {
               <p>{product.description}</p>
             </div>
           </div>
-          {/* <div className="flex justify-between items-center p-4 w-11/12 mx-auto bg-[#F5F5DC] shadow-md rounded-md">
-            <div>
-              <h5 className="text-xs text-slate-400">{product.category}</h5>
-              <h3 className="font-medium text-xl">{product.name}</h3>
-              <p className="font-bold">{formatPrice(product.price)}</p>
-            </div>
-            <div
-              onClick={() => handleAddToCart(id)}
-              className="text-sm flex justify-center h-10 font-medium items-center gap-3 border py-1 px-4 rounded-md bg-[#A5D6A7] hover:bg-[#FFD700] cursor-pointer"
-            >
-              <i className="fa-solid fa-plus"></i>
-              <span className="text-xs hidden md:block">Add To Cart</span>
-            </div>
-          </div> */}
           <div className="p-4 w-11/12 mx-auto">
             <h2 className="text-center font-bold">Related Products</h2>
           </div>

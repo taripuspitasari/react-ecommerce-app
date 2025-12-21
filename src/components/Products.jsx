@@ -2,17 +2,15 @@ import React from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {addToCart} from "../app/slices/cartSlice";
-import {addToWishlist, removeFromWishlist} from "../app/slices/wishlistSlice";
+import {toggleWishlist} from "../app/slices/wishlistSlice";
 
 const Product = ({product}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector(state => state.auth.user.id);
-  const {wishlistItems} = useSelector(state => state.wishlist);
+  const {wishlists} = useSelector(state => state.wishlist);
 
-  const isItWishlist = wishlistItems.some(
-    item => item.product_id === product.id
-  );
+  const isItWishlist = wishlists.includes(product.id);
 
   const handleToggleWishlist = () => {
     if (!userId) {
@@ -21,12 +19,7 @@ const Product = ({product}) => {
     }
 
     const productId = product.id;
-
-    if (isItWishlist) {
-      dispatch(removeFromWishlist(productId));
-    } else {
-      dispatch(addToWishlist(productId));
-    }
+    dispatch(toggleWishlist(productId));
   };
 
   const handleAddToCart = productId => {
