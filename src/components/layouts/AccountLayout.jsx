@@ -1,6 +1,4 @@
-import React from "react";
 import {Outlet, NavLink} from "react-router-dom";
-import {useDispatch} from "react-redux";
 
 export default function AccountLayout() {
   return (

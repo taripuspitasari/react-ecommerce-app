@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axiosClient from "../../axios-client";
+import {logout} from "./authSlice";
 
 export const loadUserWishlists = createAsyncThunk(
   "wishlist/loadUserWishlists",
@@ -34,8 +35,15 @@ const wishlistSlice = createSlice({
     loading: false,
     errors: null,
   },
-  reducers: {},
+  reducers: {
+    clearWishlist(state) {
+      state.wishlists = [];
+    },
+  },
   extraReducers: builder => {
+    builder.addCase(logout.fulfilled, state => {
+      state.wishlists = [];
+    });
     builder
       .addCase(loadUserWishlists.pending, state => {
         state.loading = true;
@@ -69,4 +77,5 @@ const wishlistSlice = createSlice({
   },
 });
 
+export const {clearWishlist} = wishlistSlice.actions;
 export default wishlistSlice.reducer;

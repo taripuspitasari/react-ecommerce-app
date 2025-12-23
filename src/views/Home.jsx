@@ -1,18 +1,8 @@
-import {useEffect} from "react";
 import Products from "../components/Products";
-import {useSelector, useDispatch} from "react-redux";
-import {loadProducts} from "../app/slices/productSlice";
-import {loadUserWishlists} from "../app/slices/wishlistSlice";
+import {useSelector} from "react-redux";
 
 export default function Home() {
-  const dispatch = useDispatch();
-
   const {loading, products} = useSelector(state => state.product);
-
-  useEffect(() => {
-    dispatch(loadProducts());
-    dispatch(loadUserWishlists());
-  }, []);
 
   return (
     <div>

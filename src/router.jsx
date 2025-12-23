@@ -1,5 +1,4 @@
 import {createBrowserRouter} from "react-router-dom";
-import SidebarLayout from "./components/SidebarLayout";
 import Login from "./views/Login";
 import Signup from "./views/Signup";
 import Carts from "./views/Carts";
@@ -10,10 +9,11 @@ import Checkout from "./views/Checkout";
 import Order from "./views/Order";
 import Wishlist from "./views/Wishlist";
 import OrderDetail from "./views/OrderDetail";
-import Layout from "./components/Layout";
+import Layout from "./components/layouts/Layout";
 import Home from "./views/Home";
-import DashboardLayout from "./components/DashboardLayout";
-import AccountLayout from "./components/AccountLayout";
+import DashboardLayout from "./components/layouts/DashboardLayout";
+import AccountLayout from "./components/layouts/AccountLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +31,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    Component: DashboardLayout,
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {index: true, Component: Home},
       {

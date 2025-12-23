@@ -7,8 +7,8 @@ import {toggleWishlist} from "../app/slices/wishlistSlice";
 const Product = ({product}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userId = useSelector(state => state.auth.user.id);
-  const {wishlists} = useSelector(state => state.wishlist);
+  const userId = useSelector(state => state.auth.user?.id);
+  const {wishlists} = useSelector(state => state.wishlist) ?? [];
 
   const isItWishlist = wishlists.includes(product.id);
 
