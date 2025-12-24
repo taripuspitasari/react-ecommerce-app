@@ -25,11 +25,10 @@ export default function Checkout() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (addresses.length < 0) {
-      setSelectedAddress(null);
+    if (!selectedAddress && addresses.length > 0) {
+      setSelectedAddress(addresses[0]);
     }
-    setSelectedAddress(addresses[0]);
-  }, []);
+  }, [addresses, selectedAddress]);
 
   const handleSelectMethod = method => {
     setSelectedPaymentMethod(method);
