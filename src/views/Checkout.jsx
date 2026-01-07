@@ -6,7 +6,7 @@ import FormAddAddress from "../components/Address/FormAddAddress";
 import FormUpdateAddress from "../components/Address/FormUpdateAddress";
 import {useNavigate} from "react-router-dom";
 import {createNewOrder} from "../app/slices/orderSlice";
-import {alertError} from "../components/alert";
+import {alertError, alertSuccess} from "../components/alert";
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -66,6 +66,7 @@ export default function Checkout() {
 
     dispatch(createNewOrder(payload))
       .unwrap()
+      .then(() => alertSuccess("Your order has been created"))
       .then(() => navigate("/dashboard"))
       .catch(err => console.log(err));
   };
@@ -117,9 +118,9 @@ export default function Checkout() {
             <div className="flex flex-col gap-5">
               <div className="grid lg:grid-rows-1 lg:grid-flow-col gap-3">
                 <div
-                  onClick={() => handleSelectMethod("bank_transfer")}
+                  onClick={() => handleSelectMethod("transfer")}
                   className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border cursor-pointer rounded-md ${
-                    selectedPaymentMethod === "bank_transfer"
+                    selectedPaymentMethod === "transfer"
                       ? "border-primary shadow-md text-primary"
                       : "border-slate-400"
                   }`}
@@ -128,9 +129,9 @@ export default function Checkout() {
                   <p>Bank Transfer</p>
                 </div>
                 <div
-                  onClick={() => handleSelectMethod("qr")}
+                  onClick={() => handleSelectMethod("wallet")}
                   className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border cursor-pointer rounded-md ${
-                    selectedPaymentMethod === "qr"
+                    selectedPaymentMethod === "wallet"
                       ? "border-primary shadow-md text-primary"
                       : "border-slate-400"
                   }`}
@@ -139,15 +140,15 @@ export default function Checkout() {
                   <p>Wallet</p>
                 </div>
                 <div
-                  onClick={() => handleSelectMethod("cod")}
+                  onClick={() => handleSelectMethod("cash")}
                   className={`px-4 py-4 flex flex-col gap-2 justify-center items-center border cursor-pointer rounded-md ${
-                    selectedPaymentMethod === "cod"
+                    selectedPaymentMethod === "cash"
                       ? "border-primary shadow-md text-primary"
                       : "border-slate-400"
                   }`}
                 >
                   <i className="fa-solid fa-rupiah-sign"></i>
-                  <p>COD</p>
+                  <p>Cash</p>
                 </div>
               </div>
             </div>

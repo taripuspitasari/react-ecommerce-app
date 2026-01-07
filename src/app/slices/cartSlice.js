@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axiosClient from "../../axios-client";
 import {alertSuccess} from "../../components/alert";
+import {createNewOrder} from "./orderSlice";
 
 export const fetchUserCart = createAsyncThunk(
   "cart/fetchUserCart",
@@ -99,6 +100,11 @@ const cartSlice = createSlice({
   },
   reducers: {},
   extraReducers: builder => {
+    builder.addCase(createNewOrder.fulfilled, state => {
+      state.cartItems = [];
+      state.cartTotalQuantity = 0;
+      state.cartTotalAmount = 0;
+    });
     builder
       .addCase(fetchUserCart.pending, state => {
         state.loading = true;
