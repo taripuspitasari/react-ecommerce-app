@@ -3,12 +3,12 @@ import axiosClient from "../../axios-client";
 
 export const loadProducts = createAsyncThunk(
   "products/loadProducts",
-  async ({query = "", category = ""}, {rejectWithValue}) => {
+  async ({query = "", category = "", page = 1}, {rejectWithValue}) => {
     try {
       const response = await axiosClient.get(
-        `/products?search=${query}&category=${category}`
+        `/products?search=${query}&category=${category}&page=${page}`
       );
-      return response.data.data;
+      return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data || "Error fetching products");
     }
@@ -34,6 +34,7 @@ const productSlice = createSlice({
     categories: [],
     loading: false,
     errors: null,
+    pages: null,
   },
   reducers: {},
   extraReducers: builder => {
@@ -44,7 +45,8 @@ const productSlice = createSlice({
       })
       .addCase(loadProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload;
+        state.products = action.payload.data;
+        state.pages = action.payload.meta;
       })
       .addCase(loadProducts.rejected, (state, action) => {
         state.loading = false;
