@@ -68,8 +68,16 @@ export default function ProductDetail() {
             key={product.id}
             className="flex flex-col md:flex-row py-4 md:gap-4 items-start w-11/12 mx-auto"
           >
-            <div className="md:w-1/2">
-              <img className="rounded-md" src={product.image} />
+            <div className="relative shrink-0 w-full md:w-48 aspect-square overflow-hidden">
+              <img
+                className={`rounded-md ${product.stock ? "" : "grayscale"}`}
+                src={product.image}
+              />
+              {product.stock <= 0 && (
+                <div className="absolute top-20 md:top-14 left-1/2 -translate-x-1/2 flex items-center justify-center text-white w-28 h-28 md:w-24 md:h-24 text-center rounded-full bg-gray-500 bg-opacity-70 text-xl font-bold ">
+                  <p>OUT OF STOCK</p>
+                </div>
+              )}
             </div>
             <div className="mt-3 space-y-2 md:space-y-4">
               <div>
@@ -78,13 +86,22 @@ export default function ProductDetail() {
                 <p className="font-bold">{formatPrice(product.price)}</p>
               </div>
               <ul className="flex items-center gap-2 md:w-56">
-                <li
-                  className="text-sm flex justify-center items-center gap-3 border py-1 px-2 rounded-md hover:bg-primary cursor-pointer"
-                  onClick={handleAddToCart}
-                >
-                  <span className="text-xs">Add To Cart</span>
-                  <i className="fa-solid fa-plus"></i>
-                </li>
+                {product.stock ? (
+                  <li
+                    onClick={() => handleAddToCart(product.id)}
+                    className="text-sm flex justify-between items-center gap-3 border py-1 px-2 rounded-md hover:bg-primary cursor-pointer"
+                  >
+                    <button className="text-xs">Add To Cart</button>
+                    <i className="fa-solid fa-plus"></i>
+                  </li>
+                ) : (
+                  <li className="text-sm flex justify-between items-center gap-3 border bg-gray-50 py-1 px-2 rounded-md cursor-pointer">
+                    <button disabled className="text-xs">
+                      Add To Cart
+                    </button>
+                    <i className="fa-solid fa-plus"></i>
+                  </li>
+                )}
                 <li className="cursor-pointer" onClick={handleToggleWishlist}>
                   {isItWishlist ? (
                     <i className="fa-solid fa-heart text-red-600"></i>

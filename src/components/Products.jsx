@@ -41,23 +41,43 @@ const Product = ({product}) => {
   return (
     <div
       key={product.id}
-      className="bg-white md:w-56 md:h-68 my-2 p-4 rounded-md shadow-md"
+      className="bg-white md:w-56 md:h-68 my-2 p-4 rounded-md shadow-md relative"
     >
       <Link to={`products/${product.id}`}>
-        <img className="mb-2 rounded-md w-full" src={product.image} />
+        <img
+          className={`mb-2 rounded-md w-full ${
+            product.stock ? "" : "grayscale"
+          }`}
+          src={product.image}
+        />
+        {product.stock <= 0 && (
+          <div className="absolute top-24 md:top-14 left-1/2 -translate-x-1/2 flex items-center justify-center text-white w-28 h-28 md:w-24 md:h-24  text-center rounded-full bg-gray-500 bg-opacity-70 text-xl font-bold ">
+            <p>OUT OF STOCK</p>
+          </div>
+        )}
       </Link>
       <h5 className="text-xs text-slate-400">{product.category}</h5>
       <h3 className="font-bold">{product.name}</h3>
       <p>{formatPrice(product.price)}</p>
       <div className="mt-3">
         <ul className="flex justify-between items-center gap-2">
-          <li
-            onClick={() => handleAddToCart(product.id)}
-            className="text-sm flex justify-between items-center gap-3 border py-1 px-2 rounded-md hover:bg-primary cursor-pointer"
-          >
-            <p className="text-xs">Add To Cart</p>
-            <i className="fa-solid fa-plus"></i>
-          </li>
+          {product.stock ? (
+            <li
+              onClick={() => handleAddToCart(product.id)}
+              className="text-sm flex justify-between items-center gap-3 border py-1 px-2 rounded-md hover:bg-primary cursor-pointer"
+            >
+              <button className="text-xs">Add To Cart</button>
+              <i className="fa-solid fa-plus"></i>
+            </li>
+          ) : (
+            <li className="text-sm flex justify-between items-center gap-3 border bg-gray-50 py-1 px-2 rounded-md cursor-pointer">
+              <button disabled className="text-xs">
+                Add To Cart
+              </button>
+              <i className="fa-solid fa-plus"></i>
+            </li>
+          )}
+
           <li
             className="cursor-pointer hover:text-red-600"
             onClick={handleToggleWishlist}
