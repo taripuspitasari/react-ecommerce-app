@@ -36,7 +36,7 @@ export default function Order() {
                 Date
               </th>
               <th scope="col" className="px-6 py-3 whitespace-nowrap">
-                Nomor Order
+                Order Number
               </th>
               <th scope="col" className="px-6 py-3 text-center">
                 Status
@@ -61,7 +61,7 @@ export default function Order() {
                     {item.created_at}
                   </td>
                   <td className="px-6 py-3 text-center text-gray-900 whitespace-nowrap dark:text-white">
-                    {item.id}
+                    {item.order_number}
                   </td>
                   <td className="px-6 py-3 text-center text-gray-900 whitespace-nowrap dark:text-white capitalize">
                     {item.order_status}

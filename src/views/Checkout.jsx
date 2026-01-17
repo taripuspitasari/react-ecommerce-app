@@ -68,7 +68,7 @@ export default function Checkout() {
       .unwrap()
       .then(() => alertSuccess("Your order has been created"))
       .then(() => navigate("/dashboard"))
-      .catch(err => console.log(err));
+      .catch(err => alertError(err));
   };
 
   return (

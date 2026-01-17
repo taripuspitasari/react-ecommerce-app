@@ -7,7 +7,7 @@ export default function OrderDetail() {
 
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("contoh nih");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -59,8 +59,8 @@ export default function OrderDetail() {
               <p>{order.created_at}</p>
             </div>
             <div className="px-4 md:border-r">
-              <h4 className="text-slate-400 text-xs">Order ID</h4>
-              <p>#{id}</p>
+              <h4 className="text-slate-400 text-xs">Order Number</h4>
+              <p>#{order.order_number}</p>
             </div>
             <div className="px-4 md:border-r">
               <h4 className="text-slate-400 text-xs">Order Status</h4>
